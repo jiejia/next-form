@@ -19,7 +19,6 @@ export default function SideNav() {
                 {links.map((link) => {
                     return (
                     <li key={link.name}><Link
-                        key={link.name}
                         href={link.href}
                         className={clsx('', {"active": pathname === link.href})}
                     >{link.name}</Link></li>

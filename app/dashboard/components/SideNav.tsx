@@ -18,7 +18,7 @@ export default function SideNav() {
             <ul className="menu bg-base-200 rounded-box">
                 {links.map((link) => {
                     return (
-                    <li><Link
+                    <li key={link.name}><Link
                         key={link.name}
                         href={link.href}
                         className={clsx('', {"active": pathname === link.href})}

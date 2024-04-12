@@ -1,0 +1,31 @@
+'use client';
+
+import Link from 'next/link';
+import {usePathname} from 'next/navigation';
+import clsx from 'clsx';
+
+
+const links = [
+    {name: 'Dashboard', href: '/dashboard'},
+    {name: 'Forms', href: '/dashboard/form'},
+    {name: 'Setting', href: '/dashboard/setting'},
+];
+
+export default function SideNav() {
+    const pathname = usePathname();
+    return (
+        <>
+            <ul className="menu bg-base-200">
+                {links.map((link) => {
+                    return (
+                    <li><Link
+                        key={link.name}
+                        href={link.href}
+                        className={clsx('', {"active": pathname === link.href})}
+                    >{link.name}</Link></li>
+                    );
+                })}
+            </ul>
+        </>
+    );
+}

@@ -15,7 +15,7 @@ export default function SideNav() {
     const pathname = usePathname();
     return (
         <>
-            <ul className="menu bg-base-200">
+            <ul className="menu bg-base-200 rounded-box">
                 {links.map((link) => {
                     return (
                     <li><Link

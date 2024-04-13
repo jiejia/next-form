@@ -11,7 +11,7 @@ const links = [
     {name: 'Setting', href: '/dashboard/setting'},
 ];
 
-export default function SideNav() {
+export default function Sidenav({activeName = 'Dashboard'}) {
     const pathname = usePathname();
     return (
         <>
@@ -20,7 +20,7 @@ export default function SideNav() {
                     return (
                     <li key={link.name}><Link
                         href={link.href}
-                        className={clsx('', {"active": pathname === link.href})}
+                        className={clsx('', {"active": activeName == link.name})}
                     >{link.name}</Link></li>
                     );
                 })}

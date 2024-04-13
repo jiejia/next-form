@@ -1,5 +1,5 @@
 import Image from "next/image";
-import SideNav from "@/app/dashboard/components/SideNav"
+import Sidenav from "@/app/dashboard/components/sidenav"
 import type {Metadata} from "next";
 export const metadata: Metadata = {
     title: "Dashboard | The Next Form",
@@ -7,14 +7,19 @@ export const metadata: Metadata = {
 export default function Home() {
     return (
         <>
-            <div className="text-sm breadcrumbs">
-                <ul>
-                    <li>Dashboard</li>
-                </ul>
-            </div>
-            <div>
+            <aside className="col-span-1">
+                <Sidenav activeName="Dashboard"/>
+            </aside>
+            <main className="col-span-4 relative">
+                <div className="text-sm breadcrumbs">
+                    <ul>
+                        <li>Dashboard</li>
+                    </ul>
+                </div>
+                <div>
 
-            </div>
+                </div>
+            </main>
         </>
     )
         ;

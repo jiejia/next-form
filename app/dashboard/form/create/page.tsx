@@ -26,32 +26,113 @@ export default function Create() {
                             >Forms
                             </Link>
                         </li>
-                        <li>Create</li>
+                        <li>
+                            Form 1
+                        </li>
                     </ul>
                 </div>
                 <div>
-                    <label className="form-control w-full  max-w-3xl">
-                        <div className="label">
-                            <span className="label-text">Name</span>
+                    <div className="grid grid-cols-4 gap-4">
+                        <div className="col-span-1 rounded-lg border-violet-800	border overflow-y-auto p-4">
+                            <label className="form-control w-full max-w-xs">
+                                <div className="label">
+                                    <span className="label-text">Text input</span>
+                                </div>
+                                <input type="text" placeholder="Text input" readOnly disabled={true} tabIndex={-1}
+                                       className="input input-bordered input-sm w-full max-w-xs"/>
+                            </label>
+                            <label className="form-control">
+                                <div className="label">
+                                    <span className="label-text">Textarea</span>
+                                </div>
+                                <textarea className="textarea textarea-bordered textarea-sm h-24" readOnly
+                                          disabled={true} tabIndex={-1}
+                                          placeholder="Textarea"></textarea>
+                            </label>
+                            <label className="form-control w-full max-w-xs">
+                                <div className="label">
+                                    <span className="label-text">Select</span>
+                                </div>
+                                <select className="select select-bordered select-sm" disabled={true} tabIndex={-1}>
+                                    <option>Pick one</option>
+                                </select>
+                            </label>
+                            <div className="form-control">
+                                <label className="label cursor-pointer">
+                                    <span className="label-text">Checkbox</span>
+                                    <input type="checkbox" defaultChecked readOnly disabled={true}
+                                           className="checkbox"/>
+                                </label>
+                            </div>
+                            <div className="form-control">
+                                <label className="label cursor-pointer">
+                                    <span className="label-text">Blue pill</span>
+                                    <input type="radio" name="radio-10" readOnly disabled={true} className="radio"
+                                           checked/>
+                                </label>
+                            </div>
                         </div>
-                        <input type="text" placeholder="Name" className="input input-bordered w-full max-w-3xl"/>
-                    </label>
-                    <label className="form-control w-full max-w-3xl">
-                        <div className="label">
-                            <span className="label-text">Description</span>
+                        <div className="col-span-2 rounded-lg border-violet-800	border overflow-y-auto p-4">
+                            <label className="form-control w-full max-w-xs">
+                                <div className="label">
+                                    <span className="label-text">Text input</span>
+                                </div>
+                                <input type="text" placeholder="Text input"
+                                       className="input input-bordered input-sm w-full max-w-xs"/>
+                            </label>
+                            <label className="form-control">
+                                <div className="label">
+                                    <span className="label-text">Textarea</span>
+                                </div>
+                                <textarea className="textarea textarea-bordered textarea-sm h-24"
+                                          placeholder="Textarea"></textarea>
+                            </label>
+                            <label className="form-control w-full max-w-xs">
+                                <div className="label">
+                                    <span className="label-text">Select</span>
+                                </div>
+                                <select className="select select-bordered select-sm">
+                                    <option>Pick one</option>
+                                </select>
+                            </label>
+                            <div className="form-control">
+                                <label className="label cursor-pointer">
+                                    <span className="label-text">Checkbox</span>
+                                    <input type="checkbox" defaultChecked
+                                           className="checkbox"/>
+                                </label>
+                            </div>
+                            <div className="form-control">
+                                <label className="label cursor-pointer">
+                                    <span className="label-text">Blue pill</span>
+                                    <input type="radio" name="radio-10" className="radio"
+                                           checked/>
+                                </label>
+                            </div>
                         </div>
-                        <textarea className="textarea textarea-bordered h-24" placeholder="Description"></textarea>
-                    </label>
-                    <div className="form-control w-full max-w-3xl">
-                        <label className="label cursor-pointer">
-                            <span className="label-text">Is it closed</span>
-                            <input type="checkbox" className="toggle"/>
-                        </label>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4 mt-4 w-full max-w-3xl">
-                        <button className="btn btn-primary">Create</button>
-                        <button className="btn">Reset</button>
+                        <div className="col-span-1 rounded-lg border-violet-800	border overflow-y-auto p-4">
+                            <label className="form-control w-full max-w-xs">
+                                <div className="label">
+                                    <span className="label-text">Title</span>
+                                </div>
+                                <input type="text" placeholder="Title"
+                                       className="input input-bordered input-sm w-full max-w-xs"/>
+                            </label>
+                            <label className="form-control w-full max-w-xs">
+                                <div className="label">
+                                    <span className="label-text">Placeholder</span>
+                                </div>
+                                <input type="text" placeholder="Placeholder"
+                                       className="input input-bordered input-sm w-full max-w-xs"/>
+                            </label>
+                            <label className="form-control w-full max-w-xs">
+                                <div className="label">
+                                    <span className="label-text">Width</span>
+                                </div>
+                                <input type="text" placeholder="Width"
+                                       className="input input-bordered input-sm w-full max-w-xs"/>
+                            </label>
+                        </div>
                     </div>
                 </div>
             </main>

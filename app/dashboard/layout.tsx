@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 export default function Layout({ children }: { children: React.ReactNode }) {
     return (
         <>
-            <div className="container mx-auto navbar px-4 bg-base-100 mb-4 shadow-xl rounded-box">
+            <div className="container mx-auto navbar px-4 bg-base-100 mb-4 shadow-xl rounded-box border-gray-300 border mt-4">
                 <div className="navbar-start">
                     <div className="dropdown">
                         <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
@@ -48,7 +48,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     </button>
                 </div>
             </div>
-            <div className="container mx-auto px-4 py-4 grid grid-cols-5 gap-4 shadow-xl rounded-box">
+            <div className="container mx-auto px-4 py-4 grid grid-cols-5 gap-4 shadow-xl rounded-box border-gray-300 border">
                 {children}
             </div>
             <footer className="container footer items-center p-4  text-neutral">

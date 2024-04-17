@@ -1,14 +1,29 @@
 'use client'
 
 import {elementData} from "../elementData";
-import { DragDropContext } from 'react-beautiful-dnd';
+import { DragDropContext,Droppable,Draggable } from 'react-beautiful-dnd';
 import React from 'react';
+import {resultData} from "@/app/dashboard/form/create/resultData";
 
 export default function Form() {
+    const state = elementData;
+
     const onDragEnd = () => {
+            const {destination  , source, draggableId} = resultData;
+            if (! destination) {
+                return;
+            }
+            if (destination.index === source.index && destination.droppableId === source.droppableId) {
+                return;
+            }
+
+            const newComponentIds = Array.from(['component-1', 'component-2', 'component-3', 'component-4', 'component-5']);
+            newComponentIds.splice(source.index, 1);
+            newComponentIds.splice(destination.index, 0, draggableId);
 
     };
 
+    // @ts-ignore
     return (
         <DragDropContext onDragEnd={onDragEnd}>
             <div className="grid grid-cols-4 gap-4">
@@ -17,16 +32,25 @@ export default function Form() {
                         <input type="radio" name="components_tab" role="tab" className="tab"
                                aria-label="Components" defaultChecked={true}/>
                         <div role="tabpanel" className="tab-content bg-base-100 border-base-300 p-6">
-                            <ul className="grid gap-2">
-                                {
-                                    elementData.map((element) =>
-                                            <li key={element.id}
-                                                className="border border-fuchsia-800 rounded-lg p-2 text-xs">
-                                                <span>{element.name}</span>
-                                            </li>
-                                    )
-                                }
-                            </ul>
+                            <Droppable droppableId={"components"}>
+                                {(provided) => (
+                                    <ul className="grid gap-2" ref={provided.innerRef}  {...provided.droppableProps}>
+                                        {
+                                            elementData.map((element) =>
+                                                <Draggable draggableId={"component-" + element.id} index={element.id} key={element.id}>
+                                                    {(provided) => (
+                                                        <li
+                                                            className="border border-fuchsia-800 rounded-lg p-2 text-xs" {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
+                                                            <span>{element.name}</span>
+                                                        </li>
+                                                    )}
+                                                </Draggable>
+                                            )
+                                        }
+                                        {provided.placeholder}
+                                    </ul>
+                                )}
+                            </Droppable>
                         </div>
                     </div>
 
@@ -38,9 +62,13 @@ export default function Form() {
                                aria-label="Fields Area"
                                defaultChecked={true}/>
                         <div role="tabpanel" className="tab-content bg-base-100 border-base-300  p-6">
-                            <ul>
-
-                            </ul>
+                            <Droppable droppableId={"fields"}>
+                                {(provided) => (
+                                    <ul className="grid gap-2" ref={provided.innerRef}  {...provided.droppableProps}>
+                                        {provided.placeholder}
+                                    </ul>
+                                )}
+                            </Droppable>
                         </div>
                         <input type="radio" name="design_tab" role="tab" className="tab"
                                aria-label="Json"/>

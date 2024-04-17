@@ -14,8 +14,53 @@ export default function Form() {
             <div className="grid grid-cols-4 gap-4">
                 <div className="col-span-1 overflow-y-auto">
                     <div role="tablist" className="tabs tabs-boxed">
+                        <input type="radio" name="components_tab" role="tab" className="tab"
+                               aria-label="Components" defaultChecked={true}/>
+                        <div role="tabpanel" className="tab-content bg-base-100 border-base-300 p-6">
+                            <ul className="grid gap-2">
+                                {
+                                    elementData.map((element: {
+                                            name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<React.AwaitedReactNode> | null | undefined;
+                                        }) =>
+                                            <li key={element.id}
+                                                className="border border-fuchsia-800 rounded-lg p-2 text-xs">
+                                                <span>{element.name}</span>
+                                            </li>
+                                    )
+                                }
+                            </ul>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div className="col-span-2">
+                    <div role="tablist" className="tabs tabs-boxed">
+                        <input type="radio" name="design_tab" role="tab" className="tab"
+                               aria-label="Fields Area"
+                               defaultChecked={true}/>
+                        <div role="tabpanel" className="tab-content bg-base-100 border-base-300  p-6">
+                            <ul>
+
+                            </ul>
+                        </div>
+                        <input type="radio" name="design_tab" role="tab" className="tab"
+                               aria-label="Json"/>
+                        <div role="tabpanel" className="tab-content bg-base-100 border-base-300 p-6">
+
+                        </div>
+
+                    </div>
+                </div>
+                <div className="col-span-1">
+                    <div role="tablist" className="tabs tabs-boxed">
                         <input type="radio" name="form_tab" role="tab" className="tab"
-                               aria-label="Basic Info"
+                               aria-label="Attributes"/>
+                        <div role="tabpanel" className="tab-content bg-base-100 border-base-300  p-6">
+
+                        </div>
+                        <input type="radio" name="form_tab" role="tab" className="tab"
+                               aria-label="Basic"
                                defaultChecked={true}/>
                         <div role="tabpanel"
                              className="tab-content bg-base-100 border-base-300  p-6">
@@ -40,49 +85,6 @@ export default function Form() {
                                 </label>
                             </div>
                         </div>
-
-                        <input type="radio" name="form_tab" role="tab" className="tab"
-                               aria-label="Components"/>
-                        <div role="tabpanel" className="tab-content bg-base-100 border-base-300 p-6">
-                            <ul className="grid gap-2">
-                                {
-                                    elementData.map((element: {
-                                            name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<React.AwaitedReactNode> | null | undefined;
-                                        }) =>
-                                            <li
-                                                className="border border-fuchsia-800 rounded-lg p-2 text-xs">
-                                                <span>{element.name}</span>
-                                            </li>
-                                    )
-                                }
-                            </ul>
-                        </div>
-                    </div>
-
-
-                </div>
-                <div className="col-span-2">
-                    <div role="tablist" className="tabs tabs-boxed">
-                        <input type="radio" name="field_tab" role="tab" className="tab"
-                               aria-label="Fields Area"
-                               defaultChecked={true}/>
-                        <div role="tabpanel" className="tab-content bg-base-100 border-base-300  p-6">
-                            <ul>
-
-                            </ul>
-                        </div>
-
-                    </div>
-                </div>
-                <div className="col-span-1">
-                    <div role="tablist" className="tabs tabs-boxed">
-                        <input type="radio" name="attribute_tab" role="tab" className="tab"
-                               aria-label="Attributes"
-                               defaultChecked={true}/>
-                        <div role="tabpanel" className="tab-content bg-base-100 border-base-300  p-6">
-
-                        </div>
-
                     </div>
                 </div>
             </div>

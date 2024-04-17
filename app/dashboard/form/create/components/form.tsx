@@ -19,9 +19,7 @@ export default function Form() {
                         <div role="tabpanel" className="tab-content bg-base-100 border-base-300 p-6">
                             <ul className="grid gap-2">
                                 {
-                                    elementData.map((element: {
-                                            name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<React.AwaitedReactNode> | null | undefined;
-                                        }) =>
+                                    elementData.map((element) =>
                                             <li key={element.id}
                                                 className="border border-fuchsia-800 rounded-lg p-2 text-xs">
                                                 <span>{element.name}</span>

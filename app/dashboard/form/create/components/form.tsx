@@ -26,7 +26,7 @@ export default function Form() {
     // @ts-ignore
     return (
         <DragDropContext onDragEnd={onDragEnd}>
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
                 <div className="col-span-1 overflow-y-auto">
                     <div role="tablist" className="tabs tabs-boxed">
                         <input type="radio" name="components_tab" role="tab" className="tab"
@@ -56,7 +56,7 @@ export default function Form() {
 
 
                 </div>
-                <div className="col-span-2">
+                <div className="xl:col-span-2 col-span-1">
                     <div role="tablist" className="tabs tabs-boxed">
                         <input type="radio" name="design_tab" role="tab" className="tab"
                                aria-label="Fields Area"

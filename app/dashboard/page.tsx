@@ -10,10 +10,8 @@ export default function Home() {
 
     return (
         <>
-            <aside className="col-span-1">
-                <Sidenav activeName="Dashboard"/>
-            </aside>
-            <main className="col-span-4 relative">
+            <Sidenav activeName="Dashboard"/>
+            <main className="col-span-5 lg:col-span-4 relative">
                 <div className="text-sm breadcrumbs">
                     <ul>
                         <li>Dashboard</li>

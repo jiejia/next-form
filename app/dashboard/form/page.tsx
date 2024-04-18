@@ -8,10 +8,8 @@ export const metadata: Metadata = {
 export default function Form() {
     return (
         <>
-            <aside className="col-span-1">
-                <Sidenav activeName="Forms"/>
-            </aside>
-            <main className="col-span-4 relative">
+            <Sidenav activeName="Forms"/>
+            <main className="col-span-5 lg:col-span-4 relative">
                 <div id="nav" className="absolute right-0 top-0">
                     <button className="btn btn-outline btn-sm">
                         <Link

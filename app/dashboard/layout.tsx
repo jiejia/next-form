@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
-import Sidenav from "@/app/dashboard/components/sidenav";
-
+import Links from "@/app/dashboard/components/links";
 export const metadata: Metadata = {
     title: "Dashboard | The Next Form",
 };
 export default function Layout({ children }: { children: React.ReactNode }) {
     return (
-        <>
-            <div className="container mx-auto navbar px-4 bg-base-100 mb-4 shadow-xl rounded-box border-gray-300 border mt-4">
+        <div className="container mx-auto">
+            <div
+                className="navbar px-4 bg-base-100 mb-4 shadow-xl rounded-box border-gray-300 border mt-4">
                 <div className="navbar-start">
-                    <div className="dropdown">
+                    <div className="dropdown lg:hidden block">
                         <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24"
                                  stroke="currentColor">
@@ -19,9 +19,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                         </div>
                         <ul tabIndex={0}
                             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-                            <li><a>Homepage</a></li>
-                            <li><a>Portfolio</a></li>
-                            <li><a>About</a></li>
+                            <Links />
+
                         </ul>
                     </div>
                 </div>
@@ -48,14 +47,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     </button>
                 </div>
             </div>
-            <div className="container mx-auto px-4 py-4 grid grid-cols-5 gap-4 shadow-xl rounded-box border-gray-300 border">
+            <div
+                className="px-4 py-4 grid grid-cols-5 gap-4 shadow-xl rounded-box border-gray-300 border">
                 {children}
             </div>
-            <footer className="container footer items-center p-4  text-neutral">
-                <aside className="items-center grid-flow-col">
-                    <p>Copyright © 2024 - All right reserved</p>
+            <footer className="footer items-center p-4  text-neutral grid grid-cols-2 gap-2">
+                <aside className="col-span-1 items-center grid-flow-col">
+                    <p>© 2024 All right reserved</p>
                 </aside>
-                <nav className="grid-flow-col gap-4 md:place-self-center md:justify-self-end">
+                <nav className="col-span-1 grid-flow-col gap-4 place-self-center justify-self-end">
                     <a>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                              className="fill-current">
@@ -79,6 +79,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     </a>
                 </nav>
             </footer>
-        </>
+        </div>
     );
 }

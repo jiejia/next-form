@@ -6,10 +6,8 @@ export const metadata: Metadata = {
 export default function Setting() {
     return (
         <>
-            <aside className="col-span-1">
-                <Sidenav activeName="Setting"/>
-            </aside>
-            <main className="col-span-4 relative">
+            <Sidenav activeName="Setting"/>
+            <main className="col-span-5 lg:col-span-4 relative">
                 <div className="text-sm breadcrumbs">
                     <ul>
                         <li>Setting</li>

@@ -1,30 +1,18 @@
 'use client';
 
-import Link from 'next/link';
 import {usePathname} from 'next/navigation';
-import clsx from 'clsx';
+import links from '@/app/dashboard/components/links';
+import Links from "@/app/dashboard/components/links";
 
-
-const links = [
-    {name: 'Dashboard', href: '/dashboard'},
-    {name: 'Forms', href: '/dashboard/form'},
-    {name: 'Setting', href: '/dashboard/setting'},
-];
 
 export default function Sidenav({activeName = 'Dashboard'}) {
     const pathname = usePathname();
     return (
-        <>
+        <aside className="col-span-1 lg:block hidden">
             <ul className="menu bg-base-200 rounded-box">
-                {links.map((link) => {
-                    return (
-                    <li key={link.name}><Link
-                        href={link.href}
-                        className={clsx('', {"active": activeName == link.name})}
-                    >{link.name}</Link></li>
-                    );
-                })}
+                <Links activeName={activeName}/>
             </ul>
-        </>
+        </aside>
     );
 }
+

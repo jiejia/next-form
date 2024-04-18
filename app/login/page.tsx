@@ -12,7 +12,7 @@ export default function Login() {
     return (
         <div className="container max-w-lg mx-auto">
             <div
-                className=" px-4 py-4 shadow-xl rounded-box border-gray-300 border mt-36 grid grid-cols-2 gap-2">
+                className=" px-4 py-4 shadow-xl rounded-box border-gray-300 border mt-24 grid grid-cols-2 gap-2">
                 <h2 className="text-center col-span-2 text-lg font-bold	mb-2">Login</h2>
                 <label className="input input-bordered flex items-center gap-2 col-span-2">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"

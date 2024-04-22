@@ -5,6 +5,7 @@ import { DragDropContext,Droppable,Draggable } from 'react-beautiful-dnd';
 import React from 'react';
 import { useState } from 'react';
 import { v4 as uuidV4 } from 'uuid';
+import clsx from "clsx";
 
 
 export default function Form() {
@@ -21,15 +22,24 @@ export default function Form() {
     }
 
     const onDragEnd = (result: any) => {
-        // console.log(result)
+        console.log(result)
+
         if (!result.destination ||  (result.destination.droppableId == result.source.droppableId  && result.destination.index === result.source.index)) {
             return;
         }
 
+        // 如果拖拽结束后，处于拖拽状态，则复制一个元素
+        // if (result.reason === 'DROP' && result.mode === 'FLUID' && result.snapshot.isDragging) {
+        //     const draggedItem = state.components[result.source.index];
+        //     // newItems.splice(destination.index, 0, { ...draggedItem });
+        //     // setItems(newItems);
+        //     console.log(draggedItem);
+        // }
+
         // clone
         if (result.source.droppableId === "components" && result.destination.droppableId === "fields") {
             const draggedItem = state.components[result.source.index];
-            console.log(draggedItem)
+            // console.log(draggedItem)
             const field = {uuid: uuidV4(), id: draggedItem.id, name: draggedItem.name};
             state.fields.splice(result.destination.index, 0, field);
             // console.log(result.source.index, draggedItem);
@@ -57,16 +67,28 @@ export default function Form() {
                                aria-label="Components" defaultChecked={true}/>
                         <div role="tabpanel" className="tab-content bg-base-100 border-base-300 p-6">
                             <Droppable droppableId={"components"} isDropDisabled={true}>
-                                {(provided) => (
-                                    <ul className="grid gap-2" ref={provided.innerRef}  {...provided.droppableProps}>
+                                {(provided, snapshot) => (
+                                    <ul className="grid gap-2" ref={provided.innerRef} {...provided.droppableProps}>
                                         {
                                             state.components.map((element, index) =>
-                                                <Draggable draggableId={"component-" + element.id} index={index} key={index}>
+                                                <Draggable draggableId={"component-" + element.id} index={index} key={index} isDragDisabled={false}>
                                                     {(provided, snapshot) => (
-                                                        <li
-                                                            className="border border-fuchsia-800 rounded-lg p-2 text-xs" {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
-                                                            <span>{element.name}</span>
-                                                        </li>
+                                                        <>
+                                                            <li
+                                                                className={clsx('border border-fuchsia-800 rounded-lg p-2 text-xs', {"border-dotted": snapshot.isDragging })} {...provided.draggableProps} {...provided.dragHandleProps}
+                                                                ref={provided.innerRef}>
+                                                                <span>{element.name}</span>
+                                                            </li>
+                                                            {snapshot.isDragging && (
+                                                                <>
+                                                                    <li
+                                                                        className={clsx('border border-fuchsia-800 rounded-lg p-2 text-xs hidden', {})}>
+                                                                        <span>{element.name}</span>
+                                                                    </li>
+                                                                </>
+                                                            )}
+                                                        </>
+
                                                     )}
                                                 </Draggable>
                                             )

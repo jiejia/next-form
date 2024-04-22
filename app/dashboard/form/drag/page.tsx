@@ -5,9 +5,27 @@ import Sidenav from "@/app/dashboard/components/sidenav";
 import React from 'react';
 import { DragDropContext,Droppable,Draggable } from 'react-beautiful-dnd';
 
+
+// function Column(column: string, tasks: string[])
+// {
+//     return (
+//       <>
+//         <h2>{column.title}</h2>
+//
+//       </>
+//     );
+// }
+
 export default function Drag() {
 
-    const initialData = {
+
+    interface InitialData {
+        columns: { [key: string]: any };
+        tasks: { [key: string]: any };
+        columnOrder: string[];
+    }
+
+    const initialData : InitialData = {
         'tasks': {
             'task-1': {id: 'task-1',content: 'Take out the garbage' },
             'task-2': {id: 'task-2',content: 'Watch my favorite show' },
@@ -21,10 +39,11 @@ export default function Drag() {
                 taskIds: ['task-1', 'task-2', 'task-3', 'task-4'],
             },
         },
+        // facilitate reordering of the columns
+        'columnOrder': ['column-1'],
     };
 
-
-
+    // @ts-ignore
     return (
         <>
             <Sidenav activeName="Forms"/>
@@ -50,7 +69,14 @@ export default function Drag() {
                     </ul>
                 </div>
                 <div>
+                    {/*{*/}
+                    {/*    initialData.columnOrder.map((columnId:string) => {*/}
+                    {/*            const column = initialData.columns[columnId] ;*/}
+                    {/*            const tasks = column.taskIds.map((taskId: string | number) => initialData.tasks[taskId]);*/}
 
+                    {/*            return  <Column key={column.id} column={column} tasks={tasks} />;*/}
+                    {/*    });*/}
+                    {/*}*/}
                 </div>
             </main>
         </>

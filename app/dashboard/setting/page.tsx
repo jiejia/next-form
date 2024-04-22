@@ -29,8 +29,8 @@ export default function Setting() {
                                 <div className="label">
                                     <span className="label-text">Theme</span>
                                 </div>
-                                <select className="select select-bordered select-sm">
-                                    <option disabled selected>Pick one</option>
+                                <select className="select select-bordered select-sm" defaultValue={0}>
+                                    <option disabled value={0}>Pick one</option>
                                     <option>Star Wars</option>
                                     <option>Harry Potter</option>
                                     <option>Lord of the Rings</option>

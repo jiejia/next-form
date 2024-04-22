@@ -2,7 +2,11 @@ import type {Metadata} from "next";
 import Link from "next/link";
 import Sidenav from "@/app/dashboard/components/sidenav";
 import React from 'react';
-import Form from "@/app/dashboard/form/create/components/form";
+import dynamic from 'next/dynamic';
+
+const FormNoSSR = dynamic(() => import('@/app/dashboard/form/create/components/form'), {
+    ssr: false
+});
 
 export const metadata: Metadata = {
     title: "Create Form | The Next Form",
@@ -35,7 +39,7 @@ export default function Create() {
                     </ul>
                 </div>
                 <div>
-                    <Form />
+                    <FormNoSSR />
                     <div className="mt-4 w-full border-t border-gray-300 border-dotted pt-4 text-center">
                         <div className="">
                             <button className="btn btn-primary btn-sm mr-2">Submit</button>

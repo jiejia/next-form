@@ -1,44 +1,68 @@
 'use client'
 
-import {elementData} from "../elementData";
+import {initialData} from "../initialData";
 import { DragDropContext,Droppable,Draggable } from 'react-beautiful-dnd';
 import React from 'react';
-import {resultData} from "@/app/dashboard/form/create/resultData";
+import { useState } from 'react';
+import { v4 as uuidV4 } from 'uuid';
+
 
 export default function Form() {
-    const state = elementData;
 
-    const onDragEnd = () => {
-            const {destination  , source, draggableId} = resultData;
-            if (! destination) {
-                return;
-            }
-            if (destination.index === source.index && destination.droppableId === source.droppableId) {
-                return;
-            }
+    const [state, setState] = useState(initialData);
 
-            const newComponentIds = Array.from(['component-1', 'component-2', 'component-3', 'component-4', 'component-5']);
-            newComponentIds.splice(source.index, 1);
-            newComponentIds.splice(destination.index, 0, draggableId);
 
+    const onBeforeDragStart = (start: any) => {
+        return
+    }
+
+    const onDragStart = (start: any) => {
+        // console.log(start);
+    }
+
+    const onDragEnd = (result: any) => {
+        // console.log(result)
+        if (!result.destination ||  (result.destination.droppableId == result.source.droppableId  && result.destination.index === result.source.index)) {
+            return;
+        }
+
+        // clone
+        if (result.source.droppableId === "components" && result.destination.droppableId === "fields") {
+            const draggedItem = state.components[result.source.index];
+            console.log(draggedItem)
+            const field = {uuid: uuidV4(), id: draggedItem.id, name: draggedItem.name};
+            state.fields.splice(result.destination.index, 0, field);
+            // console.log(result.source.index, draggedItem);
+        }
+
+        // change order
+        if (result.source.droppableId === "fields" && result.destination.droppableId === "fields") {
+            const draggedItem = state.fields[result.source.index];
+            state.fields.splice(result.source.index, 1);
+            state.fields.splice(result.destination.index, 0, draggedItem);
+        }
+
+
+
+        setState(state)
     };
 
     // @ts-ignore
     return (
-        <DragDropContext onDragEnd={onDragEnd}>
+        <DragDropContext onBeforeDragStart={onBeforeDragStart} onDragStart={onDragStart} onDragEnd={onDragEnd}>
             <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
                 <div className="col-span-1 overflow-y-auto">
                     <div role="tablist" className="tabs tabs-boxed">
                         <input type="radio" name="components_tab" role="tab" className="tab"
                                aria-label="Components" defaultChecked={true}/>
                         <div role="tabpanel" className="tab-content bg-base-100 border-base-300 p-6">
-                            <Droppable droppableId={"components"}>
+                            <Droppable droppableId={"components"} isDropDisabled={true}>
                                 {(provided) => (
                                     <ul className="grid gap-2" ref={provided.innerRef}  {...provided.droppableProps}>
                                         {
-                                            elementData.map((element) =>
-                                                <Draggable draggableId={"component-" + element.id} index={element.id} key={element.id}>
-                                                    {(provided) => (
+                                            state.components.map((element, index) =>
+                                                <Draggable draggableId={"component-" + element.id} index={index} key={index}>
+                                                    {(provided, snapshot) => (
                                                         <li
                                                             className="border border-fuchsia-800 rounded-lg p-2 text-xs" {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
                                                             <span>{element.name}</span>
@@ -65,6 +89,18 @@ export default function Form() {
                             <Droppable droppableId={"fields"}>
                                 {(provided) => (
                                     <ul className="grid gap-2" ref={provided.innerRef}  {...provided.droppableProps}>
+                                        {
+                                            state.fields.map((element,index) =>
+                                                <Draggable draggableId={element.uuid}  key={element.uuid} index={index}>
+                                                    {(provided, snapshot) => (
+                                                        <li
+                                                            className="border border-fuchsia-800 rounded-lg p-2 text-xs" {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
+                                                            <span>{element.name}</span>
+                                                        </li>
+                                                    )}
+                                                </Draggable>
+                                            )
+                                        }
                                         {provided.placeholder}
                                     </ul>
                                 )}

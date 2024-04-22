@@ -13,14 +13,16 @@ export const links = [
 export default function Links({activeName = ''}) {
     return (
         <>
-            {links.map((link) => {
-                return (
-                    <li key={link.name}><Link
-                        href={link.href}
-                        className={clsx('', {"active": activeName == link.name})}
-                    >{link.name}</Link></li>
-                );
-            })}
+            {
+                links.map((link) => {
+                    return (
+                        <li key={link.name}><Link
+                            href={link.href}
+                            className={clsx('', {"active": activeName == link.name})}
+                        >{link.name}</Link></li>
+                    );
+                })
+            }
         </>
     );
 }

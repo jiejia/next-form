@@ -113,14 +113,14 @@ export default function Form() {
                                defaultChecked={true}/>
                         <div role="tabpanel" className="tab-content bg-base-100 border-base-300  p-6">
                             <Droppable droppableId={"fields"}>
-                                {(provided) => (
-                                    <ul className="grid gap-2" ref={provided.innerRef}  {...provided.droppableProps}>
+                                {(provided, snapshot) => (
+                                    <ul className={clsx('grid gap-2 rounded-lg p-4', {"bg-yellow-100": snapshot.isDraggingOver}, {"bg-yellow-50": ! snapshot.isDraggingOver})} ref={provided.innerRef}  {...provided.droppableProps}>
                                         {
                                             state.fields.map((element,index) =>
                                                 <Draggable draggableId={element.uuid}  key={element.uuid} index={index}>
                                                     {(provided, snapshot) => (
                                                         <li
-                                                            className="border border-fuchsia-800 rounded-lg p-2 text-xs relative" {...provided.draggableProps}
+                                                            className="border border-fuchsia-800 rounded-lg p-2 text-xs relative cursor-pointer outline	 outline-2 outline-green-700	" {...provided.draggableProps}
                                                             ref={provided.innerRef}>
                                                             <span className="block absolute" {...provided.dragHandleProps}>
                                                                                                                   <svg

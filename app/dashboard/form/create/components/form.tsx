@@ -52,11 +52,15 @@ export default function Form() {
             state.fields.splice(result.destination.index, 0, draggedItem);
         }
 
-
+        // remove field
+        if (result.source.droppableId === "fields" && result.destination.droppableId === "remove") {
+            state.fields.splice(result.source.index, 1);
+        }
 
         setState(state)
     };
 
+    // @ts-ignore
     // @ts-ignore
     return (
         <DragDropContext onBeforeDragStart={onBeforeDragStart} onDragStart={onDragStart} onDragEnd={onDragEnd}>
@@ -75,14 +79,14 @@ export default function Form() {
                                                     {(provided, snapshot) => (
                                                         <>
                                                             <li
-                                                                className={clsx('border border-fuchsia-800 rounded-lg p-2 text-xs', {"border-dotted": snapshot.isDragging })} {...provided.draggableProps} {...provided.dragHandleProps}
+                                                                className={clsx('border border-fuchsia-800 rounded-lg p-2 text-xs select-none', {"border-dotted": snapshot.isDragging })} {...provided.draggableProps} {...provided.dragHandleProps}
                                                                 ref={provided.innerRef}>
                                                                 <span>{element.name}</span>
                                                             </li>
                                                             {snapshot.isDragging && (
                                                                 <>
                                                                     <li
-                                                                        className={clsx('border border-fuchsia-800 rounded-lg p-2 text-xs hidden', {})}>
+                                                                        className={clsx('border border-fuchsia-800 rounded-lg p-2 text-xs select-none', {"block": snapshot.isDragging})}>
                                                                         <span>{element.name}</span>
                                                                     </li>
                                                                 </>
@@ -116,8 +120,23 @@ export default function Form() {
                                                 <Draggable draggableId={element.uuid}  key={element.uuid} index={index}>
                                                     {(provided, snapshot) => (
                                                         <li
-                                                            className="border border-fuchsia-800 rounded-lg p-2 text-xs" {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
-                                                            <span>{element.name}</span>
+                                                            className="border border-fuchsia-800 rounded-lg p-2 text-xs relative" {...provided.draggableProps}
+                                                            ref={provided.innerRef}>
+                                                            <span className="block absolute" {...provided.dragHandleProps}>
+                                                                                                                  <svg
+                                                                                                                      xmlns="http://www.w3.org/2000/svg"
+                                                                                                                      fill="none"
+                                                                                                                      viewBox="0 0 24 24"
+                                                                                                                      strokeWidth={1.5}
+                                                                                                                      stroke="currentColor"
+                                                                                                                      className="w-6 h-6">
+                                                                <path strokeLinecap="round" strokeLinejoin="round"
+                                                                      d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
+                                                            </svg>
+                                                            </span>
+
+
+                                                            <span className="block leading-loose pl-8">{element.name}</span>
                                                         </li>
                                                     )}
                                                 </Draggable>
@@ -125,6 +144,14 @@ export default function Form() {
                                         }
                                         {provided.placeholder}
                                     </ul>
+                                )}
+                            </Droppable>
+                            <Droppable droppableId={"remove"} >
+                                {(provided,snapshot) => (
+                                    <div ref={provided.innerRef}
+                                    {...provided.droppableProps} className={clsx('mt-4 p-4 text-center rounded-lg', {"bg-red-200 border-dotted": snapshot.isDraggingOver}, {"bg-red-50": ! snapshot.isDraggingOver})}>
+                                        Remove
+                                    </div>
                                 )}
                             </Droppable>
                         </div>

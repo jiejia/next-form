@@ -59,7 +59,7 @@ export default function Form() {
         if (result.source.droppableId === "components" && result.destination.droppableId === "fields") {
             const draggedItem = state.components[result.source.index];
             // console.log(draggedItem)
-            const field = {uuid: uuidV4(), id: draggedItem.id, name: draggedItem.name, active: false};
+            const field = {uuid: uuidV4(), id: draggedItem.id, name: draggedItem.name, title : "", active: false};
             state.fields.splice(result.destination.index, 0, field);
             // console.log(result.source.index, draggedItem);
         }
@@ -128,7 +128,7 @@ export default function Form() {
                 <div className="xl:col-span-2 col-span-1">
                     <div role="tablist" className="tabs tabs-boxed">
                         <input type="radio" name="design_tab" role="tab" className="tab"
-                               aria-label="Fields Area"
+                               aria-label="Fields"
                                defaultChecked={true}/>
                         <div role="tabpanel" className="tab-content bg-base-100 border-base-300  p-6">
                             <Droppable droppableId={"fields"}>
@@ -139,9 +139,9 @@ export default function Form() {
                                                 <Draggable draggableId={element.uuid}  key={element.uuid} index={index}>
                                                     {(provided, snapshot) => (
                                                         <li
-                                                            className={clsx('z-10 border border-fuchsia-800 rounded-lg p-2 text-xs relative cursor-pointer', {"outline-double outline-4 outline-yellow-400": element.active})} {...provided.draggableProps}
+                                                            className={clsx('border border-fuchsia-800 rounded-lg p-2 text-xs relative cursor-pointer', {"outline-double outline-4 outline-yellow-400": element.active})} {...provided.draggableProps}
                                                             ref={provided.innerRef} onClick={handleFieldClick}>
-                                                            <span className="z-0 block absolute" {...provided.dragHandleProps}>
+                                                            <span className="block absolute" {...provided.dragHandleProps}>
                                                                                                                   <svg
                                                                                                                       xmlns="http://www.w3.org/2000/svg"
                                                                                                                       fill="none"
@@ -155,7 +155,8 @@ export default function Form() {
                                                             </span>
 
 
-                                                            <span className="z-0 block leading-loose pl-8">{element.name}</span>
+                                                            <span className="block leading-loose pl-8">{element.name}</span>
+                                                            {/*<span>{element.title}</span>*/}
                                                         </li>
                                                     )}
                                                 </Draggable>

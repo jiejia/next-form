@@ -12,6 +12,25 @@ export default function Form() {
 
     const [state, setState] = useState(initialData);
 
+    const handleFieldClick = (e: any) => {
+        let uuid = e.currentTarget.getAttribute('data-rbd-draggable-id')
+
+        // console.log(uuid)
+
+        // iterate over fields and set active to false
+        const updatedFields = state.fields.map((field) => {
+            if(field.uuid === uuid) {
+                return {...field, active: true}; // 注意：这会把匹配到的field设置为active: true，其他则为false
+            } else {
+                return {...field, active: false};
+            }
+        });
+
+        setState({ ...state, fields: updatedFields });
+
+        // console.log(state.fields)
+
+    };
 
     const onBeforeDragStart = (start: any) => {
         return
@@ -22,7 +41,7 @@ export default function Form() {
     }
 
     const onDragEnd = (result: any) => {
-        console.log(result)
+        // console.log(result)
 
         if (!result.destination ||  (result.destination.droppableId == result.source.droppableId  && result.destination.index === result.source.index)) {
             return;
@@ -40,7 +59,7 @@ export default function Form() {
         if (result.source.droppableId === "components" && result.destination.droppableId === "fields") {
             const draggedItem = state.components[result.source.index];
             // console.log(draggedItem)
-            const field = {uuid: uuidV4(), id: draggedItem.id, name: draggedItem.name};
+            const field = {uuid: uuidV4(), id: draggedItem.id, name: draggedItem.name, active: false};
             state.fields.splice(result.destination.index, 0, field);
             // console.log(result.source.index, draggedItem);
         }
@@ -120,9 +139,9 @@ export default function Form() {
                                                 <Draggable draggableId={element.uuid}  key={element.uuid} index={index}>
                                                     {(provided, snapshot) => (
                                                         <li
-                                                            className="border border-fuchsia-800 rounded-lg p-2 text-xs relative cursor-pointer outline	 outline-2 outline-green-700	" {...provided.draggableProps}
-                                                            ref={provided.innerRef}>
-                                                            <span className="block absolute" {...provided.dragHandleProps}>
+                                                            className={clsx('z-10 border border-fuchsia-800 rounded-lg p-2 text-xs relative cursor-pointer', {"outline-double outline-4 outline-yellow-400": element.active})} {...provided.draggableProps}
+                                                            ref={provided.innerRef} onClick={handleFieldClick}>
+                                                            <span className="z-0 block absolute" {...provided.dragHandleProps}>
                                                                                                                   <svg
                                                                                                                       xmlns="http://www.w3.org/2000/svg"
                                                                                                                       fill="none"
@@ -136,7 +155,7 @@ export default function Form() {
                                                             </span>
 
 
-                                                            <span className="block leading-loose pl-8">{element.name}</span>
+                                                            <span className="z-0 block leading-loose pl-8">{element.name}</span>
                                                         </li>
                                                     )}
                                                 </Draggable>
@@ -149,8 +168,15 @@ export default function Form() {
                             <Droppable droppableId={"remove"} >
                                 {(provided,snapshot) => (
                                     <div ref={provided.innerRef}
-                                    {...provided.droppableProps} className={clsx('mt-4 p-4 text-center rounded-lg', {"bg-red-200 border-dotted": snapshot.isDraggingOver}, {"bg-red-50": ! snapshot.isDraggingOver})}>
-                                        Remove
+                                         {...provided.droppableProps}
+                                         className={clsx('mt-4 p-4 text-center rounded-lg', {"bg-red-200 border-dotted": snapshot.isDraggingOver}, {"bg-red-50": !snapshot.isDraggingOver})}>
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                             strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 inline">
+                                            <path strokeLinecap="round" strokeLinejoin="round"
+                                                  d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/>
+                                        </svg>
+
                                     </div>
                                 )}
                             </Droppable>

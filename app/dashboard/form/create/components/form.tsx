@@ -12,6 +12,8 @@ export default function Form() {
 
     const [state, setState] = useState(initialData);
 
+    const [formTab, setFormTab] = useState('basic')
+
     const handleFieldClick = (e: any) => {
         let uuid = e.currentTarget.getAttribute('data-rbd-draggable-id')
 
@@ -26,10 +28,17 @@ export default function Form() {
             }
         });
 
-        setState({ ...state, fields: updatedFields });
+        let currentField = state.fields[0];
 
-        // console.log(state.fields)
+        state.fields.forEach(item => {
+            if (item.uuid == uuid)
+                currentField = item
+        });
 
+        setState({ ...state, fields: updatedFields , currentField: currentField});
+
+        setFormTab('attributes');
+         // console.log(formTab)
     };
 
     const onBeforeDragStart = (start: any) => {
@@ -59,7 +68,7 @@ export default function Form() {
         if (result.source.droppableId === "components" && result.destination.droppableId === "fields") {
             const draggedItem = state.components[result.source.index];
             // console.log(draggedItem)
-            const field = {uuid: uuidV4(), id: draggedItem.id, name: draggedItem.name, title : "", active: false};
+            const field = {uuid: uuidV4(), id: draggedItem.id, name: draggedItem.name, title : "", active: false, config: draggedItem.config};
             state.fields.splice(result.destination.index, 0, field);
             // console.log(result.source.index, draggedItem);
         }
@@ -155,7 +164,7 @@ export default function Form() {
                                                             </span>
 
 
-                                                            <span className="block leading-loose pl-8">{element.name}</span>
+                                                            <span className="block leading-loose pl-8">{element.config.title}</span>
                                                             {/*<span>{element.title}</span>*/}
                                                         </li>
                                                     )}
@@ -193,13 +202,14 @@ export default function Form() {
                 <div className="col-span-1">
                     <div role="tablist" className="tabs tabs-boxed">
                         <input type="radio" name="form_tab" role="tab" className="tab"
-                               aria-label="Attributes"/>
+                               aria-label="Attributes"
+                               defaultChecked={formTab === 'attributes'}/>
                         <div role="tabpanel" className="tab-content bg-base-100 border-base-300  p-6">
 
                         </div>
                         <input type="radio" name="form_tab" role="tab" className="tab"
                                aria-label="Basic"
-                               defaultChecked={true}/>
+                               defaultChecked={formTab === 'basic'}/>
                         <div role="tabpanel"
                              className="tab-content bg-base-100 border-base-300  p-6">
                             <label className="form-control w-full max-w-xs">

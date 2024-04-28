@@ -12,7 +12,12 @@ export default function Form() {
 
     const [state, setState] = useState(initialData);
 
-    const [formTab, setFormTab] = useState('basic')
+    const [formTab, setFormTab] = useState('attributes')
+
+    const handleFieldChange = (e: any) => {
+        e.preventDefault();
+
+    }
 
     const handleFieldClick = (e: any) => {
         let uuid = e.currentTarget.getAttribute('data-rbd-draggable-id')
@@ -34,6 +39,8 @@ export default function Form() {
             if (item.uuid == uuid)
                 currentField = item
         });
+
+        console.log(currentField)
 
         setState({ ...state, fields: updatedFields , currentField: currentField});
 
@@ -205,7 +212,19 @@ export default function Form() {
                                aria-label="Attributes"
                                defaultChecked={formTab === 'attributes'}/>
                         <div role="tabpanel" className="tab-content bg-base-100 border-base-300  p-6">
-
+                            <label className="form-control w-full max-w-xs">
+                                <div className="label">
+                                    <span className="label-text">Title</span>
+                                </div>
+                                <input type="text" placeholder="Title" value={state.currentField.config.title} onChange={handleFieldChange}
+                                       className="input input-bordered input-sm w-full max-w-xs"/>
+                            </label>
+                            <div className="form-control">
+                                <label className="label cursor-pointer">
+                                    <span className="label-text">Required</span>
+                                    <input type="checkbox" className="toggle" checked={state.currentField.config.required}/>
+                                </label>
+                            </div>
                         </div>
                         <input type="radio" name="form_tab" role="tab" className="tab"
                                aria-label="Basic"

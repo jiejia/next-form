@@ -4,19 +4,56 @@ import {initialData} from "../initialData";
 import { DragDropContext,Droppable,Draggable } from 'react-beautiful-dnd';
 import React from 'react';
 import { useState } from 'react';
+import { useImmer } from 'use-immer'
 import { v4 as uuidV4 } from 'uuid';
 import clsx from "clsx";
+import _ from "lodash";
 
 
 export default function Form() {
 
-    const [state, setState] = useState(initialData);
-
+    const [fields, setFields] = useState(initialData.fields);
+    const [currentField, setCurrentField] = useState(initialData.currentField);
     const [formTab, setFormTab] = useState('attributes')
 
-    const handleFieldChange = (e: any) => {
-        e.preventDefault();
+    const handleFieldTitleChange = (e: any) => {
+        const uuid = currentField.uuid;
 
+        fields.forEach(item => {
+            if (item.uuid == uuid) {
+                item.config.title = e.currentTarget.value;
+            }
+        });
+
+        setFields(fields)
+
+        setCurrentField({
+            ...currentField,
+            config: {
+                ...currentField.config,
+                title: e.target.value
+            }
+        });
+    }
+
+    const handleFieldRequiredChange = (e: any) => {
+        const uuid = currentField.uuid;
+
+        fields.forEach(item => {
+            if (item.uuid == uuid) {
+                item.config.required = e.currentTarget.checked;
+            }
+        });
+
+        setFields(fields)
+
+        setCurrentField({
+            ...currentField,
+            config: {
+                ...currentField.config,
+                title: e.currentTarget.checked
+            }
+        });
     }
 
     const handleFieldClick = (e: any) => {
@@ -25,7 +62,7 @@ export default function Form() {
         // console.log(uuid)
 
         // iterate over fields and set active to false
-        const updatedFields = state.fields.map((field) => {
+        const updatedFields = fields.map((field) => {
             if(field.uuid === uuid) {
                 return {...field, active: true}; // 注意：这会把匹配到的field设置为active: true，其他则为false
             } else {
@@ -33,17 +70,13 @@ export default function Form() {
             }
         });
 
-        let currentField = state.fields[0];
 
-        state.fields.forEach(item => {
+        fields.forEach(item => {
             if (item.uuid == uuid)
-                currentField = item
+                setCurrentField(item)
         });
 
-        console.log(currentField)
-
-        setState({ ...state, fields: updatedFields , currentField: currentField});
-
+        setFields(updatedFields);
         setFormTab('attributes');
          // console.log(formTab)
     };
@@ -73,26 +106,27 @@ export default function Form() {
 
         // clone
         if (result.source.droppableId === "components" && result.destination.droppableId === "fields") {
-            const draggedItem = state.components[result.source.index];
+            const draggedItem = _.cloneDeep(initialData.components[result.source.index]);
             // console.log(draggedItem)
-            const field = {uuid: uuidV4(), id: draggedItem.id, name: draggedItem.name, title : "", active: false, config: draggedItem.config};
-            state.fields.splice(result.destination.index, 0, field);
-            // console.log(result.source.index, draggedItem);
+            const field = {uuid: uuidV4(), id: draggedItem.id, name: draggedItem.name, active: false, config: draggedItem.config};
+            fields.splice(result.destination.index, 0, field);
+            console.log(initialData.components);
+            setFields(fields)
         }
 
         // change order
         if (result.source.droppableId === "fields" && result.destination.droppableId === "fields") {
-            const draggedItem = state.fields[result.source.index];
-            state.fields.splice(result.source.index, 1);
-            state.fields.splice(result.destination.index, 0, draggedItem);
+            const draggedItem = fields[result.source.index];
+            fields.splice(result.source.index, 1);
+            fields.splice(result.destination.index, 0, draggedItem);
+            setFields(fields)
         }
 
         // remove field
         if (result.source.droppableId === "fields" && result.destination.droppableId === "remove") {
-            state.fields.splice(result.source.index, 1);
+            fields.splice(result.source.index, 1);
+            setFields(fields)
         }
-
-        setState(state)
     };
 
     // @ts-ignore
@@ -109,7 +143,7 @@ export default function Form() {
                                 {(provided, snapshot) => (
                                     <ul className="grid gap-2" ref={provided.innerRef} {...provided.droppableProps}>
                                         {
-                                            state.components.map((element, index) =>
+                                            initialData.components.map((element, index) =>
                                                 <Draggable draggableId={"component-" + element.id} index={index} key={index} isDragDisabled={false}>
                                                     {(provided, snapshot) => (
                                                         <>
@@ -151,7 +185,7 @@ export default function Form() {
                                 {(provided, snapshot) => (
                                     <ul className={clsx('grid gap-2 rounded-lg p-4', {"bg-yellow-100": snapshot.isDraggingOver}, {"bg-yellow-50": ! snapshot.isDraggingOver})} ref={provided.innerRef}  {...provided.droppableProps}>
                                         {
-                                            state.fields.map((element,index) =>
+                                            fields.map((element,index) =>
                                                 <Draggable draggableId={element.uuid}  key={element.uuid} index={index}>
                                                     {(provided, snapshot) => (
                                                         <li
@@ -214,15 +248,25 @@ export default function Form() {
                         <div role="tabpanel" className="tab-content bg-base-100 border-base-300  p-6">
                             <label className="form-control w-full max-w-xs">
                                 <div className="label">
+                                    <span className="label-text">uuid</span>
+                                </div>
+                                <input type="text" placeholder="Title" value={currentField.uuid}
+                                       className="input input-bordered input-sm w-full max-w-xs"/>
+                            </label>
+                            <label className="form-control w-full max-w-xs">
+                                <div className="label">
                                     <span className="label-text">Title</span>
                                 </div>
-                                <input type="text" placeholder="Title" value={state.currentField.config.title} onChange={handleFieldChange}
+                                <input type="text" placeholder="Title" value={currentField.config.title}
+                                       onChange={handleFieldTitleChange}
                                        className="input input-bordered input-sm w-full max-w-xs"/>
                             </label>
                             <div className="form-control">
                                 <label className="label cursor-pointer">
                                     <span className="label-text">Required</span>
-                                    <input type="checkbox" className="toggle" checked={state.currentField.config.required}/>
+                                    <input type="checkbox" className="toggle"
+                                           checked={currentField.config.required}
+                                           onChange={handleFieldRequiredChange}/>
                                 </label>
                             </div>
                         </div>

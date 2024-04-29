@@ -82,7 +82,7 @@ const components: component[] = [
     }
 ];
 
-const fields: field[] = [
+let fields: field[] = [
     {
         uuid: "f3216f83-f6d8-4859-a388-aa7683a61251",
         id: 1,

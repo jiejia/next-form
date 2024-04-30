@@ -51,7 +51,7 @@ export default function Form() {
             ...currentField,
             config: {
                 ...currentField.config,
-                title: e.currentTarget.checked
+                required: e.currentTarget.checked
             }
         });
     }
@@ -189,23 +189,23 @@ export default function Form() {
                                                 <Draggable draggableId={element.uuid}  key={element.uuid} index={index}>
                                                     {(provided, snapshot) => (
                                                         <li
-                                                            className={clsx('border border-fuchsia-800 rounded-lg p-2 text-xs relative cursor-pointer', {"outline-double outline-4 outline-yellow-400": element.active})} {...provided.draggableProps}
+                                                            className={clsx('border border-fuchsia-800 rounded-lg p-1 text-xs relative cursor-pointer grid grid-cols-9', {"outline-double outline-4 outline-yellow-400": element.active})} {...provided.draggableProps}
                                                             ref={provided.innerRef} onClick={handleFieldClick}>
-                                                            <span className="block absolute" {...provided.dragHandleProps}>
-                                                                                                                  <svg
-                                                                                                                      xmlns="http://www.w3.org/2000/svg"
-                                                                                                                      fill="none"
-                                                                                                                      viewBox="0 0 24 24"
-                                                                                                                      strokeWidth={1.5}
-                                                                                                                      stroke="currentColor"
-                                                                                                                      className="w-6 h-6">
-                                                                <path strokeLinecap="round" strokeLinejoin="round"
-                                                                      d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
-                                                            </svg>
+                                                            <span
+                                                                className="block absolute p-1" {...provided.dragHandleProps}>
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"
+     className="w-6 h-6">
+  <path strokeLinecap="round" strokeLinejoin="round"
+        d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"/>
+</svg>
+
                                                             </span>
 
 
-                                                            <span className="block leading-loose pl-8">{element.config.title}</span>
+                                                            <span
+                                                                className="block leading-loose pl-8 col-span-2">{element.name}</span>
+                                                            <span
+                                                                className="block leading-loose col-span-7">{element.config.title}</span>
                                                             {/*<span>{element.title}</span>*/}
                                                         </li>
                                                     )}
@@ -258,7 +258,7 @@ export default function Form() {
                                     <span className="label-text">Title</span>
                                 </div>
                                 <input type="text" placeholder="Title" value={currentField.config.title}
-                                       onChange={handleFieldTitleChange}
+                                       onChange={handleFieldTitleChange} maxLength={255}
                                        className="input input-bordered input-sm w-full max-w-xs"/>
                             </label>
                             <div className="form-control">

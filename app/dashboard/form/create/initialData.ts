@@ -30,7 +30,7 @@ interface field {
 const components: component[] = [
     {
         id: 1, name: "Input Text", config: {
-            title: "Input Text",
+            title: "Title",
             placeholder: "please type",
             maxLength: 20,
             minLength: 20,
@@ -40,7 +40,7 @@ const components: component[] = [
     },
     {
         id: 2, name: "Textarea", config: {
-            title: "Textarea",
+            title: "Title",
             placeholder: "please type",
             rows: 3,
             cols: 20,
@@ -51,7 +51,7 @@ const components: component[] = [
     },
     {
         id: 3, name: "Select", config: {
-            title: "Select",
+            title: "Title",
             options: {
                 0: "choose one"
             },
@@ -62,7 +62,7 @@ const components: component[] = [
     },
     {
         id: 4, name: "Checkbox", config: {
-            title: "Checkbox",
+            title: "Title",
             options: {
                 1: "choose one"
             },
@@ -72,7 +72,7 @@ const components: component[] = [
     },
     {
         id: 5, name: "Radio", config: {
-            title: "Radio",
+            title: "Title",
             options: {
                 1: "choose one"
             },
@@ -89,7 +89,7 @@ let fields: field[] = [
         name: "Input Text",
         active: true,
         config: {
-            title: "Input Text",
+            title: "Title",
             placeholder: "please type",
             length: 20,
             maxLength: 20,

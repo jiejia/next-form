@@ -262,6 +262,26 @@ export default function Form() {
         // console.log(formTab)
     };
 
+    const handleFieldOptionClick = (e: any) => {
+        // const uuid = currentField.uuid;
+        //
+        // fields.forEach(item => {
+        //     if (item.uuid == uuid && item.config.options !== undefined) {
+        //         item.config.options.push({"k": "", "v": ""});
+        //     }
+        // });
+        //
+        // setFields(fields)
+        //
+        // if (currentField.options !== undefined) {
+        //     currentField.options.push({"k": "", "v": ""});
+        // }
+        // console.log(currentField)
+        //
+        // setCurrentField(currentField);
+
+    }
+
     const onBeforeDragStart = (start: any) => {
         return
     }
@@ -316,6 +336,8 @@ export default function Form() {
         }
     };
 
+    // @ts-ignore
+    // @ts-ignore
     // @ts-ignore
     // @ts-ignore
     return (
@@ -573,9 +595,23 @@ export default function Form() {
                             {
                                 (currentField.config.options !== undefined) ? (
                                     <label className="form-control w-full max-w-xs">
-                                        <div className="label">
-                                            <span className="label-text">Options</span>
+                                        <div className="label grid grid-cols-5 gap-2">
+                                            <span className="label-text col-span-2">Options</span>
+                                            <button className="btn btn-sm col-start-5 col-span-1" onClick={handleFieldOptionClick}>+</button>
                                         </div>
+                                        <ul>
+                                            {
+                                                currentField.config.options.map((option:any, index:any) => (
+                                                    <li key={index} className="grid grid-cols-5 gap-2">
+                                                        <input type="text" value={option.k}
+                                                               className="input input-bordered input-sm col-span-1 text-center"/>
+                                                        <input type="text" value={option.v}
+                                                               className="input input-bordered input-sm  col-span-3"/>
+                                                        <button className="btn btn-sm col-span-1">-</button>
+                                                    </li>
+                                                ))
+                                            }
+                                        </ul>
                                     </label>
                                 ) : (
                                     <></>

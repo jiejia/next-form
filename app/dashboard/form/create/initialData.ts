@@ -52,9 +52,9 @@ const components: component[] = [
     {
         id: 3, name: "Select", config: {
             title: "Title",
-            options: {
-                0: "choose one"
-            },
+            options: [
+                {"k": 0, "v": "choose one"},
+            ],
             defaultValue: [0],
             required: false,
             isMultiple: false
@@ -63,9 +63,9 @@ const components: component[] = [
     {
         id: 4, name: "Checkbox", config: {
             title: "Title",
-            options: {
-                1: "choose one"
-            },
+            options: [
+                {"k": 0, "v": "choose one"},
+            ],
             defaultValue: [],
             required: false,
         }
@@ -73,9 +73,9 @@ const components: component[] = [
     {
         id: 5, name: "Radio", config: {
             title: "Title",
-            options: {
-                1: "choose one"
-            },
+            options: [
+                {"k": 0, "v": "choose one"},
+            ],
             defaultValue: [],
             required: false,
         }

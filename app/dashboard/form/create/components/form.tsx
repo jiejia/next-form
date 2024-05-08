@@ -263,23 +263,50 @@ export default function Form() {
     };
 
     const handleFieldOptionClick = (e: any) => {
-        // const uuid = currentField.uuid;
-        //
-        // fields.forEach(item => {
-        //     if (item.uuid == uuid && item.config.options !== undefined) {
-        //         item.config.options.push({"k": "", "v": ""});
-        //     }
-        // });
-        //
-        // setFields(fields)
-        //
-        // if (currentField.options !== undefined) {
-        //     currentField.options.push({"k": "", "v": ""});
-        // }
-        // console.log(currentField)
-        //
-        // setCurrentField(currentField);
+        const uuid = currentField.uuid;
 
+        fields.forEach(item => {
+            if (item.uuid == uuid && item.config.options !== undefined) {
+
+                item.config.options.push({"k": item.config.options.length, "v": ""});
+
+                setCurrentField({
+                    ...currentField,
+                    config: {
+                        ...currentField.config,
+                        options: item.config.options
+                    }
+                });
+            }
+        });
+
+        setFields(fields)
+    }
+
+    const handleFieldOptionRemoveClick = (key: any) => {
+        const uuid = currentField.uuid;
+
+        fields.forEach(item => {
+            if (item.uuid == uuid && item.config.options !== undefined) {
+                item.config.options.forEach((option: any, index: any) => {
+                    if (index === key) {
+                        // @ts-ignore
+                        item.config.options.splice(index, 1);
+                    }
+                })
+                console.log(item.config)
+
+                setCurrentField({
+                    ...currentField,
+                    config: {
+                        ...currentField.config,
+                        options: item.config.options
+                    }
+                });
+            }
+        });
+
+        setFields(fields)
     }
 
     const onBeforeDragStart = (start: any) => {
@@ -607,7 +634,7 @@ export default function Form() {
                                                                className="input input-bordered input-sm col-span-1 text-center"/>
                                                         <input type="text" value={option.v}
                                                                className="input input-bordered input-sm  col-span-3"/>
-                                                        <button className="btn btn-sm col-span-1">-</button>
+                                                        <button className={clsx('btn btn-sm col-span-1', {"hidden": index == 0})} onClick={() => handleFieldOptionRemoveClick(index)}>-</button>
                                                     </li>
                                                 ))
                                             }

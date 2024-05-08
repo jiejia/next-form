@@ -9,7 +9,7 @@ interface config {
     rows?: number;
     cols?: number;
     regex?: string;
-    options?: object;
+    options?: object[];
     isMultiple?: boolean;
     [propName: string]: any;
 }

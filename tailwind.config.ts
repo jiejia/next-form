@@ -24,6 +24,6 @@ const config: Config = {
     },
   },
   darkMode: "class",
-  plugins: [require("daisyui")],
+  plugins: [require("daisyui"),require('tailwind-scrollbar'),],
 };
 export default config;

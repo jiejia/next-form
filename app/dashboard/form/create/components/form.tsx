@@ -400,6 +400,8 @@ export default function Form(props: any) {
 
         // remove field
         if (result.source.droppableId === "fields" && result.destination.droppableId === "remove") {
+            if (fields.length == 1)
+                return
             fields.splice(result.source.index, 1);
             fields[0].active = true;
             setFields(fields)
@@ -457,17 +459,17 @@ export default function Form(props: any) {
                         <input type="radio" name="design_tab" role="tab" className="tab"
                                aria-label="Fields"
                                defaultChecked={true}/>
-                        <div role="tabpanel" className="tab-content bg-base-100 border-base-300  p-6">
+                        <div role="tabpanel" className="tab-content bg-base-100 border-base-300 p-6">
                             <Droppable droppableId={"fields"}>
                                 {(provided, snapshot) => (
-                                    <ul className={clsx('grid gap-2 rounded-lg p-4', {"bg-yellow-100": snapshot.isDraggingOver}, {"bg-yellow-50": !snapshot.isDraggingOver})}
+                                    <ul className={clsx('grid gap-2 rounded-lg p-4 h-96 content-start scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-slate-700 scrollbar-track-slate-300 overflow-y-scroll', {"bg-yellow-100": snapshot.isDraggingOver}, {"bg-yellow-50": !snapshot.isDraggingOver})}
                                         ref={provided.innerRef}  {...provided.droppableProps}>
                                         {
                                             fields.map((element: any, index: any) =>
                                                     <Draggable draggableId={element.uuid} key={element.uuid} index={index}>
                                                         {(provided, snapshot) => (
                                                             <li
-                                                                className={clsx('border border-fuchsia-800 rounded-lg p-1 text-xs relative cursor-pointer grid grid-cols-9', {"outline-double outline-4 outline-yellow-400": element.active})} {...provided.draggableProps}
+                                                                className={clsx('border border-fuchsia-800 h-8 rounded-lg p-1 text-xs relative cursor-pointer grid grid-cols-9', {"outline-double outline-4 outline-yellow-400": element.active})} {...provided.draggableProps}
                                                                 ref={provided.innerRef} onClick={handleFieldClick}>
                                                             <span
                                                                 className="block absolute p-1" {...provided.dragHandleProps}>

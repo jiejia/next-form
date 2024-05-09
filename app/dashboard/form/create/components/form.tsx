@@ -401,7 +401,9 @@ export default function Form(props: any) {
         // remove field
         if (result.source.droppableId === "fields" && result.destination.droppableId === "remove") {
             fields.splice(result.source.index, 1);
+            fields[0].active = true;
             setFields(fields)
+            setCurrentField(fields[0])
         }
     };
 

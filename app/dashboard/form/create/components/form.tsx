@@ -1,6 +1,5 @@
 'use client'
 
-import {initialData} from "../initialData";
 import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
 import React from 'react';
 import {useState} from 'react';
@@ -10,8 +9,8 @@ import clsx from "clsx";
 import _ from "lodash";
 
 
-export default function Form() {
-
+export default function Form(props: any) {
+    const initialData = props.initialData;
     const [fields, setFields] = useState(initialData.fields);
     const [currentField, setCurrentField] = useState(initialData.currentField);
     const [formTab, setFormTab] = useState('attributes')
@@ -19,7 +18,7 @@ export default function Form() {
     const handleFieldTitleChange = (e: any) => {
         const uuid = currentField.uuid;
 
-        fields.forEach(item => {
+        fields.forEach((item:any) => {
             if (item.uuid == uuid) {
                 item.config.title = e.currentTarget.value;
             }
@@ -39,7 +38,7 @@ export default function Form() {
     const handleFieldPlaceholderChange = (e: any) => {
         const uuid = currentField.uuid;
 
-        fields.forEach(item => {
+        fields.forEach((item:any) => {
             if (item.uuid == uuid) {
                 item.config.placeholder = e.currentTarget.value;
             }
@@ -59,7 +58,7 @@ export default function Form() {
     const handleFieldDefaultValueChange = (e: any) => {
         const uuid = currentField.uuid;
 
-        fields.forEach(item => {
+        fields.forEach((item:any) => {
             if (item.uuid == uuid) {
                 item.config.defaultValue = e.currentTarget.value;
             }
@@ -79,7 +78,7 @@ export default function Form() {
     const handleFieldLengthChange = (e: any) => {
         const uuid = currentField.uuid;
 
-        fields.forEach(item => {
+        fields.forEach((item:any) => {
             if (item.uuid == uuid) {
                 item.config.length = e.currentTarget.value;
             }
@@ -99,7 +98,7 @@ export default function Form() {
     const handleFieldMaxLengthChange = (e: any) => {
         const uuid = currentField.uuid;
 
-        fields.forEach(item => {
+        fields.forEach((item:any) => {
             if (item.uuid == uuid) {
                 item.config.maxLength = e.currentTarget.value;
             }
@@ -119,7 +118,7 @@ export default function Form() {
     const handleFieldMinLengthChange = (e: any) => {
         const uuid = currentField.uuid;
 
-        fields.forEach(item => {
+        fields.forEach((item:any) => {
             if (item.uuid == uuid) {
                 item.config.minLength = e.currentTarget.value;
             }
@@ -139,7 +138,7 @@ export default function Form() {
     const handleFieldRowsChange = (e: any) => {
         const uuid = currentField.uuid;
 
-        fields.forEach(item => {
+        fields.forEach((item:any) => {
             if (item.uuid == uuid) {
                 item.config.rows = e.currentTarget.value;
             }
@@ -159,7 +158,7 @@ export default function Form() {
     const handleFieldColsChange = (e: any) => {
         const uuid = currentField.uuid;
 
-        fields.forEach(item => {
+        fields.forEach((item:any) => {
             if (item.uuid == uuid) {
                 item.config.cols = e.currentTarget.value;
             }
@@ -179,7 +178,7 @@ export default function Form() {
     const handleFieldRegexChange = (e: any) => {
         const uuid = currentField.uuid;
 
-        fields.forEach(item => {
+        fields.forEach((item:any) => {
             if (item.uuid == uuid) {
                 item.config.regex = e.currentTarget.value;
             }
@@ -200,7 +199,7 @@ export default function Form() {
     const handleFieldRequiredChange = (e: any) => {
         const uuid = currentField.uuid;
 
-        fields.forEach(item => {
+        fields.forEach((item:any) => {
             if (item.uuid == uuid) {
                 item.config.required = e.currentTarget.checked;
             }
@@ -220,7 +219,7 @@ export default function Form() {
     const handleFieldIsMultipleChange = (e: any) => {
         const uuid = currentField.uuid;
 
-        fields.forEach(item => {
+        fields.forEach((item:any) => {
             if (item.uuid == uuid) {
                 item.config.isMultiple = e.currentTarget.checked;
             }
@@ -240,10 +239,8 @@ export default function Form() {
     const handleFieldClick = (e: any) => {
         let uuid = e.currentTarget.getAttribute('data-rbd-draggable-id')
 
-        // console.log(uuid)
-
         // iterate over fields and set active to false
-        const updatedFields = fields.map((field) => {
+        const updatedFields = fields.map((field:any) => {
             if (field.uuid === uuid) {
                 return {...field, active: true}; // 注意：这会把匹配到的field设置为active: true，其他则为false
             } else {
@@ -252,7 +249,7 @@ export default function Form() {
         });
 
 
-        fields.forEach(item => {
+        fields.forEach((item:any) => {
             if (item.uuid == uuid)
                 setCurrentField(item)
         });
@@ -265,10 +262,12 @@ export default function Form() {
     const handleFieldOptionClick = (e: any) => {
         const uuid = currentField.uuid;
 
-        fields.forEach(item => {
+        fields.forEach((item:any) => {
             if (item.uuid == uuid && item.config.options !== undefined) {
 
-                item.config.options.push({"k": item.config.options.length, "v": ""});
+                // console.log(item.config.options[item.config.options.length - 1].k + 1)
+
+                item.config.options.push({"k": item.config.options[item.config.options.length - 1].k + 1, "v": ""});
 
                 setCurrentField({
                     ...currentField,
@@ -277,6 +276,8 @@ export default function Form() {
                         options: item.config.options
                     }
                 });
+                console.log('add')
+
             }
         });
 
@@ -286,16 +287,52 @@ export default function Form() {
     const handleFieldOptionRemoveClick = (key: any) => {
         const uuid = currentField.uuid;
 
-        fields.forEach(item => {
+        fields.forEach((item:any) => {
             if (item.uuid == uuid && item.config.options !== undefined) {
+
+                // remove option from options
                 item.config.options.forEach((option: any, index: any) => {
                     if (index === key) {
                         // @ts-ignore
                         item.config.options.splice(index, 1);
                     }
                 })
-                console.log(item.config)
 
+                // reset k
+                item.config.options.forEach((option: any, index: any) => {
+                    option.k = index;
+                })
+
+                // setState
+                setCurrentField({
+                    ...currentField,
+                    config: {
+                        ...currentField.config,
+                        options: item.config.options
+                    }
+                });
+                console.log('remove')
+            }
+        });
+
+        setFields(fields)
+    }
+
+    const handleFieldOptionChange = (key: any, e:any) => {
+
+        const uuid = currentField.uuid;
+
+        fields.forEach((item:any) => {
+            if (item.uuid == uuid && item.config.options !== undefined) {
+
+                // remove option from options
+                item.config.options.forEach((option: any, index: any) => {
+                    if (index === key) {
+                        option.v = e.target.value;
+                    }
+                })
+
+                // setState
                 setCurrentField({
                     ...currentField,
                     config: {
@@ -308,6 +345,11 @@ export default function Form() {
 
         setFields(fields)
     }
+
+    const handleFormSubmit = () => {
+        console.log(fields)
+    }
+
 
     const onBeforeDragStart = (start: any) => {
         return
@@ -363,10 +405,6 @@ export default function Form() {
         }
     };
 
-    // @ts-ignore
-    // @ts-ignore
-    // @ts-ignore
-    // @ts-ignore
     return (
         <DragDropContext onBeforeDragStart={onBeforeDragStart} onDragStart={onDragStart} onDragEnd={onDragEnd}>
             <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
@@ -379,7 +417,7 @@ export default function Form() {
                                 {(provided, snapshot) => (
                                     <ul className="grid gap-2" ref={provided.innerRef} {...provided.droppableProps}>
                                         {
-                                            initialData.components.map((element, index) =>
+                                            initialData.components.map((element: any, index: any) =>
                                                 <Draggable draggableId={"component-" + element.id} index={index}
                                                            key={index} isDragDisabled={false}>
                                                     {(provided, snapshot) => (
@@ -423,7 +461,7 @@ export default function Form() {
                                     <ul className={clsx('grid gap-2 rounded-lg p-4', {"bg-yellow-100": snapshot.isDraggingOver}, {"bg-yellow-50": !snapshot.isDraggingOver})}
                                         ref={provided.innerRef}  {...provided.droppableProps}>
                                         {
-                                            fields.map((element, index) =>
+                                            fields.map((element: any, index: any) =>
                                                     <Draggable draggableId={element.uuid} key={element.uuid} index={index}>
                                                         {(provided, snapshot) => (
                                                             <li
@@ -611,7 +649,7 @@ export default function Form() {
                                         <div className="label">
                                             <span className="label-text">Regex</span>
                                         </div>
-                                        <input type="text" placeholder="Title" value={currentField.config.regex}
+                                        <input type="text" placeholder="Regex" value={currentField.config.regex}
                                                onChange={handleFieldRegexChange} maxLength={255}
                                                className="input input-bordered input-sm w-full max-w-xs"/>
                                     </label>
@@ -624,17 +662,24 @@ export default function Form() {
                                     <label className="form-control w-full max-w-xs">
                                         <div className="label grid grid-cols-5 gap-2">
                                             <span className="label-text col-span-2">Options</span>
-                                            <button className="btn btn-sm col-start-5 col-span-1" onClick={handleFieldOptionClick}>+</button>
+                                            <button className="btn btn-sm col-start-5 col-span-1"
+                                                    onClick={handleFieldOptionClick}>+
+                                            </button>
                                         </div>
-                                        <ul>
+                                        <ul className="grid gap-y-2">
                                             {
-                                                currentField.config.options.map((option:any, index:any) => (
+                                                currentField.config.options.map((option: any, index: any) => (
                                                     <li key={index} className="grid grid-cols-5 gap-2">
                                                         <input type="text" value={option.k}
-                                                               className="input input-bordered input-sm col-span-1 text-center"/>
+                                                               className="input input-bordered input-sm col-span-1 text-center"
+                                                               readOnly={true}/>
                                                         <input type="text" value={option.v}
-                                                               className="input input-bordered input-sm  col-span-3"/>
-                                                        <button className={clsx('btn btn-sm col-span-1', {"hidden": index == 0})} onClick={() => handleFieldOptionRemoveClick(index)}>-</button>
+                                                               className="input input-bordered input-sm  col-span-3"
+                                                               onChange={() => handleFieldOptionChange(index, event)}/>
+                                                        <button
+                                                            className={clsx('btn btn-sm col-span-1', {"hidden": index == 0})}
+                                                            onClick={() => handleFieldOptionRemoveClick(index)}>-
+                                                        </button>
                                                     </li>
                                                 ))
                                             }
@@ -686,6 +731,12 @@ export default function Form() {
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div className="mt-4 w-full border-t border-gray-300 border-dotted pt-4 text-center">
+                <div className="">
+                    <button className="btn btn-primary btn-sm mr-2" onClick={handleFormSubmit}>Submit</button>
+                    <button className="btn btn-sm">Reset</button>
                 </div>
             </div>
         </DragDropContext>

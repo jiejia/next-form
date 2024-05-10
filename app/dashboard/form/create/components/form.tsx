@@ -76,6 +76,10 @@ export default function Form(props: any) {
     }
 
     const handleFieldLengthChange = (e: any) => {
+        if (parseInt(e.currentTarget.value) > e.currentTarget.max || parseInt(e.currentTarget.value) < e.currentTarget.min) {
+            return
+        }
+
         const uuid = currentField.uuid;
 
         fields.forEach((item:any) => {
@@ -96,6 +100,15 @@ export default function Form(props: any) {
     }
 
     const handleFieldMaxLengthChange = (e: any) => {
+        let intValue = parseInt(e.currentTarget.value)
+        if (intValue > e.currentTarget.max || intValue < e.currentTarget.min) {
+            return
+        }
+
+        if (intValue < currentField.config.minLength) {
+            return
+        }
+
         const uuid = currentField.uuid;
 
         fields.forEach((item:any) => {
@@ -116,6 +129,14 @@ export default function Form(props: any) {
     }
 
     const handleFieldMinLengthChange = (e: any) => {
+        if (parseInt(e.currentTarget.value) > e.currentTarget.max || parseInt(e.currentTarget.value) < e.currentTarget.min) {
+            return
+        }
+
+        if (parseInt(e.currentTarget.value) > currentField.config.maxLength) {
+            return
+        }
+
         const uuid = currentField.uuid;
 
         fields.forEach((item:any) => {
@@ -136,6 +157,10 @@ export default function Form(props: any) {
     }
 
     const handleFieldRowsChange = (e: any) => {
+        if (parseInt(e.currentTarget.value) > e.currentTarget.max || parseInt(e.currentTarget.value) < e.currentTarget.min) {
+            return
+        }
+
         const uuid = currentField.uuid;
 
         fields.forEach((item:any) => {
@@ -156,6 +181,10 @@ export default function Form(props: any) {
     }
 
     const handleFieldColsChange = (e: any) => {
+        if (parseInt(e.currentTarget.value) > e.currentTarget.max || parseInt(e.currentTarget.value) < e.currentTarget.min) {
+            return
+        }
+
         const uuid = currentField.uuid;
 
         fields.forEach((item:any) => {
@@ -538,13 +567,13 @@ export default function Form(props: any) {
                                     <span className="label-text">Title</span>
                                 </div>
                                 <input type="text" placeholder="Title" value={currentField.config.title}
-                                       onChange={handleFieldTitleChange} maxLength={255}
+                                       onChange={handleFieldTitleChange} maxLength={255} required={true} minLength={1}
                                        className="input input-bordered input-sm w-full max-w-xs"/>
                             </label>
                             <div className="form-control">
                                 <label className="label cursor-pointer">
                                     <span className="label-text">Required</span>
-                                    <input type="checkbox" className="toggle"
+                                    <input type="checkbox" className="toggle" required={true}
                                            checked={currentField.config.required}
                                            onChange={handleFieldRequiredChange}/>
                                 </label>
@@ -555,7 +584,7 @@ export default function Form(props: any) {
                                         <div className="label">
                                             <span className="label-text">Placeholder</span>
                                         </div>
-                                        <input type="text" placeholder="Title" value={currentField.config.placeholder}
+                                        <input type="text" placeholder="" value={currentField.config.placeholder}
                                                onChange={handleFieldPlaceholderChange} maxLength={255}
                                                className="input input-bordered input-sm w-full max-w-xs"/>
                                     </label>
@@ -583,9 +612,8 @@ export default function Form(props: any) {
                                         <div className="label">
                                             <span className="label-text">Length</span>
                                         </div>
-                                        <input type="number" placeholder="Title" value={currentField.config.length}
-                                               onChange={handleFieldLengthChange} maxLength={255}
-                                               className="input input-bordered input-sm w-full max-w-xs"/>
+                                        <input type="range" min={0} max={255} onChange={handleFieldLengthChange} value={currentField.config.length} className="range range-primary range-xs"/>
+
                                     </label>
                                 ) : (
                                     <></>
@@ -597,9 +625,8 @@ export default function Form(props: any) {
                                         <div className="label">
                                             <span className="label-text">Max Length</span>
                                         </div>
-                                        <input type="number" placeholder="Title" value={currentField.config.maxLength}
-                                               onChange={handleFieldMaxLengthChange} maxLength={255}
-                                               className="input input-bordered input-sm w-full max-w-xs"/>
+                                        <input type="range" min={1} max={100000} onChange={handleFieldMaxLengthChange}
+                                               value={currentField.config.maxLength} className="range range-primary range-xs"/>
                                     </label>
                                 ) : (
                                     <></>
@@ -611,9 +638,8 @@ export default function Form(props: any) {
                                         <div className="label">
                                             <span className="label-text">Min Length</span>
                                         </div>
-                                        <input type="number" placeholder="Title" value={currentField.config.minLength}
-                                               onChange={handleFieldMinLengthChange} maxLength={255}
-                                               className="input input-bordered input-sm w-full max-w-xs"/>
+                                        <input type="range" min={1} max={100000} onChange={handleFieldMinLengthChange}
+                                               value={currentField.config.minLength} className="range range-primary range-xs"/>
                                     </label>
                                 ) : (
                                     <></>
@@ -626,7 +652,7 @@ export default function Form(props: any) {
                                             <span className="label-text">Rows</span>
                                         </div>
                                         <input type="number" placeholder="Title" value={currentField.config.rows}
-                                               onChange={handleFieldRowsChange} maxLength={255}
+                                               onChange={handleFieldRowsChange} required={true} max={1000} min={1}
                                                className="input input-bordered input-sm w-full max-w-xs"/>
                                     </label>
                                 ) : (
@@ -639,8 +665,8 @@ export default function Form(props: any) {
                                         <div className="label">
                                             <span className="label-text">Cols</span>
                                         </div>
-                                        <input type="text" placeholder="Title" value={currentField.config.cols}
-                                               onChange={handleFieldColsChange} maxLength={255}
+                                        <input type="number" placeholder="Title" value={currentField.config.cols}
+                                               onChange={handleFieldColsChange} required={true} max={1000} min={1}
                                                className="input input-bordered input-sm w-full max-w-xs"/>
                                     </label>
                                 ) : (

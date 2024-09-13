@@ -1,15 +1,24 @@
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
-  return (
-    <section>
-      {/* 这里可以添加 dashboard 特定的导航或其他元素 */}
-      <nav className="bg-gray-100 p-4">
-        <h2 className="text-xl font-bold">Dashboard Navigation</h2>
-      </nav>
-      {children}
-    </section>
-  )
+import Block from "@/components/block";
+
+import Sidebar from "@/components/sidebar";
+
+export default function DashboardLayout({children,}: { children: React.ReactNode }) {
+    return (
+        <div className="relative">
+            <Sidebar/>
+            <div className="fixed lg:left-[300px] left-0 top-0 right-0 p-4 grid grid-rows-[75px_1fr] h-full">
+                <header>
+                    <Block className="">
+                        wegweg
+                    </Block>
+                </header>
+                <main className="h-full">
+                    <Block className="h-full">
+                        {children}
+                    </Block>
+                </main>
+            </div>
+        </div>
+
+    )
 }

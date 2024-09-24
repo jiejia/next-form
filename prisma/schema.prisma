@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Form {
+  id             Int       @id @default(autoincrement())
+  uuid           String    @unique @db.Char(36)
+  title          String    @db.VarChar(255)
+  description    String    @db.VarChar(255)
+  enabled        Boolean
+  numberingStyle Int
+  fields         Field[]
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  deletedAt      DateTime?
+}
+
+model Field {
+  id          Int       @id @default(autoincrement())
+  uuid        String    @unique @db.Char(36)
+  title       String
+  description String
+  regex       String
+  required    Boolean
+  published   Boolean   @default(false)
+  config      Json
+  formId      Int
+  form        Form      @relation(fields: [formId], references: [id])
+  controlId   Int
+  controlType String    @db.VarChar(36)
+  controlName String    @db.VarChar(36)
+  sort        Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+}
+
+model FormSubmission {
+  id        Int       @id @default(autoincrement())
+  formId    Int
+  data      Json
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  username  String    @unique @db.VarChar(255)
+  email     String    @unique @db.VarChar(255)
+  password  String    @db.VarChar(255)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  status    Int       @default(0)
+}
+
+model Option {
+  id    Int    @id @default(autoincrement())
+  name  String @unique @db.VarChar(255)
+  value Json
+}
+
+model MenuItem {
+  id        Int        @id @default(autoincrement())
+  title     String     @db.VarChar(255)
+  url       String?    @db.VarChar(255)
+  parentId  Int?
+  parent    MenuItem?  @relation("MenuItemChildren", fields: [parentId], references: [id])
+  children  MenuItem[] @relation("MenuItemChildren")
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  deletedAt DateTime?
+  status    Int       @default(0)
+}

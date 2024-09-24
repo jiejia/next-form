@@ -12,71 +12,83 @@ datasource db {
 
 model Form {
   id             Int       @id @default(autoincrement())
-  uuid           String    @unique @db.Char(36)
-  title          String    @db.VarChar(255)
-  description    String    @db.VarChar(255)
-  enabled        Boolean
-  numberingStyle Int
+  uuid           String    @unique @db.Char(36) @map("uuid")
+  title          String    @db.VarChar(255) @map("title")
+  description    String    @db.VarChar(255) @map("description")
+  enabled        Boolean   @map("enabled")
+  numberingStyle Int       @map("numbering_style")
   fields         Field[]
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-  deletedAt      DateTime?
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+  deletedAt      DateTime? @map("deleted_at")
+
+  @@map("forms")
 }
 
 model Field {
   id          Int       @id @default(autoincrement())
-  uuid        String    @unique @db.Char(36)
-  title       String
-  description String
-  regex       String
-  required    Boolean
-  published   Boolean   @default(false)
-  config      Json
-  formId      Int
+  uuid        String    @unique @db.Char(36) @map("uuid")
+  title       String    @map("title")
+  description String    @map("description")
+  regex       String    @map("regex")
+  required    Boolean   @map("required")
+  published   Boolean   @default(false) @map("published")
+  config      Json      @map("config")
+  formId      Int       @map("form_id")
   form        Form      @relation(fields: [formId], references: [id])
-  controlId   Int
-  controlType String    @db.VarChar(36)
-  controlName String    @db.VarChar(36)
-  sort        Int       @default(0)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  deletedAt   DateTime?
+  controlId   Int       @map("control_id")
+  controlType String    @db.VarChar(36) @map("control_type")
+  controlName String    @db.VarChar(36) @map("control_name")
+  sort        Int       @default(0) @map("sort")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  @@map("fields")
 }
 
 model FormSubmission {
   id        Int       @id @default(autoincrement())
-  formId    Int
-  data      Json
-  createdAt DateTime  @default(now())
-  deletedAt DateTime?
+  formId    Int       @map("form_id")
+  data      Json      @map("data")
+  createdAt DateTime  @default(now()) @map("created_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("form_submissions")
 }
 
 model User {
   id        Int       @id @default(autoincrement())
-  username  String    @unique @db.VarChar(255)
-  email     String    @unique @db.VarChar(255)
-  password  String    @db.VarChar(255)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
-  status    Int       @default(0)
+  username  String    @unique @db.VarChar(255) @map("username")
+  email     String    @unique @db.VarChar(255) @map("email")
+  password  String    @db.VarChar(255) @map("password")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  status    Int       @default(0) @map("status")
+
+  @@map("users")
 }
 
 model Option {
   id    Int    @id @default(autoincrement())
-  name  String @unique @db.VarChar(255)
-  value Json
+  name  String @unique @db.VarChar(255) @map("name")
+  value Json   @map("value")
+
+  @@map("options")
 }
 
 model MenuItem {
   id        Int        @id @default(autoincrement())
-  title     String     @db.VarChar(255)
-  url       String?    @db.VarChar(255)
-  parentId  Int?
+  title     String     @db.VarChar(255) @map("title")
+  url       String?    @db.VarChar(255) @map("url")
+  parentId  Int?       @map("parent_id")
   parent    MenuItem?  @relation("MenuItemChildren", fields: [parentId], references: [id])
   children  MenuItem[] @relation("MenuItemChildren")
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  deletedAt DateTime?
-  status    Int       @default(0)
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+  deletedAt DateTime?  @map("deleted_at")
+  status    Int        @default(0) @map("status")
+
+  @@map("menu_items")
 }

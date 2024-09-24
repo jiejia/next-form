@@ -1,6 +1,5 @@
-import bcrypt from "bcryptjs";
-
-import {PrismaClient} from "@prisma/client";
+const { PrismaClient } = require('@prisma/client');
+const bcrypt = require('bcryptjs');
 
 const prisma = new PrismaClient();
 
@@ -31,9 +30,32 @@ async function seedOptions() {
     });
 }
 
+async function seedMenuItem() {
+    await prisma.MenuItem.createMany({
+        data: [
+            {
+                title: 'Dashboard',
+                url: '/dashboard',
+                parentId: null
+            },
+            {
+                title: 'Forms',
+                url: '/form',
+                parentId: null
+            },
+            {
+                title: 'Settings',
+                url: '/setting',
+                parentId: null
+            },
+        ],
+    });
+}
+
 async function main() {
     await seedUsers();
     await seedOptions();
+    await seedMenuItem();
 }
 
 main()

@@ -1,6 +1,6 @@
 'use client'
 
-import Block from '@/components/block';
+import Block from '@/components/shared/block';
 import {Input, Button, Checkbox} from "@nextui-org/react";
 import Image from "next/image";
 import {Link} from "@nextui-org/link";

@@ -1,7 +1,7 @@
-import Block from "@/components/block";
+import Block from "@/components/shared/block";
 
-import Sidebar from "@/components/sidebar";
-import Header from "@/components/header";
+import Sidebar from "@/components/ui/sidebar";
+import Header from "@/components/ui/header";
 
 
 export default function DashboardLayout({children,}: { children: React.ReactNode }) {

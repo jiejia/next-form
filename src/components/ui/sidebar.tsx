@@ -1,11 +1,11 @@
 'use client'
 
 
-import Block from "@/components/block";
+import Block from "@/components/shared/block";
 import Link from "next/link";
 import Image from "next/image";
 import {Select, SelectItem} from "@nextui-org/react";
-import Copyright from "@/components/copyright";
+import Copyright from "@/components/ui/copyright";
 
 export default function Sidebar() {
     return (
@@ -64,56 +64,11 @@ export default function Sidebar() {
                                 <span className="content-center">Dark</span>
                             </div>
                         </SelectItem>
-                        <SelectItem key={2} value={2}>
-                            <div className="grid grid-flow-col grid-cols-[25px_1fr]">
-                                <span className="content-center"><svg width="15" height="15"
-                                                                      xmlns="http://www.w3.org/2000/svg">
-  <circle cx="7.5" cy="7.5" r="7.5" className="fill-green-300"/>
-</svg></span>
-                                <span className="content-center">Green</span>
-                            </div>
-                        </SelectItem>
-{/*                        <SelectItem key={3} value={3}>*/}
-{/*                            <div className="grid grid-flow-col grid-cols-[25px_1fr]">*/}
-{/*                                <span className="content-center"><svg width="15" height="15"*/}
-{/*                                                                      xmlns="http://www.w3.org/2000/svg">*/}
-{/*  <circle cx="7.5" cy="7.5" r="7.5" className="fill-lime-300"/>*/}
-{/*</svg></span>*/}
-{/*                                <span className="content-center">Lime</span>*/}
-{/*                            </div>*/}
-{/*                        </SelectItem>*/}
-                        <SelectItem key={4} value={4}>
-                            <div className="grid grid-flow-col grid-cols-[25px_1fr]">
-                                <span className="content-center"><svg width="15" height="15"
-                                                                      xmlns="http://www.w3.org/2000/svg">
-  <circle cx="7.5" cy="7.5" r="7.5" className="fill-sky-300"/>
-</svg></span>
-                                <span className="content-center">Sky</span>
-                            </div>
-                        </SelectItem>
-                        <SelectItem key={5} value={5}>
-                            <div className="grid grid-flow-col grid-cols-[25px_1fr]">
-                                <span className="content-center"><svg width="15" height="15"
-                                                                      xmlns="http://www.w3.org/2000/svg">
-  <circle cx="7.5" cy="7.5" r="7.5" className="fill-pink-300"/>
-</svg></span>
-                                <span className="content-center">Pink</span>
-                            </div>
-                        </SelectItem>
-                        <SelectItem key={6} value={6}>
-                            <div className="grid grid-flow-col grid-cols-[25px_1fr]">
-                                <span className="content-center"><svg width="15" height="15"
-                                                                      xmlns="http://www.w3.org/2000/svg">
-  <circle cx="7.5" cy="7.5" r="7.5" className="fill-yellow-300"/>
-</svg></span>
-                                <span className="content-center">Yellow</span>
-                            </div>
-                        </SelectItem>
                         <SelectItem key={7} value={7}>
                             <div className="grid grid-flow-col grid-cols-[25px_1fr]">
                                 <span className="content-center"><Image src="/svgs/following_system_mode.svg" alt="Next Form"
                                                                         width={15} height={15}/></span>
-                                <span className="content-center">Following System</span>
+                                <span className="content-center">System</span>
                             </div>
                         </SelectItem>
                     </Select>

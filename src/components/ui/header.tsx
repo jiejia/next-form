@@ -1,6 +1,6 @@
 'use client'
 
-import Block from "@/components/block";
+import Block from "@/components/shared/block";
 import Link from "next/link";
 import {Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger} from "@nextui-org/react";
 

@@ -1,7 +1,7 @@
 'use client'
 
 import LoginLayout from '@/app/login/layout';
-import Block from '@/components/block';
+import Block from '@/components/shared/block';
 import {Input, Button} from "@nextui-org/react";
 import Image from "next/image";
 import {Link} from "@nextui-org/link";

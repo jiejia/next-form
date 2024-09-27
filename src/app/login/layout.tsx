@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Copyright from "@/components/copyright";
+import Copyright from "@/components/ui/copyright";
 
 
 export default function LoginLayout({children,}: { children: React.ReactNode }) {

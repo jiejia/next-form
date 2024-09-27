@@ -36,16 +36,19 @@ async function seedMenuItem() {
             {
                 title: 'Dashboard',
                 url: '/dashboard',
+                icon: 'dashboard.svg',
                 parentId: null
             },
             {
                 title: 'Forms',
                 url: '/form',
+                icon: 'forms.svg',
                 parentId: null
             },
             {
                 title: 'Settings',
                 url: '/setting',
+                icon: 'setting.svg',
                 parentId: null
             },
         ],

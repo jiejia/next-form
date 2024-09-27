@@ -82,6 +82,7 @@ model MenuItem {
   id        Int        @id @default(autoincrement())
   title     String     @db.VarChar(255) @map("title")
   url       String?    @db.VarChar(255) @map("url")
+  icon      String?    @db.VarChar(255) @map("icon")
   parentId  Int?       @map("parent_id")
   parent    MenuItem?  @relation("MenuItemChildren", fields: [parentId], references: [id])
   children  MenuItem[] @relation("MenuItemChildren")

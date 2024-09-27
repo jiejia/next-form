@@ -5,6 +5,7 @@ import Block from "@/components/block";
 import Link from "next/link";
 import Image from "next/image";
 import {Select, SelectItem} from "@nextui-org/react";
+import Copyright from "@/components/copyright";
 
 export default function Sidebar() {
     return (
@@ -15,7 +16,7 @@ export default function Sidebar() {
                     <Link href={"/dashboard"}
                           className="grid grid-flow-col grid-cols-[40px_1fr] hover:text-slate-500">
                         <Image src="/svgs/logo.svg" alt="Next Form" className="w-8 h-8" width={40} height={40}/>
-                        <span className="content-center indent-1">SimpleForm</span>
+                        <span className="content-center indent-1">NextForm</span>
                     </Link>
                 </h1>
                 <ul className="grid grid-flow-row text-sm mt-8 gap-[2px]">
@@ -116,10 +117,7 @@ export default function Sidebar() {
                             </div>
                         </SelectItem>
                     </Select>
-                    <p className="text-xs text-center mt-4 text-slate-400">© 2024 Powered By NextForm <Link
-                        href={"https://github.com/jiejia/next-form"}><Image src="/svgs/github.svg" alt="Next Form"
-                                                                            width={20} height={20} className="inline"/></Link>
-                    </p>
+                    <Copyright/>
                 </div>
             </Block>
         </aside>

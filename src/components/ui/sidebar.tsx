@@ -30,20 +30,20 @@ export default function Sidebar() {
                         </Link>
                     </li>
                     <li>
-                        <Link href={"/dashboard/forms"}
+                        <Link href={"/dashboard/form"}
                               className="grid grid-flow-col grid-cols-[25px_1fr] px-4 py-2 hover:bg-slate-100 rounded-lg">
                                 <span className="content-center"><Image src="/svgs/forms.svg" alt="Next Form"
                                                                         className="content-center" width={15}
                                                                         height={15}/></span>
-                            <span className="content-center">Forms</span>
+                            <span className="content-center">Form</span>
                         </Link>
                     </li>
                     <li>
-                        <Link href={"/dashboard/settings"}
+                        <Link href={"/dashboard/setting"}
                               className="grid grid-flow-col grid-cols-[25px_1fr] px-4 py-2 hover:bg-slate-100 rounded-lg">
                             <span className="content-center"><Image src="/svgs/setting.svg" alt="Next Form" width={15}
                                                                     height={15}/></span>
-                            <span className="content-center">Settings</span>
+                            <span className="content-center">Setting</span>
                         </Link>
                     </li>
                 </ul>

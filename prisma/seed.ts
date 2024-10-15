@@ -40,14 +40,14 @@ async function seedMenuItem() {
                 parentId: null
             },
             {
-                title: 'Forms',
-                url: '/form',
+                title: 'Form',
+                url: '/dashboard/form',
                 icon: 'forms.svg',
                 parentId: null
             },
             {
-                title: 'Settings',
-                url: '/setting',
+                title: 'Setting',
+                url: '/dashboard/setting',
                 icon: 'setting.svg',
                 parentId: null
             },

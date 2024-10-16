@@ -5,11 +5,9 @@ import Link from "next/link";
 import Image from "next/image";
 import {Select, SelectItem} from "@nextui-org/react";
 import Copyright from "@/components/ui/copyright";
-import {useDashboard} from "@/contexts/dashboard-context";
 import clsx from "clsx";
 
-export default function Sidebar() {
-    const { dashboardData } = useDashboard();
+export default function Sidebar({currentPageId}: { currentPageId: number}) {
 
     const menuItems = [
         {
@@ -49,7 +47,7 @@ export default function Sidebar() {
                             return (
                                 <li key={index}>
                                     <Link href={item.href}
-                                          className={clsx('grid grid-flow-col grid-cols-[25px_1fr] px-4 py-2 hover:bg-slate-100 rounded-lg', {"bg-slate-100": item.id == dashboardData.id})}>
+                                          className={clsx('grid grid-flow-col grid-cols-[25px_1fr] px-4 py-2 hover:bg-slate-100 rounded-lg', {"bg-slate-100": item.id == currentPageId})}>
 
                                 <span className="content-center"><Image src={item.icon} alt="Next Form"
                                                                         className="content-center" width={15}

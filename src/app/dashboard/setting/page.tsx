@@ -1,22 +1,12 @@
-'use client'
-
-import {useDashboard} from "@/contexts/dashboard-context";
-import React, {useEffect} from "react";
-import Link from "next/link";
+import DashboardLayout from "@/app/dashboard/dashboard-layout";
 
 export default function Setting() {
-    const { setDashboardData } = useDashboard();
-
-    useEffect(() => {
-        setDashboardData({
-            id: 3,
-            breadcrumbs: <><Link href="/dashboard">Dashboard</Link> / <span>Setting</span></>
-        });
-    });
 
     return (
-        <div className="grid grid-flow-col gap-4">
+        <DashboardLayout breadcrumbs={<><span>Dashboard</span> / <span>Setting</span></>} currentPageId={3}>
+            <div className="grid grid-flow-col gap-4">
 
-        </div>
+            </div>
+        </DashboardLayout>
     );
 }

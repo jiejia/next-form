@@ -3,16 +3,14 @@
 import Block from "@/components/shared/block";
 import Link from "next/link";
 import {Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger} from "@nextui-org/react";
-import {useDashboard} from "@/contexts/dashboard-context";
 
-export default function Sidebar() {
-    const { dashboardData } = useDashboard();
+export default function Sidebar({breadcrumbs = <></>,}: { breadcrumbs: React.ReactNode }) {
 
     return (
         <header>
                 <Block className="grid grid-cols-8 !py-3">
                     <div className="col-span-6 content-center">
-                        {dashboardData.breadcrumbs}
+                        {breadcrumbs}
                     </div>
                     <div className="col-span-2 content-center justify-self-end">
                         <Dropdown placement="bottom-end">

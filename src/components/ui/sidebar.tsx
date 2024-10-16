@@ -1,13 +1,37 @@
 'use client'
 
-
 import Block from "@/components/shared/block";
 import Link from "next/link";
 import Image from "next/image";
 import {Select, SelectItem} from "@nextui-org/react";
 import Copyright from "@/components/ui/copyright";
+import {useDashboard} from "@/contexts/dashboard-context";
+import clsx from "clsx";
 
 export default function Sidebar() {
+    const { dashboardData } = useDashboard();
+
+    const menuItems = [
+        {
+            id: 1,
+            name: "Dashboard",
+            href: "/dashboard",
+            icon: "/svgs/dashboard.svg"
+        },
+        {
+            id: 2,
+            name: "Form",
+            href: "/dashboard/form",
+            icon: "/svgs/forms.svg"
+        },
+        {
+            id: 3,
+            name: "Setting",
+            href: "/dashboard/setting",
+            icon: "/svgs/setting.svg"
+        },
+    ]
+
     return (
         <aside className="h-full lg:block hidden fixed left-0 top-0 p-4">
             <Block className="h-full w-[280px] relative">
@@ -20,32 +44,22 @@ export default function Sidebar() {
                     </Link>
                 </h1>
                 <ul className="grid grid-flow-row text-sm mt-8 gap-[2px]">
-                    <li>
-                        <Link href={"/dashboard"}
-                              className="grid grid-flow-col grid-cols-[25px_1fr] px-4 py-2 hover:bg-slate-100 rounded-lg bg-slate-100">
-                                <span className="content-center"><Image src="/svgs/dashboard.svg" alt="Next Form"
+                    {
+                        menuItems.map((item, index) => {
+                            return (
+                                <li key={index}>
+                                    <Link href={item.href}
+                                          className={clsx('grid grid-flow-col grid-cols-[25px_1fr] px-4 py-2 hover:bg-slate-100 rounded-lg', {"bg-slate-100": item.id == dashboardData.id})}>
+
+                                <span className="content-center"><Image src={item.icon} alt="Next Form"
                                                                         className="content-center" width={15}
                                                                         height={15}/></span>
-                            <span className="content-center">Dashboard</span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href={"/dashboard/form"}
-                              className="grid grid-flow-col grid-cols-[25px_1fr] px-4 py-2 hover:bg-slate-100 rounded-lg">
-                                <span className="content-center"><Image src="/svgs/forms.svg" alt="Next Form"
-                                                                        className="content-center" width={15}
-                                                                        height={15}/></span>
-                            <span className="content-center">Form</span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link href={"/dashboard/setting"}
-                              className="grid grid-flow-col grid-cols-[25px_1fr] px-4 py-2 hover:bg-slate-100 rounded-lg">
-                            <span className="content-center"><Image src="/svgs/setting.svg" alt="Next Form" width={15}
-                                                                    height={15}/></span>
-                            <span className="content-center">Setting</span>
-                        </Link>
-                    </li>
+                                        <span className="content-center">{item.name}</span>
+                                    </Link>
+                                </li>
+                            );
+                        })
+                    }
                 </ul>
                 <div className="absolute bottom-4 left-4 right-4">
                     <hr className="mb-4"/>

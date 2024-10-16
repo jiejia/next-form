@@ -1,4 +1,3 @@
-'use client'
 
 
 export default function Block({children, className = ''}: { children: React.ReactNode , className?: string }) {

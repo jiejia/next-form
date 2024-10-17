@@ -5,7 +5,7 @@ import DashboardLayout from '@/app/dashboard/dashboard-layout';
 export default function Dashboard() {
 
     return (
-        <DashboardLayout breadcrumbs={<><span>Dashboard</span></>} currentPageId={1}>
+        <DashboardLayout breadcrumbs={<><span>Dashboard</span></>} menuItemId={1}>
             <div className="grid grid-flow-col gap-4">
                 <Block>
                     <h3 className="text-center">Number Of Forms</h3>

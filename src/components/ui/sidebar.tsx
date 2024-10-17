@@ -7,7 +7,7 @@ import {Select, SelectItem} from "@nextui-org/react";
 import Copyright from "@/components/ui/copyright";
 import clsx from "clsx";
 
-export default function Sidebar({currentPageId}: { currentPageId: number }) {
+export default function Sidebar({menuItemId}: { menuItemId: number }) {
 
     const menuItems = [
         {
@@ -47,7 +47,7 @@ export default function Sidebar({currentPageId}: { currentPageId: number }) {
                             return (
                                 <li key={index}>
                                     <Link href={item.href}
-                                          className={clsx('grid grid-flow-col grid-cols-[25px_1fr] px-4 py-2 hover:bg-slate-100 rounded-lg', {"bg-slate-100": item.id == currentPageId})}>
+                                          className={clsx('grid grid-flow-col grid-cols-[25px_1fr] px-4 py-2 hover:bg-slate-100 rounded-lg', {"bg-slate-100": item.id == menuItemId})}>
 
                                 <span className="content-center"><Image src={item.icon} alt="Next Form"
                                                                         className="content-center" width={15}

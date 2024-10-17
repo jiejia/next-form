@@ -7,7 +7,7 @@ import {Select, SelectItem} from "@nextui-org/react";
 import Copyright from "@/components/ui/copyright";
 import clsx from "clsx";
 
-export default function Sidebar({currentPageId}: { currentPageId: number}) {
+export default function Sidebar({currentPageId}: { currentPageId: number }) {
 
     const menuItems = [
         {
@@ -78,7 +78,8 @@ export default function Sidebar({currentPageId}: { currentPageId: number}) {
                         </SelectItem>
                         <SelectItem key={7} value={7}>
                             <div className="grid grid-flow-col grid-cols-[25px_1fr]">
-                                <span className="content-center"><Image src="/svgs/following_system_mode.svg" alt="Next Form"
+                                <span className="content-center"><Image src="/svgs/following_system_mode.svg"
+                                                                        alt="Next Form"
                                                                         width={15} height={15}/></span>
                                 <span className="content-center">System</span>
                             </div>

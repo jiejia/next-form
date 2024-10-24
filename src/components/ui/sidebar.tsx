@@ -31,7 +31,7 @@ export default function Sidebar({menuItemId}: { menuItemId: number }) {
     ]
 
     return (
-        <aside className="h-full lg:block hidden fixed left-0 top-0 p-4">
+        <aside className="h-full">
             <Block className="h-full w-[280px] relative">
                 <h1 className="text-xl font-semibold lg:px-8">
                     {/* eslint-disable-next-line @next/next/no-img-element */}

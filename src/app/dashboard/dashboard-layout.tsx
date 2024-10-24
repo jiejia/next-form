@@ -9,12 +9,14 @@ export default function DashboardLayout({children, breadcrumbs, menuItemId}: {
 
     return (
         <div className="relative">
-            <Sidebar menuItemId={menuItemId}/>
-            <div className="fixed lg:left-[300px] left-0 top-0 right-0 p-4 grid grid-rows-[75px_1fr] h-full">
-                <Header breadcrumbs={breadcrumbs}/>
-                <main className="h-full">
-                    {children}
-                </main>
+            <div className={"fixed left-0 top-0 right-0 bottom-0 grid grid-cols-[280px_1fr] gap-4 p-4"}>
+                <Sidebar menuItemId={menuItemId}/>
+                <div className="h-full grid grid-rows-[56px_1fr] gap-4">
+                    <Header breadcrumbs={breadcrumbs}/>
+                    <main className="h-full">
+                        {children}
+                    </main>
+                </div>
             </div>
         </div>
     )

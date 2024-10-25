@@ -44,13 +44,13 @@ export default function SaveForm() {
                             isRequired
                             type="text"
                             label="Title"
-                            placeholder="Enter form title"
+                            placeholder=" "
                             className="max-w-xs"
                             size="sm"
                         />
                         <Textarea
                             label="Description"
-                            placeholder="Enter form description"
+                            placeholder=" "
                             className="max-w-xs"
                             size="sm"
                         />
@@ -91,8 +91,54 @@ export default function SaveForm() {
                             </div>
                         </Switch>
                     </Tab>
-                    <Tab key="property" title="Property" className="px-0">
-
+                    <Tab key="property" title="Property" className="px-0 grid grid-flow-row gap-3">
+                        <Input
+                            isRequired
+                            type="text"
+                            label="Title"
+                            placeholder=" "
+                            className="max-w-xs"
+                            size="sm"
+                        />
+                        <Input
+                            type="text"
+                            label="Description"
+                            placeholder=" "
+                            className="max-w-xs"
+                            size="sm"
+                        />
+                        <Input
+                            type="text"
+                            label="Regrex"
+                            placeholder=" "
+                            className="max-w-xs"
+                            size="sm"
+                        />
+                        <Switch
+                            classNames={{
+                                base: cn(
+                                    "inline-flex flex-row-reverse w-full max-w-md bg-content2 hover:bg-content2 items-center",
+                                    "justify-between cursor-pointer rounded-lg gap-2 px-3 py-3 border-2 border-transparent",
+                                    "data-[selected=true]:border-primary",
+                                ),
+                                wrapper: "p-0 h-4 overflow-visible",
+                                thumb: cn("w-6 h-6 border-2 shadow-lg",
+                                    "group-data-[hover=true]:border-primary",
+                                    //selected
+                                    "group-data-[selected=true]:ml-6",
+                                    // pressed
+                                    "group-data-[pressed=true]:w-7",
+                                    "group-data-[selected]:group-data-[pressed]:ml-4",
+                                ),
+                            }}
+                            size="md"
+                        >
+                            <div className="flex flex-col gap-1">
+                                <p className="text-tiny text-default-400">
+                                    Required
+                                </p>
+                            </div>
+                        </Switch>
                     </Tab>
                 </Tabs>
             </Block>

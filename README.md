@@ -1,4 +1,7 @@
 ## operating environment
-develop develop         
+develop develop        
+
+分支管理策略 develop
+ 
 
                 

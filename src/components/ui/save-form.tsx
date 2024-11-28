@@ -17,14 +17,48 @@ export default function SaveForm() {
                     aria-label="Controls"
                     className=""
                 >
-                    <Tab key="controls" title="Controls" className="px-0">
+                    <Tab key="controls" title="Controls" className="!px-0">
                         <ControlList/>
                     </Tab>
                 </Tabs>
             </Block>
-            <Block>
-                <></>
-
+            <Block className="px-0">
+                <div className="h-full relative scrollbar-thin overflow-y-scroll overflow-x-hidden">
+                    <ul className="grid grid-cols-1 gap-2 text-left indent-1 text-xs content-start">
+                        <li className="p-4 bg-content2 rounded-lg border-default border-0 relative">
+                            <span className="text-sm">1. 测试</span>
+                            <span className="absolute right-4 bottom-2 text-default-400">Textarea</span>
+                        </li>
+                        <li className="p-4 bg-content2 rounded-lg border-default border-0 relative">
+                            <span className="text-sm">1. 测试</span>
+                            <span className="absolute right-4 bottom-2 text-default-400">Textarea</span>
+                        </li>
+                        <li className="p-4 bg-content2 rounded-lg border-default border-0 relative">
+                            <span className="text-sm">1. 测试</span>
+                            <span className="absolute right-4 bottom-2 text-default-400">Textarea</span>
+                        </li>
+                        <li className="p-4 bg-content2 rounded-lg border-default border-0 relative">
+                            <span className="text-sm">1. 测试</span>
+                            <span className="absolute right-4 bottom-2 text-default-400">Textarea</span>
+                        </li>
+                        <li className="p-4 bg-content2 rounded-lg border-default border-0 relative">
+                            <span className="text-sm">1. 测试</span>
+                            <span className="absolute right-4 bottom-2 text-default-400">Textarea</span>
+                        </li>
+                        <li className="p-4 bg-content2 rounded-lg border-default border-0 relative">
+                            <span className="text-sm">1. 测试</span>
+                            <span className="absolute right-4 bottom-2 text-default-400">Textarea</span>
+                        </li>
+                        <li className="p-4 bg-content2 rounded-lg border-default border-0 relative">
+                            <span className="text-sm">1. 测试</span>
+                            <span className="absolute right-4 bottom-2 text-default-400">Textarea</span>
+                        </li>
+                        <li className="p-4 bg-content2 rounded-lg border-default border-0 relative">
+                            <span className="text-sm">1. 测试</span>
+                            <span className="absolute right-4 bottom-2 text-default-400">Textarea</span>
+                        </li>
+                    </ul>
+                </div>
             </Block>
             <Block>
                 <Tabs
@@ -58,15 +92,15 @@ export default function SaveForm() {
                             className="max-w-xs"
                             defaultSelectedKeys={["None"]}
                         >
-                                <SelectItem key="None">None</SelectItem>
-                                <SelectItem key="Arabic numerals">Arabic numerals</SelectItem>
+                            <SelectItem key="None">None</SelectItem>
+                            <SelectItem key="Arabic numerals">Arabic numerals</SelectItem>
 
                         </Select>
                         <Switch
                             classNames={{
                                 base: cn(
                                     "inline-flex flex-row-reverse w-full max-w-md bg-content2 hover:bg-content2 items-center",
-                                    "justify-between cursor-pointer rounded-lg gap-2 px-3 py-1 border-2 border-transparent",
+                                    "justify-between cursor-pointer rounded-lg gap-2 px-3 py-3 border-2 border-transparent",
                                     "data-[selected=true]:border-primary",
                                 ),
                                 wrapper: "p-0 h-4 overflow-visible",
@@ -82,9 +116,8 @@ export default function SaveForm() {
                             size="md"
                         >
                             <div className="flex flex-col gap-1">
-                                <p className="text-medium">Enable</p>
-                                <p className="text-tiny text-default-400">
-                                    Get access to new features .
+                                <p className="text-tiny text-default-600">
+                                    Required
                                 </p>
                             </div>
                         </Switch>
@@ -132,7 +165,7 @@ export default function SaveForm() {
                             size="md"
                         >
                             <div className="flex flex-col gap-1">
-                                <p className="text-tiny text-default-400">
+                                <p className="text-tiny text-default-600">
                                     Required
                                 </p>
                             </div>

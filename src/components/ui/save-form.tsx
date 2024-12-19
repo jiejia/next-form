@@ -22,9 +22,9 @@ export default function SaveForm() {
                     </Tab>
                 </Tabs>
             </Block>
-            <Block className="px-0">
-                <div className="h-full relative scrollbar-thin overflow-y-scroll overflow-x-hidden">
-                    <ul className="grid grid-cols-1 gap-2 text-left indent-1 text-xs content-start">
+            <Block className="h-full pr-2">
+                <div className="h-full relative scrollbar-thin overflow-y-scroll">
+                    <ul className="grid grid-cols-1 gap-2 text-left indent-1 text-xs content-start absolute h-full w-full pr-2">
                         <li className="p-4 bg-content2 rounded-lg border-default border-0 relative">
                             <span className="text-sm">1. 测试</span>
                             <span className="absolute right-4 bottom-2 text-default-400">Textarea</span>
@@ -57,6 +57,27 @@ export default function SaveForm() {
                             <span className="text-sm">1. 测试</span>
                             <span className="absolute right-4 bottom-2 text-default-400">Textarea</span>
                         </li>
+                        <li className="p-4 bg-content2 rounded-lg border-default border-0 relative">
+                            <span className="text-sm">1. 测试</span>
+                            <span className="absolute right-4 bottom-2 text-default-400">Textarea</span>
+                        </li>
+                        <li className="p-4 bg-content2 rounded-lg border-default border-0 relative">
+                            <span className="text-sm">1. 测试</span>
+                            <span className="absolute right-4 bottom-2 text-default-400">Textarea</span>
+                        </li>
+                        <li className="p-4 bg-content2 rounded-lg border-default border-0 relative">
+                            <span className="text-sm">1. 测试</span>
+                            <span className="absolute right-4 bottom-2 text-default-400">Textarea</span>
+                        </li>
+                        <li className="p-4 bg-content2 rounded-lg border-default border-0 relative">
+                            <span className="text-sm">1. 测试</span>
+                            <span className="absolute right-4 bottom-2 text-default-400">Textarea</span>
+                        </li>
+                        <li className="p-4 bg-content2 rounded-lg border-default border-0 relative">
+                            <span className="text-sm">1. 测试</span>
+                            <span className="absolute right-4 bottom-2 text-default-400">Textarea</span>
+                        </li>
+
                     </ul>
                 </div>
             </Block>

@@ -10,7 +10,7 @@ export default function SaveForm() {
     const [selected, setSelected] = React.useState<string | number>("form");
     return (
         <div className="grid  gap-4 grid-cols-[1fr_300px] xl:grid-cols-[300px_1fr_300px] grid-rows-[1fr_56px] h-full">
-            <Block className="xl:block hidden">
+            <Block className="xl:block grid grid-flow-col">
                 <Tabs
                     fullWidth
                     size="md"

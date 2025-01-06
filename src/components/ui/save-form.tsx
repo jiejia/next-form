@@ -2,7 +2,7 @@
 
 import React from "react";
 import Block from '@/components/shared/block';
-import {Tabs, Tab} from "@nextui-org/react";
+import {Tabs, Tab, Button} from "@nextui-org/react";
 import ControlList from "@/components/ui/control-list";
 import {Input,Textarea,Select, SelectItem,Switch, cn} from "@nextui-org/react";
 import Scroll from "@/components/shared/scroll";
@@ -130,7 +130,7 @@ export default function SaveForm() {
                                         base: cn(
                                             "inline-flex flex-row-reverse w-full max-w-md bg-content2 hover:bg-content2 items-center",
                                             "justify-between cursor-pointer rounded-lg gap-2 px-3 py-3 border-2 border-transparent",
-                                            "data-[selected=true]:border-primary",
+                                            "data-[selected=true]:border-primary max-w-full",
                                         ),
                                         wrapper: "p-0 h-4 overflow-visible",
                                         thumb: cn("w-6 h-6 border-2 shadow-lg",
@@ -183,7 +183,7 @@ export default function SaveForm() {
                                         base: cn(
                                             "inline-flex flex-row-reverse w-full max-w-md bg-content2 hover:bg-content2 items-center",
                                             "justify-between cursor-pointer rounded-lg gap-2 px-3 py-3 border-2 border-transparent",
-                                            "data-[selected=true]:border-primary",
+                                            "data-[selected=true]:border-primary max-w-full",
                                         ),
                                         wrapper: "p-0 h-4 overflow-visible",
                                         thumb: cn("w-6 h-6 border-2 shadow-lg",
@@ -208,8 +208,8 @@ export default function SaveForm() {
                     </Tab>
                 </Tabs>
             </Block>
-            <Block className={"col-span-1 sm:col-span-2 xl:col-span-3"}>
-                <div></div>
+            <Block className={"col-span-1 sm:col-span-2 xl:col-span-3 text-center"}>
+                    <Button color="primary" size="sm" variant="shadow" radius="sm">Create</Button> <Button color="primary" radius="sm" size="sm" variant="flat">Reset</Button>
             </Block>
         </div>
     );

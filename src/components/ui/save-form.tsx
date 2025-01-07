@@ -208,7 +208,7 @@ export default function SaveForm() {
                     </Tab>
                 </Tabs>
             </Block>
-            <Block className={"col-span-1 sm:col-span-2 xl:col-span-3 text-center"}>
+            <Block className={"col-span-1 sm:col-span-2 xl:col-span-3 text-center pt-3"}>
                     <Button color="primary" size="sm" variant="shadow" radius="sm">Create</Button> <Button color="primary" radius="sm" size="sm" variant="flat">Reset</Button>
             </Block>
         </div>

@@ -13,8 +13,9 @@ import Block from "@/components/shared/block";
 import React from "react";
 import {Pagination} from "@nextui-org/react";
 import Scroll from "@/components/shared/scroll";
-
-
+import {Input} from "@nextui-org/react";
+import {Button} from "@nextui-org/react";
+import {Select, SelectItem} from "@nextui-org/react";
 
 export default function FormList() {
     const rows = [
@@ -251,12 +252,20 @@ export default function FormList() {
         },
     ];
 
+    const animals = [
+        {key: "20", label: "20"},
+        {key: "30", label: "30"},
+        {key: "50", label: "50"},
+        {key: "100", label: "100"},
+    ];
+
     const [selectedKeys, setSelectedKeys] = React.useState(new Set(["2"]));
 
     return (
-        <div className="grid grid-rows-[100px_1fr_56px] gap-4 h-full">
-            <Block>
-                <div></div>
+        <div className="grid grid-rows-[65px_1fr_56px] gap-4 h-full">
+            <Block className="grid grid-cols-[1fr_80px] gap-2">
+                <Input placeholder="title" type="text" size="sm" className="indent-8"/>
+                <Button color="primary" size="sm">Search</Button>
             </Block>
             <Block className="pr-2">
                 <Scroll>
@@ -281,15 +290,25 @@ export default function FormList() {
                 </Scroll>
 
             </Block>
-            <Block className="grid grid-cols-[1fr_4fr_1fr] pt-3">
-                <div>
-
+            <Block className="grid sm:grid-cols-[80px_1fr_80px] grid-cols-[1fr] pt-3 gap-2">
+                <div className="hidden sm:block justify-items-center content-center">
+                    Total 100
                 </div>
                 <div className="justify-items-center content-center">
-                    <Pagination showControls initialPage={1} total={100} size="sm"/>
+                    <Pagination showControls initialPage={1} total={100} size="sm" loop />
                 </div>
-                <div>
-
+                <div className="hidden sm:block justify-items-center content-center">
+                    <Select
+                        isRequired
+                        className="max-w-xs"
+                        placeholder="Select an animal"
+                        size="sm"
+                        defaultSelectedKeys={["20"]}
+                    >
+                        {animals.map((animal) => (
+                            <SelectItem key={animal.key}>{animal.label}</SelectItem>
+                        ))}
+                    </Select>
                 </div>
             </Block>
         </div>

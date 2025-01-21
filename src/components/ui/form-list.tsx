@@ -30,68 +30,23 @@ interface RowItem {
     actions?: string;
 }
 
-// 生成更多测试数据
+// 修改 generateRows 函数，使用固定的随机数
 const generateRows = () => {
     const formTypes = ['用户调查问卷', '产品反馈表', '活动报名表', '满意度调查', '需求收集表'];
     const statuses = ['active', 'paused', 'deleted'];
     
-    return Array.from({ length: 50 }, (_, index) => {
-        const date = new Date(2024, 0, index + 1);
-        return {
-            key: `${index + 1}`,
-            id: `FORM-${String(index + 1).padStart(4, '0')}`,
-            name: `${formTypes[index % formTypes.length]} ${index + 1}`,
-            created_at: `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`,
-            submissions: Math.floor(Math.random() * 1000) + 1,
-            status: statuses[index % statuses.length],
-        };
-    });
+    return Array.from({ length: 50 }, (_, index) => ({
+        key: `${index + 1}`,
+        id: `FORM-${String(index + 1).padStart(4, '0')}`,
+        name: `${formTypes[index % formTypes.length]} ${index + 1}`,
+        created_at: `2024-01-${String(index + 1).padStart(2, '0')}`,
+        submissions: (index * 17 + 23) % 1000, // 使用确定性的计算替代随机数
+        status: statuses[index % statuses.length],
+    }));
 };
 
-const rows = generateRows();
-
-const columns = [
-    {
-        key: "id",
-        label: "ID",
-    },
-    {
-        key: "name",
-        label: "表单名称",
-    },
-    {
-        key: "created_at",
-        label: "创建时间",
-    },
-    {
-        key: "submissions",
-        label: "提交数",
-    },
-    {
-        key: "status",
-        label: "状态",
-    },
-    {
-        key: "actions",
-        label: "操作",
-    }
-];
-
-const statusColorMap: Record<string, "success" | "warning" | "danger"> = {
-    active: "success",
-    paused: "warning",
-    deleted: "danger",
-};
-
-const statusTextMap = {
-    active: "进行中",
-    paused: "已暂停",
-    deleted: "已删除",
-};
-
-type ColumnKey = keyof RowItem | "actions";
-
-export default function FormList() {
+const FormList: React.FC = () => {
+    const [rows] = React.useState(() => generateRows()); // 使用 useState 确保数据只生成一次
     const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set(["2"]));
 
     const renderCell = React.useCallback((item: RowItem, columnKey: ColumnKey) => {
@@ -171,7 +126,20 @@ export default function FormList() {
 
     return (
         <div className="grid grid-rows-[65px_1fr_56px] gap-4 h-full">
-            <Block className="grid grid-cols-[1fr_80px] gap-2">
+            <Block className="grid grid-cols-[120px_1fr_80px] gap-2">
+                <Select
+                    className="max-w-xs"
+                    items={[
+                        { key: "all", label: "批量操作" },
+                        { key: "survey", label: "调查问卷" },
+                        { key: "feedback", label: "反馈表单" },
+                        { key: "registration", label: "注册表单" }
+                    ]}
+                    placeholder="操作"
+                    size="sm"
+                >
+                    {(type) => <SelectItem key={type.key}>{type.label}</SelectItem>}
+                </Select>
                 <Input placeholder="搜索表单" type="text" size="sm" className="indent-8"/>
                 <Button color="primary" size="sm">搜索</Button>
             </Block>
@@ -235,3 +203,46 @@ export default function FormList() {
         </div>
     );
 }
+
+const statusColorMap: Record<string, "success" | "warning" | "danger"> = {
+    active: "success",
+    paused: "warning",
+    deleted: "danger",
+};
+
+const statusTextMap = {
+    active: "进行中",
+    paused: "已暂停",
+    deleted: "已删除",
+};
+
+const columns = [
+    {
+        key: "id",
+        label: "ID",
+    },
+    {
+        key: "name",
+        label: "表单名称",
+    },
+    {
+        key: "created_at",
+        label: "创建时间",
+    },
+    {
+        key: "submissions",
+        label: "提交数",
+    },
+    {
+        key: "status",
+        label: "状态",
+    },
+    {
+        key: "actions",
+        label: "操作",
+    }
+];
+
+type ColumnKey = keyof RowItem | "actions";
+
+export default FormList;

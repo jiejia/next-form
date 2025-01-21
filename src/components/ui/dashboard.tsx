@@ -14,8 +14,8 @@ const submissionData = [
 
 export default function Dashboard() {
     return (
-        <div className="grid grid-rows-[2fr_5fr_5fr] gap-4 h-full">
-            <div className="grid grid-cols-[1fr_1fr_1fr_1fr] gap-4">
+        <div className="grid md:grid-rows-[2fr_5fr_5fr] grid-rows-[4fr_8fr]  gap-4 h-full">
+            <div className="grid md:grid-cols-[1fr_1fr_1fr_1fr] grid-cols-[1fr_1fr]  gap-4">
                 <Block>
                     <div className="grid grid-cols-[2fr_1fr] h-full content-center">
                         <div className="grid content-center gap-1">
@@ -57,7 +57,7 @@ export default function Dashboard() {
                     </div>
                 </Block>
             </div>
-            <div className="grid grid-cols-[1fr_1fr] gap-4">
+            <div className="grid md:grid-cols-[1fr_1fr] grid-cols-[1fr] gap-4">
                 <Block>
                     <div className="grid grid-rows-[auto_1fr] h-full">
                         <h3 className="text-lg font-semibold">每日提交统计</h3>
@@ -99,7 +99,7 @@ export default function Dashboard() {
                     </div>
                 </Block>
             </div>
-            <div className="grid grid-cols-[1fr_1fr] gap-4">
+            <div className="grid md:grid-cols-[1fr_1fr] grid-cols-[1fr] gap-4">
                 <Block>
                     <div className="grid grid-rows-[auto_1fr] h-full">
                         <h3 className="text-lg font-semibold">最近活动</h3>

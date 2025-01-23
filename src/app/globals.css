@@ -24,4 +24,29 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+  .scrollbar-hide-track {
+    &::-webkit-scrollbar {
+      width: 4px;
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-track,
+    &::-webkit-scrollbar-track-piece,
+    &::-webkit-scrollbar-button {  /* 添加这个来隐藏上下箭头 */
+      background: transparent;
+      border: none;
+      display: none;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #999;
+      border-radius: 4px;
+      border: none;
+      background-clip: content-box;
+    }
+
+    /* Firefox */
+    scrollbar-color: #999 transparent;
+    scrollbar-width: thin;
+  }
 }

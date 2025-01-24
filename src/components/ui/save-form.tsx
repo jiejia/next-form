@@ -3,15 +3,32 @@
 import React from "react";
 import Block from '@/components/shared/block';
 import {Tabs, Tab, Button} from "@nextui-org/react";
-import ControlList from "@/components/ui/control-list";
 import {Input,Textarea,Select, SelectItem,Switch, cn} from "@nextui-org/react";
 import Scroll from "@/components/shared/scroll";
 import {DndContext} from '@dnd-kit/core';
 import Image from "next/image";
 
+const controlItems = [
+    { icon: "/svgs/input_text.svg", type: "Input Text" },
+    { icon: "/svgs/textarea.svg", type: "Textarea" },
+    { icon: "/svgs/select.svg", type: "Select" },
+    { icon: "/svgs/checkbox.svg", type: "Checkbox" },
+    { icon: "/svgs/radio.svg", type: "Radio" },
+    { icon: "/svgs/date.svg", type: "Date" },
+];
+
+const elementItems = [
+    { title: "1. 测试", type: "Textarea" },
+    { title: "1. 测试", type: "Textarea" },
+    { title: "1. 测试", type: "Textarea" },
+    { title: "1. 测试", type: "Textarea" },
+    { title: "1. 测试", type: "Textarea" },
+    { title: "1. 测试", type: "Textarea" },
+];
 
 export default function SaveForm() {
     const [selected, setSelected] = React.useState<string | number>("form");
+
     return (
         <div className="grid  gap-4 grid-cols-[1fr] sm:grid-cols-[1fr_300px] xl:grid-cols-[300px_1fr_300px] grid-rows-[1fr_1fr_56px] sm:grid-rows-[1fr_56px] h-full">
             <DndContext>
@@ -24,38 +41,13 @@ export default function SaveForm() {
                     >
                         <Tab key="controls" title="Controls" className="!px-0 pb-0">
                             <Scroll>
-                                <ul className="grid grid-cols-2 gap-2 text-left indent-1 text-xs content-start">
-                                    <li className="p-2 bg-content2 rounded-lg border-default border-0 grid grid-cols-[20px_1fr]">
-                                        <Image src="/svgs/input_text.svg" alt="Next Form" className="w-4 h-4" width={20}
-                                               height={20}/>
-                                        <span>Input Text</span>
-                                    </li>
-                                    <li className="p-2 bg-content2 rounded-lg border-default border-0 grid grid-cols-[20px_1fr]">
-                                        <Image src="/svgs/textarea.svg" alt="Next Form" className="w-4 h-4" width={20}
-                                               height={20}/>
-                                        <span>Textarea</span>
-                                    </li>
-                                    <li className="p-2 bg-content2 rounded-lg border-default border-0 grid grid-cols-[20px_1fr]">
-                                        <Image src="/svgs/select.svg" alt="Next Form" className="w-4 h-4" width={20}
-                                               height={20}/>
-                                        <span>Select</span>
-                                    </li>
-                                    <li className="p-2 bg-content2 rounded-lg border-default border-0 grid grid-cols-[20px_1fr]">
-                                        <Image src="/svgs/checkbox.svg" alt="Next Form" className="w-4 h-4" width={20}
-                                               height={20}/>
-                                        <span>Checkbox</span>
-                                    </li>
-                                    <li className="p-2 bg-content2 rounded-lg border-default border-0 grid grid-cols-[20px_1fr]">
-                                        <Image src="/svgs/radio.svg" alt="Next Form" className="w-4 h-4" width={20}
-                                               height={20}/>
-                                        <span>Radio</span>
-                                    </li>
-                                    <li className="p-2 bg-content2 rounded-lg border-default border-0 grid grid-cols-[20px_1fr]">
-                                        <Image src="/svgs/date.svg" alt="Next Form" className="w-4 h-4" width={20}
-                                               height={20}/>
-                                        <span>Date</span>
-                                    </li>
-
+                                <ul id="controls" className="grid grid-cols-2 gap-2 text-left indent-1 text-xs content-start">
+                                    {controlItems.map((item, index) => (
+                                        <li key={index} className="p-2 bg-content2 rounded-lg border-default border-0 grid grid-cols-[20px_1fr] z-40">
+                                            <Image src={item.icon} alt="Next Form" className="w-4 h-4" width={20} height={20}/>
+                                            <span>{item.type}</span>
+                                        </li>
+                                    ))}
                                 </ul>
                             </Scroll>
                         </Tab>
@@ -63,32 +55,13 @@ export default function SaveForm() {
                 </Block>
                 <Block className="pr-2">
                     <Scroll>
-                        <ul className="grid grid-cols-1 gap-2 text-left indent-1 text-xs content-start">
-                            <li className="p-4 bg-content2 rounded-lg border-default border-0 relative">
-                                <span className="text-sm">1. 测试</span>
-                                <span className="absolute right-4 bottom-2 text-default-400">Textarea</span>
-                            </li>
-                            <li className="p-4 bg-content2 rounded-lg border-default border-0 relative">
-                                <span className="text-sm">1. 测试</span>
-                                <span className="absolute right-4 bottom-2 text-default-400">Textarea</span>
-                            </li>
-                            <li className="p-4 bg-content2 rounded-lg border-default border-0 relative">
-                                <span className="text-sm">1. 测试</span>
-                                <span className="absolute right-4 bottom-2 text-default-400">Textarea</span>
-                            </li>
-                            <li className="p-4 bg-content2 rounded-lg border-default border-0 relative">
-                                <span className="text-sm">1. 测试</span>
-                                <span className="absolute right-4 bottom-2 text-default-400">Textarea</span>
-                            </li>
-                            <li className="p-4 bg-content2 rounded-lg border-default border-0 relative">
-                                <span className="text-sm">1. 测试</span>
-                                <span className="absolute right-4 bottom-2 text-default-400">Textarea</span>
-                            </li>
-                            <li className="p-4 bg-content2 rounded-lg border-default border-0 relative">
-                                <span className="text-sm">1. 测试</span>
-                                <span className="absolute right-4 bottom-2 text-default-400">Textarea</span>
-                            </li>
-
+                        <ul id="elements" className="grid grid-cols-1 gap-2 text-left indent-1 text-xs content-start">
+                            {elementItems.map((item, index) => (
+                                <li key={index} className="p-4 bg-content2 rounded-lg border-default border-0 relative z-40">
+                                    <span className="text-sm">{item.title}</span>
+                                    <span className="absolute right-4 bottom-2 text-default-400">{item.type}</span>
+                                </li>
+                            ))}
                         </ul>
                     </Scroll>
                 </Block>
@@ -103,7 +76,17 @@ export default function SaveForm() {
                     >
                         <Tab key="controls" title="Controls" className="px-0 xl:hidden block pb-0">
                             <Scroll>
-                                <ControlList/>
+                                <ul id="controls"
+                                    className="grid grid-cols-2 gap-2 text-left indent-1 text-xs content-start">
+                                    {controlItems.map((item, index) => (
+                                        <li key={index}
+                                            className="p-2 bg-content2 rounded-lg border-default border-0 grid grid-cols-[20px_1fr]">
+                                            <Image src={item.icon} alt="Next Form" className="w-4 h-4" width={20}
+                                                   height={20}/>
+                                            <span>{item.type}</span>
+                                        </li>
+                                    ))}
+                                </ul>
                             </Scroll>
                         </Tab>
                         <Tab key="form" title="Form" className="px-0 pb-0">

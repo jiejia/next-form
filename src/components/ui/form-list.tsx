@@ -34,7 +34,7 @@ interface RowItem {
 const generateRows = () => {
     const formTypes = ['用户调查问卷', '产品反馈表', '活动报名表', '满意度调查', '需求收集表'];
     const statuses = ['active', 'paused', 'deleted'];
-    
+
     return Array.from({ length: 50 }, (_, index) => ({
         key: `${index + 1}`,
         id: `FORM-${String(index + 1).padStart(4, '0')}`,
@@ -76,30 +76,30 @@ const FormList: React.FC = () => {
                 return (
                     <div className="flex justify-center gap-2">
                         <Tooltip content="查看详情">
-                            <Button 
-                                isIconOnly 
-                                size="sm" 
-                                variant="light" 
+                            <Button
+                                isIconOnly
+                                size="sm"
+                                variant="light"
                                 className="text-default-400 cursor-pointer active:opacity-50"
                             >
                                 <EyeIcon className="h-5 w-5" />
                             </Button>
                         </Tooltip>
                         <Tooltip content="编辑表单">
-                            <Button 
-                                isIconOnly 
-                                size="sm" 
-                                variant="light" 
+                            <Button
+                                isIconOnly
+                                size="sm"
+                                variant="light"
                                 className="text-default-400 cursor-pointer active:opacity-50"
                             >
                                 <PencilSquareIcon className="h-5 w-5" />
                             </Button>
                         </Tooltip>
                         <Tooltip content="删除表单" color="danger">
-                            <Button 
-                                isIconOnly 
-                                size="sm" 
-                                variant="light" 
+                            <Button
+                                isIconOnly
+                                size="sm"
+                                variant="light"
                                 className="text-danger cursor-pointer active:opacity-50"
                             >
                                 <TrashIcon className="h-5 w-5" />
@@ -154,7 +154,7 @@ const FormList: React.FC = () => {
                     >
                         <TableHeader columns={columns}>
                             {(column) => (
-                                <TableColumn 
+                                <TableColumn
                                     key={column.key}
                                     align="center"
                                     className="text-center"

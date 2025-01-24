@@ -1,4 +1,4 @@
-
+import React from 'react';
 
 export default function Scroll({children, className = ''}: { children: React.ReactNode , className?: string }) {
     return (

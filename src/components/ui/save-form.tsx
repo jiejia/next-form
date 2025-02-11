@@ -43,6 +43,8 @@ const initialControlItems = [
 
 const initialElementItems = [
     {title: "1. 测试", type: "Textarea"},
+    {title: "1. 测试", type: "Textarea"},
+
 ];
 
 interface DraggableItem {
@@ -104,17 +106,25 @@ export default function SaveForm() {
         // get active item
         const {active} = event;
 
-
-        setActiveItem(getDraggableItem(active.id.toString()));
+        const currentActiveItem = getDraggableItem(active.id.toString());
+        setActiveItem(currentActiveItem);
     }
 
     function handleDragEnd(event:DragEndEvent) {
 
         const {active, over} = event;
 
+        const currentActiveItem = getDraggableItem(active.id.toString());
+        setActiveItem(currentActiveItem);
+
+
         if (over) {
-            setOverItem(getDraggableItem(over.id.toString()));
+            const currentOverItem = getDraggableItem(over.id.toString());
+            setOverItem(currentOverItem);
+            console.log(currentActiveItem, currentOverItem)
+
         }
+
     }
 
     function handleDragMove(event:DragMoveEvent) {

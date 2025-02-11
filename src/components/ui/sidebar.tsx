@@ -38,7 +38,7 @@ export default function Sidebar({menuItemId}: { menuItemId: number }) {
                     <Link href={"/dashboard"}
                           className="grid grid-flow-col grid-cols-[40px_1fr] hover:text-slate-500">
                         <Image src="/svgs/logo.svg" alt="Next Form" className="w-8 h-8" width={40} height={40}/>
-                        <span className="content-center indent-1">NextForm</span>
+                        <span className="content-center indent-1">PlainForm</span>
                     </Link>
                 </h1>
                 <ul className="grid grid-flow-row text-sm mt-8 gap-[2px]">

@@ -14,6 +14,7 @@ import {
 import Scroll from "@/components/shared/scroll";
 import Image from "next/image";
 import {SortableItem} from "@/components/shared/sortable-item";
+import {Droppable} from "@/components/shared/droppable";
 import {Item} from "@/components/shared/item";
 import {
     DndContext,
@@ -42,8 +43,8 @@ const initialControlItems = [
 ];
 
 const initialElementItems = [
-    {title: "1. 测试", type: "Textarea"},
-    {title: "1. 测试", type: "Textarea"},
+    {title: "请输入标题", type: "Textarea"},
+    {title: "请输入标题", type: "Textarea"},
 
 ];
 
@@ -61,7 +62,6 @@ interface ElementItem {
     title: string;
     type: string;
 }
-
 
 
 export default function SaveForm() {
@@ -82,18 +82,20 @@ export default function SaveForm() {
     );
 
     // get draggable item
-    const getDraggableItem = (currentId : string) : DraggableItem=> {
+    const getDraggableItem = (currentId: string): DraggableItem => {
         let area = null;
         if (currentId.toString().includes('element')) {
             area = 'element';
-        } else {
+        } else if (currentId.toString().includes('control')) {
             area = 'control';
+        } else {
+            area = 'recycle';
         }
 
-        const id = currentId.split("-").pop();
+        let id = currentId.split("-").pop();
 
-        if (! id) {
-            throw new Error("id is null");
+        if (!id) {
+            id = '0';
         }
 
         return {
@@ -102,7 +104,7 @@ export default function SaveForm() {
         };
     }
 
-    function handleDragStart(event:DragStartEvent ) {
+    function handleDragStart(event: DragStartEvent) {
         // get active item
         const {active} = event;
 
@@ -110,7 +112,7 @@ export default function SaveForm() {
         setActiveItem(currentActiveItem);
     }
 
-    function handleDragEnd(event:DragEndEvent) {
+    function handleDragEnd(event: DragEndEvent) {
 
         const {active, over} = event;
 
@@ -123,11 +125,35 @@ export default function SaveForm() {
             setOverItem(currentOverItem);
             console.log(currentActiveItem, currentOverItem)
 
+            // drag control to element
+            if (currentActiveItem.area == 'control' && currentOverItem.area == 'element') {
+                const newElementItems = [...elementItems];
+                newElementItems.splice(currentOverItem.id, 0, {
+                    title: "请输入标题",
+                    type: controlItems[currentActiveItem.id].type,
+                });
+                setElementItems(newElementItems);
+            }
+
+            // drag element to element
+            if (currentActiveItem.area == 'element' && currentOverItem.area == 'element') {
+                const newElementItems = [...elementItems];
+                const [removed] = newElementItems.splice(currentActiveItem.id, 1);
+                newElementItems.splice(currentOverItem.id, 0, removed);
+                setElementItems(newElementItems);
+            }
+
+            // drag element to recycle
+            if (currentActiveItem.area == 'element' && currentOverItem.area == 'recycle') {
+                const newElementItems = [...elementItems];
+                newElementItems.splice(currentActiveItem.id, 1);
+                setElementItems(newElementItems);
+            }
         }
 
     }
 
-    function handleDragMove(event:DragMoveEvent) {
+    function handleDragMove(event: DragMoveEvent) {
 
     }
 
@@ -176,30 +202,37 @@ export default function SaveForm() {
                     </Tabs>
                 </Block>
                 <Block className="pr-2">
-                    <Scroll>
-                        <ul
-                            id="elements"
-                            className="grid grid-cols-1 gap-2 text-left indent-1 text-xs content-start"
-                        >
-                            <SortableContext
-                                items={elementItems.map((_, index) => index)}
-                                strategy={verticalListSortingStrategy}
+                    <div className="grid grid-rows-[1fr_50px] gap-2 h-full">
+                        <Scroll>
+                            <ul
+                                id="elements"
+                                className="grid grid-cols-1 gap-2 text-left indent-1 text-xs content-start"
                             >
-                                {elementItems.map((item, index) => (
-                                    <SortableItem
-                                        key={index}
-                                        id={"element-" + index}
-                                        className="p-4 bg-content2 rounded-lg border-default border-0 relative z-40"
-                                    >
-                                        <span className="text-sm">{item.title}</span>
-                                        <span className="absolute right-4 bottom-2 text-default-400">
-                      {item.type}
-                    </span>
-                                    </SortableItem>
-                                ))}
-                            </SortableContext>
-                        </ul>
-                    </Scroll>
+                                <SortableContext
+                                    items={elementItems.map((_, index) => index)}
+                                    strategy={verticalListSortingStrategy}
+                                >
+                                    {elementItems.map((item, index) => (
+                                        <SortableItem
+                                            key={index}
+                                            id={"element-" + index}
+                                            className="p-2 bg-content2 rounded-lg border-default border-0 relative z-40"
+                                        >
+                                            <span className="text-sm">{index + 1}.{item.title}</span>
+                                            <span className="absolute right-4 bottom-2 text-default-400">{item.type}</span>
+                                        </SortableItem>
+                                    ))}
+                                </SortableContext>
+                            </ul>
+                        </Scroll>
+                        <Droppable id="recycle" className="mr-2 bg-red-50 rounded-lg flex justify-center items-center">
+                                <Image src="/svgs/recycle.svg"
+                                       alt="recycle" className="text-red-400"
+                                       width={15} height={15}/>
+                        </Droppable>
+
+                    </div>
+
                 </Block>
                 <Block className="grid grid-rows-[40px_1fr]">
                     <Tabs
@@ -220,21 +253,27 @@ export default function SaveForm() {
                                     id="controls"
                                     className="grid grid-cols-2 gap-2 text-left indent-1 text-xs content-start"
                                 >
-                                    {controlItems.map((item, index) => (
-                                        <li
-                                            key={index}
-                                            className="p-2 bg-content2 rounded-lg border-default border-0 grid grid-cols-[20px_1fr]"
-                                        >
-                                            <Image
-                                                src={item.icon}
-                                                alt="Next Form"
-                                                className="w-4 h-4"
-                                                width={20}
-                                                height={20}
-                                            />
-                                            <span>{item.type}</span>
-                                        </li>
-                                    ))}
+                                    <SortableContext
+                                        items={controlItems.map((_, index) => index)}
+                                        strategy={verticalListSortingStrategy}
+                                    >
+                                        {controlItems.map((item, index) => (
+                                            <SortableItem
+                                                key={index}
+                                                id={"control-" + index}
+                                                className="p-2 bg-content2 rounded-lg border-default border-0 grid grid-cols-[20px_1fr] z-40"
+                                            >
+                                                <Image
+                                                    src={item.icon}
+                                                    alt="Next Form"
+                                                    className="w-4 h-4"
+                                                    width={20}
+                                                    height={20}
+                                                />
+                                                <span>{item.type}</span>
+                                            </SortableItem>
+                                        ))}
+                                    </SortableContext>
                                 </ul>
                             </Scroll>
                         </Tab>
@@ -380,7 +419,7 @@ export default function SaveForm() {
                             </Item>
                         ) : (
                             <Item
-                                className="p-4 bg-content3 rounded-lg border-default border-0 relative z-40 text-xs"
+                                className="p-2 bg-content3 rounded-lg border-default border-0 relative z-40 text-xs"
                             >
                                 <span className="text-sm">
                                   {

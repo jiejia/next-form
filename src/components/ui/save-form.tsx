@@ -143,7 +143,7 @@ export default function SaveForm() {
                 setElementItems(newElementItems);
             }
 
-            // drag element to recycle
+            // drag element to recycle(remove element)
             if (currentActiveItem.area == 'element' && currentOverItem.area == 'recycle') {
                 const newElementItems = [...elementItems];
                 newElementItems.splice(currentActiveItem.id, 1);

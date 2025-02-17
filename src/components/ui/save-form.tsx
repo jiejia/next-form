@@ -399,9 +399,10 @@ export default function SaveForm() {
                 <DragOverlay>
                     {activeItem ? (
                         activeItem.area == 'control' ? (
-                            <Item
-                                className="p-2 bg-content3 rounded-lg border-default border-0 grid grid-cols-[20px_1fr] z-40 text-xs"
-                            >
+                            controlItems[activeItem.id] ? (
+                                <Item
+                                    className="p-2 bg-content3 rounded-lg border-default border-0 grid grid-cols-[20px_1fr] z-40 text-xs"
+                                >
                                 <Image
                                     src={
                                         controlItems[activeItem.id].icon
@@ -416,11 +417,12 @@ export default function SaveForm() {
                                       controlItems[activeItem.id].type
                                   }
                                 </span>
-                            </Item>
+                            </Item> ) : null
                         ) : (
-                            <Item
-                                className="p-2 bg-content3 rounded-lg border-default border-0 relative z-40 text-xs"
-                            >
+                            elementItems[activeItem.id] ? (
+                                <Item
+                                    className="p-2 bg-content3 rounded-lg border-default border-0 relative z-40 text-xs"
+                                >
                                 <span className="text-sm">
                                   {
                                       elementItems[activeItem.id].title
@@ -432,7 +434,7 @@ export default function SaveForm() {
                                   }
                                 </span>
                             </Item>
-                        )
+                        ) : null )       
                     ) : null}
                 </DragOverlay>
             </DndContext>

@@ -129,8 +129,10 @@ export default function SaveForm() {
         currentActiveItem.area == "control" &&
         currentOverItem.area == "element"
       ) {
+        console.log("y", event.delta.y);
+
         const newElementItems = [...elementItems];
-        newElementItems.splice(currentOverItem.id, 0, {
+        newElementItems.splice(currentOverItem.id + 1, 0, {
           title: "请输入标题",
           type: controlItems[currentActiveItem.id].type,
         });
@@ -172,7 +174,7 @@ export default function SaveForm() {
         onDragMove={handleDragMove}
       >
         <Block className="xl:grid hidden xl:grid-rows-[40px_1fr]">
-          <Tabs fullWidth size="md" aria-label="Controls" className="">
+          <Tabs fullWidth size="md" aria-label="Controls" className="pr-4">
             <Tab key="controls" title="Controls" className="!px-0 pb-0">
               <Scroll>
                 <SortableContext
@@ -208,7 +210,10 @@ export default function SaveForm() {
         <Block className="pr-2">
           <div className="grid grid-rows-[1fr_50px] gap-2 h-full">
             <Scroll>
-              <Droppable id="elements-0" className="h-full">
+              <Droppable
+                id={"elements-" + (elementItems.length + 1)}
+                className="h-full"
+              >
                 <SortableContext
                   items={elementItems.map((_, index) => index)}
                   strategy={verticalListSortingStrategy}
@@ -256,7 +261,7 @@ export default function SaveForm() {
             aria-label="Options"
             selectedKey={selected}
             onSelectionChange={setSelected}
-            className=""
+            className="pr-4"
           >
             <Tab
               key="controls"

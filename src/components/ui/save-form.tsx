@@ -27,6 +27,7 @@ import {
   DragStartEvent,
   DragEndEvent,
   DragMoveEvent,
+  rectIntersection, // 添加这个导入
 } from "@dnd-kit/core";
 import {
   arrayMove,
@@ -168,7 +169,7 @@ export default function SaveForm() {
     <div className="grid  gap-4 grid-cols-[1fr] sm:grid-cols-[1fr_300px] xl:grid-cols-[300px_1fr_300px] grid-rows-[1fr_1fr_56px] sm:grid-rows-[1fr_56px] h-full">
       <DndContext
         sensors={sensors}
-        collisionDetection={closestCenter}
+        collisionDetection={rectIntersection}
         onDragEnd={handleDragEnd}
         onDragStart={handleDragStart}
         onDragMove={handleDragMove}

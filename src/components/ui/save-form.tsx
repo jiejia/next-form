@@ -89,7 +89,7 @@ export default function SaveForm() {
       area = "element";
     } else if (currentId.toString().includes("control")) {
       area = "control";
-    } else {
+    } else if (currentId.toString().includes("recycle")) {
       area = "recycle";
     }
 

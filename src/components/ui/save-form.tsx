@@ -106,17 +106,13 @@ export default function SaveForm() {
     };
   };
 
-  // 添加一个辅助函数来判断插入位置
   const getInsertPosition = (activeRect: DOMRect, overRect: DOMRect) => {
-    // 如果拖拽元素的顶部位置高于目标元素的底部，插入到上方
     if (activeRect.bottom <= overRect.bottom) {
       return "before";
     }
-    // 如果拖拽元素的底部位置低于目标元素的顶部，插入到下方
     if (activeRect.top >= overRect.top) {
       return "after";
     }
-    // 默认插入到下方
     return "after";
   };
 
@@ -139,17 +135,33 @@ export default function SaveForm() {
       setOverItem(currentOverItem);
       console.log(currentActiveItem, currentOverItem);
 
+      const activeRect = active.rect.current.translated;
+      const overRect = over.rect;
+
       // drag control to element
       if (
         currentActiveItem.area == "control" &&
         currentOverItem.area == "element"
       ) {
-        const newElementItems = [...elementItems];
-        newElementItems.splice(currentOverItem.id + 1, 0, {
-          title: "请输入标题",
-          type: controlItems[currentActiveItem.id].type,
-        });
-        setElementItems(newElementItems);
+        if (activeRect && overRect) {
+          const insertPosition = getInsertPosition(activeRect, overRect);
+          console.log(insertPosition);
+
+          const newElementItems = [...elementItems];
+
+          if (insertPosition === "before") {
+            newElementItems.splice(currentOverItem.id, 0, {
+              title: "请输入标题",
+              type: controlItems[currentActiveItem.id].type,
+            });
+          } else {
+            newElementItems.splice(currentOverItem.id + 1, 0, {
+              title: "请输入标题",
+              type: controlItems[currentActiveItem.id].type,
+            });
+          }
+          setElementItems(newElementItems);
+        }
       }
 
       // drag element to element
@@ -158,14 +170,10 @@ export default function SaveForm() {
         currentOverItem.area == "element" &&
         currentActiveItem.id != currentOverItem.id
       ) {
-        const activeRect = active.rect.current.translated;
-        const overRect = over.rect;
-
         if (activeRect && overRect) {
           const insertPosition = getInsertPosition(activeRect, overRect);
           const newElementItems = [...elementItems];
           const [removed] = newElementItems.splice(currentActiveItem.id, 1);
-
           if (insertPosition === "before") {
             if (currentActiveItem.id < currentOverItem.id) {
               newElementItems.splice(currentOverItem.id - 1, 0, removed);
@@ -173,14 +181,12 @@ export default function SaveForm() {
               newElementItems.splice(currentOverItem.id, 0, removed);
             }
           } else {
-            console.log(newElementItems);
             if (currentActiveItem.id < currentOverItem.id) {
               newElementItems.splice(currentOverItem.id, 0, removed);
             } else {
               newElementItems.splice(currentOverItem.id + 1, 0, removed);
             }
           }
-
           setElementItems(newElementItems);
         }
       }

@@ -106,6 +106,20 @@ export default function SaveForm() {
     };
   };
 
+  // 添加一个辅助函数来判断插入位置
+  const getInsertPosition = (activeRect: DOMRect, overRect: DOMRect) => {
+    // 如果拖拽元素的顶部位置高于目标元素的底部，插入到上方
+    if (activeRect.bottom <= overRect.bottom) {
+      return "before";
+    }
+    // 如果拖拽元素的底部位置低于目标元素的顶部，插入到下方
+    if (activeRect.top >= overRect.top) {
+      return "after";
+    }
+    // 默认插入到下方
+    return "after";
+  };
+
   function handleDragStart(event: DragStartEvent) {
     // get active item
     const { active } = event;
@@ -130,8 +144,6 @@ export default function SaveForm() {
         currentActiveItem.area == "control" &&
         currentOverItem.area == "element"
       ) {
-        console.log("y", event.delta.y);
-
         const newElementItems = [...elementItems];
         newElementItems.splice(currentOverItem.id + 1, 0, {
           title: "请输入标题",
@@ -143,12 +155,34 @@ export default function SaveForm() {
       // drag element to element
       if (
         currentActiveItem.area == "element" &&
-        currentOverItem.area == "element"
+        currentOverItem.area == "element" &&
+        currentActiveItem.id != currentOverItem.id
       ) {
-        const newElementItems = [...elementItems];
-        const [removed] = newElementItems.splice(currentActiveItem.id, 1);
-        newElementItems.splice(currentOverItem.id, 0, removed);
-        setElementItems(newElementItems);
+        const activeRect = active.rect.current.translated;
+        const overRect = over.rect;
+
+        if (activeRect && overRect) {
+          const insertPosition = getInsertPosition(activeRect, overRect);
+          const newElementItems = [...elementItems];
+          const [removed] = newElementItems.splice(currentActiveItem.id, 1);
+
+          if (insertPosition === "before") {
+            if (currentActiveItem.id < currentOverItem.id) {
+              newElementItems.splice(currentOverItem.id - 1, 0, removed);
+            } else {
+              newElementItems.splice(currentOverItem.id, 0, removed);
+            }
+          } else {
+            console.log(newElementItems);
+            if (currentActiveItem.id < currentOverItem.id) {
+              newElementItems.splice(currentOverItem.id, 0, removed);
+            } else {
+              newElementItems.splice(currentOverItem.id + 1, 0, removed);
+            }
+          }
+
+          setElementItems(newElementItems);
+        }
       }
 
       // drag element to recycle(remove element)
@@ -212,7 +246,7 @@ export default function SaveForm() {
           <div className="grid grid-rows-[1fr_50px] gap-2 h-full">
             <Scroll>
               <Droppable
-                id={"elements-" + (elementItems.length + 1)}
+                id={"elements-" + elementItems.length}
                 className="h-full"
               >
                 <SortableContext

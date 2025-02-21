@@ -1,0 +1,17 @@
+{
+  "id": 4,
+  "type": "checkbox",
+  "required": false,
+  "name": "Checkbox",
+  "config": {
+    "title": "请输入标题",
+    "options": [
+      {
+        "key": 0,
+        "val": "choose one",
+        "selected": false
+      }
+    ],
+    "required": false
+  }
+}

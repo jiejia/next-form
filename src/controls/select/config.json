@@ -1,0 +1,18 @@
+{
+  "id": 3,
+  "type": "select",
+  "required": false,
+  "name": "Select",
+  "config": {
+    "title": "请输入标题",
+    "options": [
+      {
+        "key": 0,
+        "val": "choose one",
+        "selected": false
+      }
+    ],
+    "required": false,
+    "isMultiple": false
+  }
+}

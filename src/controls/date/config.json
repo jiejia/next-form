@@ -1,0 +1,10 @@
+{
+  "id": 6,
+  "type": "date",
+  "required": false,
+  "name": "Date",
+  "config": {
+    "title": "请输入标题",
+    "required": false
+  }
+}

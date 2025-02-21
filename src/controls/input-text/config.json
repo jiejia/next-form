@@ -1,0 +1,16 @@
+{
+  "id": 1,
+  "type": "input-text",
+  "required": false,
+  "name": "Input Text",
+  "config": {
+    "regex": "",
+    "title": "请输入标题",
+    "length": 255,
+    "required": true,
+    "maxLength": 0,
+    "minLength": 255,
+    "placeholder": "",
+    "defaultValue": ""
+  }
+}

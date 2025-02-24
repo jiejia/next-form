@@ -12,5 +12,6 @@
     "minLength": 255,
     "placeholder": "",
     "defaultValue": ""
-  }
+  },
+  "icon": "/svgs/input_text.svg"
 }

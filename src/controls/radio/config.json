@@ -13,5 +13,6 @@
       }
     ],
     "required": false
-  }
+  },
+  "icon": "/svgs/radio.svg"
 }

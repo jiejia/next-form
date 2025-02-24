@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import Block from "@/components/shared/block";
 import { Tabs, Tab, Button } from "@nextui-org/react";
 import {
@@ -35,46 +35,33 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+import {v4 as uuidV4} from 'uuid';
 
-const initialControlItems = [
-  { icon: "/svgs/input_text.svg", type: "Input Text" },
-  { icon: "/svgs/textarea.svg", type: "Textarea" },
-  { icon: "/svgs/select.svg", type: "Select" },
-  { icon: "/svgs/checkbox.svg", type: "Checkbox" },
-  { icon: "/svgs/radio.svg", type: "Radio" },
-  { icon: "/svgs/date.svg", type: "Date" },
-];
+import { DraggableItem, Control, Field } from "@/types/form";
 
-const initialElementItems = [
-  { title: "请输入标题", type: "Textarea" },
-  { title: "请输入标题", type: "Textarea" },
-];
-
-interface DraggableItem {
-  id: number;
-  area: string;
-}
-
-interface ControlItem {
-  icon: string;
-  type: string;
-}
-
-interface ElementItem {
-  title: string;
-  type: string;
-}
+import { getControlConfigs } from "@/services/form-service";
 
 export default function SaveForm() {
+
+  useEffect(() => {
+    getControl();
+  }, [])
+
   const [selected, setSelected] = React.useState<string | number>("form");
 
   const [activeItem, setActiveItem] = useState<DraggableItem | null>(null);
   const [overItem, setOverItem] = useState<DraggableItem | null>(null);
 
-  const [controlItems, setControlItems] =
-    useState<ControlItem[]>(initialControlItems);
-  const [elementItems, setElementItems] =
-    useState<ElementItem[]>(initialElementItems);
+  const [controls, setControls] =
+    useState<Control[]>([]);
+  const [elements, setElements] =
+    useState<Field[]>([]);
+
+  const getControl = async () => {
+    const controls = await getControlConfigs()
+    setControls(controls)
+    // console.log(controls)
+  }
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -147,20 +134,19 @@ export default function SaveForm() {
           const insertPosition = getInsertPosition(activeRect, overRect);
           console.log(insertPosition);
 
-          const newElementItems = [...elementItems];
+          const newElementItems = [...elements];
+
+          const field:Field = {
+            title: "请输入标题",
+            type: controls[currentActiveItem.id].type,
+          }
 
           if (insertPosition === "before") {
-            newElementItems.splice(currentOverItem.id, 0, {
-              title: "请输入标题",
-              type: controlItems[currentActiveItem.id].type,
-            });
+            newElementItems.splice(currentOverItem.id, 0, field);
           } else {
-            newElementItems.splice(currentOverItem.id + 1, 0, {
-              title: "请输入标题",
-              type: controlItems[currentActiveItem.id].type,
-            });
+            newElementItems.splice(currentOverItem.id + 1, 0, field);
           }
-          setElementItems(newElementItems);
+          setElements(newElementItems);
         }
       }
 
@@ -172,7 +158,7 @@ export default function SaveForm() {
       ) {
         if (activeRect && overRect) {
           const insertPosition = getInsertPosition(activeRect, overRect);
-          const newElementItems = [...elementItems];
+          const newElementItems = [...elements];
           const [removed] = newElementItems.splice(currentActiveItem.id, 1);
           if (insertPosition === "before") {
             if (currentActiveItem.id < currentOverItem.id) {
@@ -187,7 +173,7 @@ export default function SaveForm() {
               newElementItems.splice(currentOverItem.id + 1, 0, removed);
             }
           }
-          setElementItems(newElementItems);
+          setElements(newElementItems);
         }
       }
 
@@ -196,9 +182,9 @@ export default function SaveForm() {
         currentActiveItem.area == "element" &&
         currentOverItem.area == "recycle"
       ) {
-        const newElementItems = [...elementItems];
+        const newElementItems = [...elements];
         newElementItems.splice(currentActiveItem.id, 1);
-        setElementItems(newElementItems);
+        setElements(newElementItems);
       }
     }
   }
@@ -219,14 +205,14 @@ export default function SaveForm() {
             <Tab key="controls" title="Controls" className="!px-0 pb-0">
               <Scroll>
                 <SortableContext
-                  items={controlItems.map((_, index) => index)}
+                  items={controls.map((_, index) => index)}
                   strategy={verticalListSortingStrategy}
                 >
                   <ul
                     id="controls"
                     className="grid grid-cols-2 gap-2 text-left indent-1 text-xs content-start h-full"
                   >
-                    {controlItems.map((item, index) => (
+                    {controls.map((item, index) => (
                       <SortableItem
                         key={index}
                         id={"control-" + index}
@@ -252,18 +238,18 @@ export default function SaveForm() {
           <div className="grid grid-rows-[1fr_50px] gap-2 h-full">
             <Scroll>
               <Droppable
-                id={"elements-" + elementItems.length}
+                id={"elements-" + elements.length}
                 className="h-full"
               >
                 <SortableContext
-                  items={elementItems.map((_, index) => index)}
+                  items={elements.map((_, index) => index)}
                   strategy={verticalListSortingStrategy}
                 >
                   <ul
                     id="elements"
                     className="grid grid-cols-1 gap-2 text-left indent-1 text-xs content-start h-full"
                   >
-                    {elementItems.map((item, index) => (
+                    {elements.map((item, index) => (
                       <SortableItem
                         key={index}
                         id={"element-" + index}
@@ -315,10 +301,10 @@ export default function SaveForm() {
                   className="grid grid-cols-2 gap-2 text-left indent-1 text-xs content-start"
                 >
                   <SortableContext
-                    items={controlItems.map((_, index) => index)}
+                    items={controls.map((_, index) => index)}
                     strategy={verticalListSortingStrategy}
                   >
-                    {controlItems.map((item, index) => (
+                    {controls.map((item, index) => (
                       <SortableItem
                         key={index}
                         id={"control-" + index}
@@ -460,25 +446,25 @@ export default function SaveForm() {
         <DragOverlay>
           {activeItem &&
             (activeItem.area === "control"
-              ? controlItems[activeItem.id] && (
+              ? controls[activeItem.id] && (
                   <Item className="p-2 bg-content3 rounded-lg border-default border-0 grid grid-cols-[20px_1fr] z-40 text-xs">
                     <Image
-                      src={controlItems[activeItem.id].icon}
+                      src={controls[activeItem.id].icon}
                       alt="Next Form"
                       className="w-4 h-4"
                       width={20}
                       height={20}
                     />
-                    <span>{controlItems[activeItem.id].type}</span>
+                    <span>{controls[activeItem.id].type}</span>
                   </Item>
                 )
-              : elementItems[activeItem.id] && (
+              : elements[activeItem.id] && (
                   <Item className="p-2 bg-content3 rounded-lg border-default border-0 relative z-40 text-xs">
                     <span className="text-sm">
-                      {elementItems[activeItem.id].title}
+                      {elements[activeItem.id].title}
                     </span>
                     <span className="absolute right-4 bottom-2 text-default-400">
-                      {elementItems[activeItem.id].type}
+                      {elements[activeItem.id].type}
                     </span>
                   </Item>
                 ))}

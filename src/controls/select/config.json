@@ -14,5 +14,6 @@
     ],
     "required": false,
     "isMultiple": false
-  }
+  },
+  "icon": "/svgs/select.svg"
 }

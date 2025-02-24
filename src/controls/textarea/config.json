@@ -13,5 +13,6 @@
     "minLength": 0,
     "placeholder": "",
     "defaultValue": ""
-  }
+  },
+  "icon": "/svgs/textarea.svg"
 }

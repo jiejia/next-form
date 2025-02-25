@@ -29,6 +29,8 @@ import Controls from "@/components/ui/form/controls";
 import Fields from "@/components/ui/form/fields";
 import Property from "@/components/ui/form/property";
 import Form from "@/components/ui/form/form";
+import Recycle from "@/components/ui/form/recycle";
+import DndWrapper from "@/components/shared/dnd-wrapper";
 
 export default function SaveForm() {
 
@@ -193,9 +195,7 @@ export default function SaveForm() {
     return (
         <div
             className="grid  gap-4 grid-cols-[1fr] sm:grid-cols-[1fr_300px] xl:grid-cols-[300px_1fr_300px] grid-rows-[1fr_1fr_56px] sm:grid-rows-[1fr_56px] h-full">
-            <DndContext
-                sensors={sensors}
-                collisionDetection={rectIntersection}
+            <DndWrapper
                 onDragEnd={handleDragEnd}
                 onDragStart={handleDragStart}
                 onDragMove={handleDragMove}
@@ -214,18 +214,7 @@ export default function SaveForm() {
                         <Scroll>
                             <Fields fields={fields}/>
                         </Scroll>
-                        <Droppable
-                            id="recycle"
-                            className="mr-2 bg-red-50 rounded-lg flex justify-center items-center"
-                        >
-                            <Image
-                                src="/svgs/recycle.svg"
-                                alt="recycle"
-                                className="text-red-400"
-                                width={15}
-                                height={15}
-                            />
-                        </Droppable>
+                        <Recycle/>
                     </div>
                 </Block>
                 <Block className="grid grid-rows-[40px_1fr]">
@@ -295,7 +284,7 @@ export default function SaveForm() {
                             </Item>
                         ))}
                 </DragOverlay>
-            </DndContext>
+            </DndWrapper>
         </div>
     );
 }

@@ -54,7 +54,7 @@ export default function SaveForm() {
 
   const [controls, setControls] =
     useState<Control[]>([]);
-  const [elements, setElements] =
+  const [fields, setFields] =
     useState<Field[]>([]);
 
   const getControl = async () => {
@@ -73,8 +73,8 @@ export default function SaveForm() {
   // get draggable item
   const getDraggableItem = (currentId: string): DraggableItem => {
     let area = null;
-    if (currentId.toString().includes("element")) {
-      area = "element";
+    if (currentId.toString().includes("field")) {
+      area = "field";
     } else if (currentId.toString().includes("control")) {
       area = "control";
     } else if (currentId.toString().includes("recycle")) {
@@ -125,66 +125,75 @@ export default function SaveForm() {
       const activeRect = active.rect.current.translated;
       const overRect = over.rect;
 
-      // drag control to element
+      // drag control to field
       if (
         currentActiveItem.area == "control" &&
-        currentOverItem.area == "element"
+        currentOverItem.area == "field"
       ) {
         if (activeRect && overRect) {
           const insertPosition = getInsertPosition(activeRect, overRect);
           console.log(insertPosition);
 
-          const newElementItems = [...elements];
+          const newFiledItems = [...fields];
 
           const field:Field = {
-            title: "请输入标题",
+            uuid: uuidV4(),
+            controlId: controls[currentActiveItem.id].id,
+            controlName: controls[currentActiveItem.id].name,
+            controlType: controls[currentActiveItem.id].type,
+            active: false,
+            title: controls[currentActiveItem.id].config.title,
+            description: "",
+            required: controls[currentActiveItem.id].required,
+            regex: "",
+            config: controls[currentActiveItem.id].config,
             type: controls[currentActiveItem.id].type,
           }
 
           if (insertPosition === "before") {
-            newElementItems.splice(currentOverItem.id, 0, field);
+            newFiledItems.splice(currentOverItem.id, 0, field);
           } else {
-            newElementItems.splice(currentOverItem.id + 1, 0, field);
+            newFiledItems.splice(currentOverItem.id + 1, 0, field);
           }
-          setElements(newElementItems);
+          setFields(newFiledItems);
         }
       }
 
-      // drag element to element
+      // drag field to field
       if (
-        currentActiveItem.area == "element" &&
-        currentOverItem.area == "element" &&
+        currentActiveItem.area == "field" &&
+        currentOverItem.area == "field" &&
         currentActiveItem.id != currentOverItem.id
       ) {
         if (activeRect && overRect) {
           const insertPosition = getInsertPosition(activeRect, overRect);
-          const newElementItems = [...elements];
-          const [removed] = newElementItems.splice(currentActiveItem.id, 1);
+          const newFiledItems = [...fields];
+          const [removed] = newFiledItems.splice(currentActiveItem.id, 1);
           if (insertPosition === "before") {
             if (currentActiveItem.id < currentOverItem.id) {
-              newElementItems.splice(currentOverItem.id - 1, 0, removed);
+              newFiledItems.splice(currentOverItem.id - 1, 0, removed);
             } else {
-              newElementItems.splice(currentOverItem.id, 0, removed);
+              newFiledItems.splice(currentOverItem.id, 0, removed);
             }
           } else {
             if (currentActiveItem.id < currentOverItem.id) {
-              newElementItems.splice(currentOverItem.id, 0, removed);
+              newFiledItems.splice(currentOverItem.id, 0, removed);
             } else {
-              newElementItems.splice(currentOverItem.id + 1, 0, removed);
+              newFiledItems.splice(currentOverItem.id + 1, 0, removed);
             }
           }
-          setElements(newElementItems);
+          setFields(newFiledItems);
         }
       }
 
-      // drag element to recycle(remove element)
+      // drag field to recycle(remove field)
       if (
-        currentActiveItem.area == "element" &&
+        currentActiveItem.area == "field" &&
         currentOverItem.area == "recycle"
       ) {
-        const newElementItems = [...elements];
-        newElementItems.splice(currentActiveItem.id, 1);
-        setElements(newElementItems);
+        const newFiledItems = [...fields];
+        newFiledItems.splice(currentActiveItem.id, 1);
+        setFields(newFiledItems);
       }
     }
   }
@@ -238,21 +247,21 @@ export default function SaveForm() {
           <div className="grid grid-rows-[1fr_50px] gap-2 h-full">
             <Scroll>
               <Droppable
-                id={"elements-" + elements.length}
+                id={"fields-" + fields.length}
                 className="h-full"
               >
                 <SortableContext
-                  items={elements.map((_, index) => index)}
+                  items={fields.map((_, index) => index)}
                   strategy={verticalListSortingStrategy}
                 >
                   <ul
-                    id="elements"
+                    id="fields"
                     className="grid grid-cols-1 gap-2 text-left indent-1 text-xs content-start h-full"
                   >
-                    {elements.map((item, index) => (
+                    {fields.map((item, index) => (
                       <SortableItem
                         key={index}
-                        id={"element-" + index}
+                        id={"field-" + index}
                         className="p-2 bg-content2 rounded-lg border-default border-0 relative z-40"
                       >
                         <span className="text-sm">
@@ -458,13 +467,13 @@ export default function SaveForm() {
                     <span>{controls[activeItem.id].type}</span>
                   </Item>
                 )
-              : elements[activeItem.id] && (
+              : fields[activeItem.id] && (
                   <Item className="p-2 bg-content3 rounded-lg border-default border-0 relative z-40 text-xs">
                     <span className="text-sm">
-                      {elements[activeItem.id].title}
+                      {fields[activeItem.id].title}
                     </span>
                     <span className="absolute right-4 bottom-2 text-default-400">
-                      {elements[activeItem.id].type}
+                      {fields[activeItem.id].type}
                     </span>
                   </Item>
                 ))}

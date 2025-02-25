@@ -9,6 +9,7 @@ export interface Config {
     options?: object[];
     isMultiple?: boolean;
     dateFormat?: string;
+    title: string;
     [propName: string]: any;
 }
 

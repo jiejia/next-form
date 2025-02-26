@@ -4,28 +4,31 @@ import {
     PointerSensor,
     useSensor,
     useSensors,
-    rectIntersection, // 添加这个导入
+    rectIntersection,
+    DragEndEvent,
+    DragMoveEvent,
+    DragStartEvent
 } from "@dnd-kit/core";
-import {sortableKeyboardCoordinates} from "@dnd-kit/sortable";
-import {DragEndEvent, DragMoveEvent, DragStartEvent} from "@dnd-kit/core";
+import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import React from "react";
 
-export default function DndWrapper({
-                                       handleDragEnd,
-                                       handleDragStart,
-                                       handleDragMove,
-                                    children
-                                   }: {
+interface DndWrapperProps {
+    children: React.ReactNode;
     handleDragEnd: (event: DragEndEvent) => void;
     handleDragStart: (event: DragStartEvent) => void;
     handleDragMove: (event: DragMoveEvent) => void;
-    children: React.ReactNode;
-}) {
+}
 
+export default function DndWrapper({
+                                       children,
+                                       handleDragEnd,
+                                       handleDragStart,
+                                       handleDragMove
+                                   }: DndWrapperProps) {
     const sensors = useSensors(
         useSensor(PointerSensor),
         useSensor(KeyboardSensor, {
-            coordinateGetter: sortableKeyboardCoordinates,
+            coordinateGetter: sortableKeyboardCoordinates
         })
     );
 
@@ -37,7 +40,7 @@ export default function DndWrapper({
             onDragStart={handleDragStart}
             onDragMove={handleDragMove}
         >
-            ｛children｝
+            {children}
         </DndContext>
     );
 }

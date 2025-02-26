@@ -5,7 +5,7 @@ import Block from "@/components/shared/block";
 import {Tabs, Tab, Button} from "@nextui-org/react";
 import Scroll from "@/components/shared/scroll";
 import Image from "next/image";
-import {Droppable} from "@/components/shared/droppable";
+import {DndDroppable} from "@/components/shared/dnd-droppable";
 import {Item} from "@/components/shared/item";
 import {
     DndContext,
@@ -196,9 +196,9 @@ export default function SaveForm() {
         <div
             className="grid  gap-4 grid-cols-[1fr] sm:grid-cols-[1fr_300px] xl:grid-cols-[300px_1fr_300px] grid-rows-[1fr_1fr_56px] sm:grid-rows-[1fr_56px] h-full">
             <DndWrapper
-                onDragEnd={handleDragEnd}
-                onDragStart={handleDragStart}
-                onDragMove={handleDragMove}
+                handleDragEnd={handleDragEnd}
+                handleDragStart={handleDragStart}
+                handleDragMove={handleDragMove}
             >
                 <Block className="xl:grid hidden xl:grid-rows-[40px_1fr]">
                     <Tabs fullWidth size="md" aria-label="Controls" className="pr-4">

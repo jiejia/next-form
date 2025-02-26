@@ -1,12 +1,12 @@
 import {Field} from "@/types/form";
-import {Droppable} from "@/components/shared/droppable";
+import {DndDroppable} from "@/components/shared/dnd-droppable";
 import {SortableContext, verticalListSortingStrategy} from "@dnd-kit/sortable";
 import {SortableItem} from "@/components/shared/sortable-item";
 import React from "react";
 
 export default function Fields({fields}: { fields: Field[] }) {
     return (
-        <Droppable
+        <DndDroppable
             id={"fields-" + fields.length}
             className="h-full"
         >
@@ -34,6 +34,6 @@ export default function Fields({fields}: { fields: Field[] }) {
                     ))}
                 </ul>
             </SortableContext>
-        </Droppable>
+        </DndDroppable>
     );
 }

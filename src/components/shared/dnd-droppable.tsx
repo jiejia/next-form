@@ -1,7 +1,7 @@
 import React from "react";
 import { useDroppable } from "@dnd-kit/core";
 
-export function Droppable({
+export function DndDroppable({
   children,
   id,
   className,

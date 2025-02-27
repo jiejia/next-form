@@ -1,290 +1,260 @@
 "use client";
 
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Block from "@/components/shared/block";
-import {Tabs, Tab, Button} from "@nextui-org/react";
+import { Tabs, Tab, Button } from "@nextui-org/react";
 import Scroll from "@/components/shared/scroll";
 import Image from "next/image";
-import {DndDroppable} from "@/components/shared/dnd-droppable";
-import {Item} from "@/components/shared/item";
+import { DndDroppable } from "@/components/shared/dnd-droppable";
+import { Item } from "@/components/shared/item";
 import {
-    DndContext,
-    DragOverlay,
-    KeyboardSensor,
-    PointerSensor,
-    useSensor,
-    useSensors,
-    DragStartEvent,
-    DragEndEvent,
-    DragMoveEvent,
-    rectIntersection, // 添加这个导入
+  DndContext,
+  DragOverlay,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragStartEvent,
+  DragEndEvent,
+  DragMoveEvent,
+  rectIntersection, // 添加这个导入
 } from "@dnd-kit/core";
-import {
-    sortableKeyboardCoordinates,
-} from "@dnd-kit/sortable";
-import {v4 as uuidV4} from 'uuid';
-import {DraggableItem, Control, Field} from "@/types/form";
-import {getControlConfigs} from "@/services/form-service";
+import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
+import { v4 as uuidV4 } from "uuid";
+import { DraggableItem, Control, Field } from "@/types/form";
+import { getControlConfigs } from "@/services/form-service";
 import Controls from "@/components/ui/form/controls";
 import Fields from "@/components/ui/form/fields";
 import Property from "@/components/ui/form/property";
 import Form from "@/components/ui/form/form";
 import Recycle from "@/components/ui/form/recycle";
 import DndWrapper from "@/components/shared/dnd-wrapper";
+import Overlay from "@/components/ui/form/overlay";
+import Actions from "@/components/ui/form/actions";
 
 export default function SaveForm() {
+  useEffect(() => {
+    getControl();
+  }, []);
 
-    useEffect(() => {
-        getControl();
-    }, [])
+  const [selected, setSelected] = React.useState<string | number>("form");
 
-    const [selected, setSelected] = React.useState<string | number>("form");
+  const [activeItem, setActiveItem] = useState<DraggableItem | null>(null);
+  const [overItem, setOverItem] = useState<DraggableItem | null>(null);
 
-    const [activeItem, setActiveItem] = useState<DraggableItem | null>(null);
-    const [overItem, setOverItem] = useState<DraggableItem | null>(null);
+  const [controls, setControls] = useState<Control[]>([]);
+  const [fields, setFields] = useState<Field[]>([]);
 
-    const [controls, setControls] =
-        useState<Control[]>([]);
-    const [fields, setFields] =
-        useState<Field[]>([]);
+  const getControl = async () => {
+    const controls = await getControlConfigs();
+    setControls(controls);
+    // console.log(controls)
+  };
 
-    const getControl = async () => {
-        const controls = await getControlConfigs()
-        setControls(controls)
-        // console.log(controls)
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  // get draggable item
+  const getDraggableItem = (currentId: string): DraggableItem => {
+    let area = null;
+    if (currentId.toString().includes("field")) {
+      area = "field";
+    } else if (currentId.toString().includes("control")) {
+      area = "control";
+    } else if (currentId.toString().includes("recycle")) {
+      area = "recycle";
     }
 
-    const sensors = useSensors(
-        useSensor(PointerSensor),
-        useSensor(KeyboardSensor, {
-            coordinateGetter: sortableKeyboardCoordinates,
-        })
-    );
+    let id = currentId.split("-").pop();
 
-    // get draggable item
-    const getDraggableItem = (currentId: string): DraggableItem => {
-        let area = null;
-        if (currentId.toString().includes("field")) {
-            area = "field";
-        } else if (currentId.toString().includes("control")) {
-            area = "control";
-        } else if (currentId.toString().includes("recycle")) {
-            area = "recycle";
-        }
+    if (!id) {
+      id = "0";
+    }
 
-        let id = currentId.split("-").pop();
-
-        if (!id) {
-            id = "0";
-        }
-
-        return {
-            id: parseInt(id),
-            area: area,
-        };
+    return {
+      id: parseInt(id),
+      area: area,
     };
+  };
 
-    const getInsertPosition = (activeRect: DOMRect, overRect: DOMRect) => {
-        if (activeRect.bottom <= overRect.bottom) {
-            return "before";
-        }
-        if (activeRect.top >= overRect.top) {
-            return "after";
-        }
-        return "after";
-    };
-
-    function handleDragStart(event: DragStartEvent) {
-        // get active item
-        const {active} = event;
-
-        const currentActiveItem = getDraggableItem(active.id.toString());
-        setActiveItem(currentActiveItem);
+  const getInsertPosition = (activeRect: DOMRect, overRect: DOMRect) => {
+    if (activeRect.bottom <= overRect.bottom) {
+      return "before";
     }
+    if (activeRect.top >= overRect.top) {
+      return "after";
+    }
+    return "after";
+  };
 
-    function handleDragEnd(event: DragEndEvent) {
-        const {active, over} = event;
+  function handleDragStart(event: DragStartEvent) {
+    // get active item
+    const { active } = event;
 
-        const currentActiveItem = getDraggableItem(active.id.toString());
-        setActiveItem(currentActiveItem);
+    const currentActiveItem = getDraggableItem(active.id.toString());
+    setActiveItem(currentActiveItem);
+  }
 
-        if (over) {
-            const currentOverItem = getDraggableItem(over.id.toString());
-            setOverItem(currentOverItem);
-            console.log(currentActiveItem, currentOverItem);
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
 
-            const activeRect = active.rect.current.translated;
-            const overRect = over.rect;
+    const currentActiveItem = getDraggableItem(active.id.toString());
+    setActiveItem(currentActiveItem);
 
-            // drag control to field
-            if (
-                currentActiveItem.area == "control" &&
-                currentOverItem.area == "field"
-            ) {
-                if (activeRect && overRect) {
-                    const insertPosition = getInsertPosition(activeRect, overRect);
-                    console.log(insertPosition);
+    if (over) {
+      const currentOverItem = getDraggableItem(over.id.toString());
+      setOverItem(currentOverItem);
+      console.log(currentActiveItem, currentOverItem);
 
-                    const newFiledItems = [...fields];
+      const activeRect = active.rect.current.translated;
+      const overRect = over.rect;
 
-                    const field: Field = {
-                        uuid: uuidV4(),
-                        controlId: controls[currentActiveItem.id].id,
-                        controlName: controls[currentActiveItem.id].name,
-                        controlType: controls[currentActiveItem.id].type,
-                        active: false,
-                        title: controls[currentActiveItem.id].config.title,
-                        description: "",
-                        required: controls[currentActiveItem.id].required,
-                        regex: "",
-                        config: controls[currentActiveItem.id].config,
-                        type: controls[currentActiveItem.id].type,
-                    }
+      // drag control to field
+      if (
+        currentActiveItem.area == "control" &&
+        currentOverItem.area == "field"
+      ) {
+        if (activeRect && overRect) {
+          const insertPosition = getInsertPosition(activeRect, overRect);
+          console.log(insertPosition);
 
-                    if (insertPosition === "before") {
-                        newFiledItems.splice(currentOverItem.id, 0, field);
-                    } else {
-                        newFiledItems.splice(currentOverItem.id + 1, 0, field);
-                    }
-                    setFields(newFiledItems);
-                }
-            }
+          const newFiledItems = [...fields];
 
-            // drag field to field
-            if (
-                currentActiveItem.area == "field" &&
-                currentOverItem.area == "field" &&
-                currentActiveItem.id != currentOverItem.id
-            ) {
-                if (activeRect && overRect) {
-                    const insertPosition = getInsertPosition(activeRect, overRect);
-                    const newFiledItems = [...fields];
-                    const [removed] = newFiledItems.splice(currentActiveItem.id, 1);
-                    if (insertPosition === "before") {
-                        if (currentActiveItem.id < currentOverItem.id) {
-                            newFiledItems.splice(currentOverItem.id - 1, 0, removed);
-                        } else {
-                            newFiledItems.splice(currentOverItem.id, 0, removed);
-                        }
-                    } else {
-                        if (currentActiveItem.id < currentOverItem.id) {
-                            newFiledItems.splice(currentOverItem.id, 0, removed);
-                        } else {
-                            newFiledItems.splice(currentOverItem.id + 1, 0, removed);
-                        }
-                    }
-                    setFields(newFiledItems);
-                }
-            }
+          const field: Field = {
+            uuid: uuidV4(),
+            controlId: controls[currentActiveItem.id].id,
+            controlName: controls[currentActiveItem.id].name,
+            controlType: controls[currentActiveItem.id].type,
+            active: false,
+            title: controls[currentActiveItem.id].config.title,
+            description: "",
+            required: controls[currentActiveItem.id].required,
+            regex: "",
+            config: controls[currentActiveItem.id].config,
+            type: controls[currentActiveItem.id].type,
+          };
 
-            // drag field to recycle(remove field)
-            if (
-                currentActiveItem.area == "field" &&
-                currentOverItem.area == "recycle"
-            ) {
-                const newFiledItems = [...fields];
-                newFiledItems.splice(currentActiveItem.id, 1);
-                setFields(newFiledItems);
-            }
+          if (insertPosition === "before") {
+            newFiledItems.splice(currentOverItem.id, 0, field);
+          } else {
+            newFiledItems.splice(currentOverItem.id + 1, 0, field);
+          }
+          setFields(newFiledItems);
         }
-    }
+      }
 
-    function handleDragMove(event: DragMoveEvent) {
-    }
+      // drag field to field
+      if (
+        currentActiveItem.area == "field" &&
+        currentOverItem.area == "field" &&
+        currentActiveItem.id != currentOverItem.id
+      ) {
+        if (activeRect && overRect) {
+          const insertPosition = getInsertPosition(activeRect, overRect);
+          const newFiledItems = [...fields];
+          const [removed] = newFiledItems.splice(currentActiveItem.id, 1);
+          if (insertPosition === "before") {
+            if (currentActiveItem.id < currentOverItem.id) {
+              newFiledItems.splice(currentOverItem.id - 1, 0, removed);
+            } else {
+              newFiledItems.splice(currentOverItem.id, 0, removed);
+            }
+          } else {
+            if (currentActiveItem.id < currentOverItem.id) {
+              newFiledItems.splice(currentOverItem.id, 0, removed);
+            } else {
+              newFiledItems.splice(currentOverItem.id + 1, 0, removed);
+            }
+          }
+          setFields(newFiledItems);
+        }
+      }
 
-    return (
-        <div
-            className="grid  gap-4 grid-cols-[1fr] sm:grid-cols-[1fr_300px] xl:grid-cols-[300px_1fr_300px] grid-rows-[1fr_1fr_56px] sm:grid-rows-[1fr_56px] h-full">
-            <DndWrapper
-                handleDragEnd={handleDragEnd}
-                handleDragStart={handleDragStart}
-                handleDragMove={handleDragMove}
+      // drag field to recycle(remove field)
+      if (
+        currentActiveItem.area == "field" &&
+        currentOverItem.area == "recycle"
+      ) {
+        const newFiledItems = [...fields];
+        newFiledItems.splice(currentActiveItem.id, 1);
+        setFields(newFiledItems);
+      }
+    }
+  }
+
+  function handleDragMove(event: DragMoveEvent) {}
+
+  return (
+    <div className="grid  gap-4 grid-cols-[1fr] sm:grid-cols-[1fr_300px] xl:grid-cols-[300px_1fr_300px] grid-rows-[1fr_1fr_56px] sm:grid-rows-[1fr_56px] h-full">
+      <DndWrapper
+        handleDragEnd={handleDragEnd}
+        handleDragStart={handleDragStart}
+        handleDragMove={handleDragMove}
+      >
+        <Block className="xl:grid hidden xl:grid-rows-[40px_1fr]">
+          <Tabs fullWidth size="md" aria-label="Controls" className="pr-4">
+            <Tab key="controls" title="Controls" className="!px-0 pb-0">
+              <Scroll>
+                <Controls controls={controls} />
+              </Scroll>
+            </Tab>
+          </Tabs>
+        </Block>
+        <Block className="pr-2">
+          <div className="grid grid-rows-[1fr_50px] gap-2 h-full">
+            <Scroll>
+              <Fields fields={fields} />
+            </Scroll>
+            <Recycle />
+          </div>
+        </Block>
+        <Block className="grid grid-rows-[40px_1fr]">
+          <Tabs
+            fullWidth
+            size="md"
+            aria-label="Options"
+            selectedKey={selected}
+            onSelectionChange={setSelected}
+            className="pr-4"
+          >
+            <Tab
+              key="controls"
+              title="Controls"
+              className="px-0 xl:hidden block pb-0"
             >
-                <Block className="xl:grid hidden xl:grid-rows-[40px_1fr]">
-                    <Tabs fullWidth size="md" aria-label="Controls" className="pr-4">
-                        <Tab key="controls" title="Controls" className="!px-0 pb-0">
-                            <Scroll>
-                                <Controls controls={controls}/>
-                            </Scroll>
-                        </Tab>
-                    </Tabs>
-                </Block>
-                <Block className="pr-2">
-                    <div className="grid grid-rows-[1fr_50px] gap-2 h-full">
-                        <Scroll>
-                            <Fields fields={fields}/>
-                        </Scroll>
-                        <Recycle/>
-                    </div>
-                </Block>
-                <Block className="grid grid-rows-[40px_1fr]">
-                    <Tabs
-                        fullWidth
-                        size="md"
-                        aria-label="Options"
-                        selectedKey={selected}
-                        onSelectionChange={setSelected}
-                        className="pr-4"
-                    >
-                        <Tab
-                            key="controls"
-                            title="Controls"
-                            className="px-0 xl:hidden block pb-0"
-                        >
-                            <Scroll>
-                                <Controls controls={controls}/>
-                            </Scroll>
-                        </Tab>
-                        <Tab key="form" title="Form" className="px-0 pb-0">
-                            <Scroll>
-                                <Form />
-                            </Scroll>
-                        </Tab>
-                        <Tab key="property" title="Property" className="px-0 pb-0">
-                            <Scroll>
-                                <Property/>
-                            </Scroll>
-                        </Tab>
-                    </Tabs>
-                </Block>
-                <Block
-                    className={"col-span-1 sm:col-span-2 xl:col-span-3 text-center pt-3"}
-                >
-                    <Button color="primary" size="sm" variant="shadow" radius="sm">
-                        Create
-                    </Button>{" "}
-                    <Button color="primary" radius="sm" size="sm" variant="flat">
-                        Reset
-                    </Button>
-                </Block>
-                <DragOverlay>
-                    {activeItem &&
-                        (activeItem.area === "control"
-                            ? controls[activeItem.id] && (
-                            <Item
-                                className="p-2 bg-content3 rounded-lg border-default border-0 grid grid-cols-[20px_1fr] z-40 text-xs">
-                                <Image
-                                    src={controls[activeItem.id].icon}
-                                    alt="Next Form"
-                                    className="w-4 h-4"
-                                    width={20}
-                                    height={20}
-                                />
-                                <span>{controls[activeItem.id].type}</span>
-                            </Item>
-                        )
-                            : fields[activeItem.id] && (
-                            <Item className="p-2 bg-content3 rounded-lg border-default border-0 relative z-40 text-xs">
-                    <span className="text-sm">
-                      {fields[activeItem.id].title}
-                    </span>
-                                <span className="absolute right-4 bottom-2 text-default-400">
-                      {fields[activeItem.id].type}
-                    </span>
-                            </Item>
-                        ))}
-                </DragOverlay>
-            </DndWrapper>
-        </div>
-    );
+              <Scroll>
+                <Controls controls={controls} />
+              </Scroll>
+            </Tab>
+            <Tab key="form" title="Form" className="px-0 pb-0">
+              <Scroll>
+                <Form />
+              </Scroll>
+            </Tab>
+            <Tab key="property" title="Property" className="px-0 pb-0">
+              <Scroll>
+                <Property />
+              </Scroll>
+            </Tab>
+          </Tabs>
+        </Block>
+        <Block
+          className={"col-span-1 sm:col-span-2 xl:col-span-3 text-center pt-3"}
+        >
+          <Actions />
+        </Block>
+        {activeItem && (
+          <Overlay
+            activeItem={activeItem}
+            fields={fields}
+            controls={controls}
+          />
+        )}
+      </DndWrapper>
+    </div>
+  );
 }

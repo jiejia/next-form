@@ -1,7 +1,7 @@
 import {Field} from "@/types/form";
 import {DndDroppable} from "@/components/shared/dnd-droppable";
 import {SortableContext, verticalListSortingStrategy} from "@dnd-kit/sortable";
-import {SortableItem} from "@/components/shared/sortable-item";
+import {DndSortableItem} from "@/components/shared/dnd-sortable-item";
 import React from "react";
 
 export default function Fields({fields}: { fields: Field[] }) {
@@ -19,7 +19,7 @@ export default function Fields({fields}: { fields: Field[] }) {
                     className="grid grid-cols-1 gap-2 text-left indent-1 text-xs content-start h-full"
                 >
                     {fields.map((item, index) => (
-                        <SortableItem
+                        <DndSortableItem
                             key={index}
                             id={"field-" + index}
                             className="p-2 bg-content2 rounded-lg border-default border-0 relative z-40"
@@ -30,7 +30,7 @@ export default function Fields({fields}: { fields: Field[] }) {
                             <span className="absolute right-4 bottom-2 text-default-400">
                           {item.type}
                         </span>
-                        </SortableItem>
+                        </DndSortableItem>
                     ))}
                 </ul>
             </SortableContext>

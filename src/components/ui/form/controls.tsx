@@ -1,5 +1,5 @@
 import {SortableContext, verticalListSortingStrategy} from "@dnd-kit/sortable";
-import {SortableItem} from "@/components/shared/sortable-item";
+import {DndSortableItem} from "@/components/shared/dnd-sortable-item";
 import Image from "next/image";
 import React from "react";
 import {Control} from "@/types/form";
@@ -17,7 +17,7 @@ export default function Controls({controls}: { controls: Control[] }) {
                 className="grid grid-cols-2 gap-2 text-left indent-1 text-xs content-start h-full"
             >
                 {controls.map((item, index) => (
-                    <SortableItem
+                    <DndSortableItem
                         key={index}
                         id={"control-" + index}
                         className="p-2 bg-content2 rounded-lg border-default border-0 grid grid-cols-[20px_1fr] z-40"
@@ -30,7 +30,7 @@ export default function Controls({controls}: { controls: Control[] }) {
                             height={20}
                         />
                         <span>{item.type}</span>
-                    </SortableItem>
+                    </DndSortableItem>
                 ))}
             </ul>
         </SortableContext>

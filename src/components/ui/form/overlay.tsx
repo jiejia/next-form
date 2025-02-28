@@ -29,7 +29,7 @@ export default function Overlay({activeItem, fields, controls}: {activeItem: Dra
                       {fields[activeItem.id].title}
                     </span>
                         <span className="absolute right-4 bottom-2 text-default-400">
-                      {fields[activeItem.id].type}
+                      {fields[activeItem.id].controlType}
                     </span>
                     </Item>
                 ))}

@@ -28,7 +28,7 @@ export default function Fields({fields}: { fields: Field[] }) {
                           {index + 1}.{item.title}
                         </span>
                             <span className="absolute right-4 bottom-2 text-default-400">
-                          {item.type}
+                          {item.controlType}
                         </span>
                         </DndSortableItem>
                     ))}

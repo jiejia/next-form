@@ -2,14 +2,10 @@
 
 import React, { useState, useEffect } from "react";
 import Block from "@/components/shared/block";
-import { Tabs, Tab, Button } from "@nextui-org/react";
+import { Tabs, Tab } from "@nextui-org/react";
 import Scroll from "@/components/shared/scroll";
-import Image from "next/image";
-import { DndDroppable } from "@/components/shared/dnd-droppable";
-import { Item } from "@/components/shared/item";
+
 import {
-  DndContext,
-  DragOverlay,
   KeyboardSensor,
   PointerSensor,
   useSensor,
@@ -17,7 +13,6 @@ import {
   DragStartEvent,
   DragEndEvent,
   DragMoveEvent,
-  rectIntersection, // 添加这个导入
 } from "@dnd-kit/core";
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { v4 as uuidV4 } from "uuid";
@@ -31,19 +26,24 @@ import Recycle from "@/components/ui/form/recycle";
 import DndWrapper from "@/components/shared/dnd-wrapper";
 import Overlay from "@/components/ui/form/overlay";
 import Actions from "@/components/ui/form/actions";
+import {formData} from "@/data/form";
+import _ from "lodash";
+
 
 export default function SaveForm() {
   useEffect(() => {
     getControl();
   }, []);
 
-  const [selected, setSelected] = React.useState<string | number>("form");
+  const formDataClone = _.cloneDeep(formData);
 
+
+  const [currentField, setCurrentField] = useState<Field | null>(formDataClone.currentField);
+  const [selected, setSelected] = useState<string | number>("form");
   const [activeItem, setActiveItem] = useState<DraggableItem | null>(null);
   const [overItem, setOverItem] = useState<DraggableItem | null>(null);
-
   const [controls, setControls] = useState<Control[]>([]);
-  const [fields, setFields] = useState<Field[]>([]);
+  const [fields, setFields] = useState<Field[]>(formDataClone.fields);
 
   const getControl = async () => {
     const controls = await getControlConfigs();
@@ -135,7 +135,6 @@ export default function SaveForm() {
             required: controls[currentActiveItem.id].required,
             regex: "",
             config: controls[currentActiveItem.id].config,
-            type: controls[currentActiveItem.id].type,
           };
 
           if (insertPosition === "before") {

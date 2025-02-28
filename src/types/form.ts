@@ -37,7 +37,6 @@ export interface Field {
     controlType: string;
     active?: boolean;
     sort?: number;
-    type: string;
 }
 
 export interface Form {

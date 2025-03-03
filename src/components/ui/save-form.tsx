@@ -16,7 +16,7 @@ import {
 } from "@dnd-kit/core";
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { v4 as uuidV4 } from "uuid";
-import { DraggableItem, Control, Field } from "@/types/form";
+import type { DraggableItem, Control, Field } from "@/types/form";
 import { getControlConfigs } from "@/services/form-service";
 import Controls from "@/components/ui/form/controls";
 import Fields from "@/components/ui/form/fields";
@@ -37,13 +37,14 @@ export default function SaveForm() {
 
   const formDataClone = _.cloneDeep(formData);
 
-
   const [currentField, setCurrentField] = useState<Field | null>(formDataClone.currentField);
+  const [form, setForm] = useState(formDataClone.form);
+  const [fields, setFields] = useState<Field[]>(formDataClone.fields);
+
   const [selected, setSelected] = useState<string | number>("form");
   const [activeItem, setActiveItem] = useState<DraggableItem | null>(null);
   const [overItem, setOverItem] = useState<DraggableItem | null>(null);
   const [controls, setControls] = useState<Control[]>([]);
-  const [fields, setFields] = useState<Field[]>(formDataClone.fields);
 
   const getControl = async () => {
     const controls = await getControlConfigs();
@@ -231,7 +232,7 @@ export default function SaveForm() {
             </Tab>
             <Tab key="form" title="Form" className="px-0 pb-0">
               <Scroll>
-                <Form />
+                <Form form={form} setForm={setForm}/>
               </Scroll>
             </Tab>
             <Tab key="property" title="Property" className="px-0 pb-0">

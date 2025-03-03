@@ -3,6 +3,7 @@ import {Item} from "@/components/shared/item";
 import Image from "next/image";
 import React from "react";
 import {Control, DraggableItem, Field} from "@/types/form";
+import clsx from "clsx";
 
 
 export default function Overlay({activeItem, fields, controls}: {activeItem: DraggableItem, fields: Field[], controls: Control[]}) {
@@ -24,7 +25,7 @@ export default function Overlay({activeItem, fields, controls}: {activeItem: Dra
                     </Item>
                 )
                     : fields[activeItem.id] && (
-                    <Item className="p-2 bg-content3 rounded-lg border-default border-0 relative z-40 text-xs">
+                    <Item className={clsx('p-2 bg-content3 rounded-lg border-default border-0 relative z-40 text-xs', {"outline -outline-offset-2 outline-2 outline-primary": fields[activeItem.id].active})}>
                     <span className="text-sm">
                       {fields[activeItem.id].title}
                     </span>

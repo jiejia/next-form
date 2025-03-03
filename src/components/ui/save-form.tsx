@@ -26,9 +26,8 @@ import Recycle from "@/components/ui/form/recycle";
 import DndWrapper from "@/components/shared/dnd-wrapper";
 import Overlay from "@/components/ui/form/overlay";
 import Actions from "@/components/ui/form/actions";
-import {formData} from "@/data/form";
+import { formData } from "@/data/form";
 import _ from "lodash";
-
 
 export default function SaveForm() {
   useEffect(() => {
@@ -37,7 +36,9 @@ export default function SaveForm() {
 
   const formDataClone = _.cloneDeep(formData);
 
-  const [currentField, setCurrentField] = useState<Field | null>(formDataClone.currentField);
+  const [currentField, setCurrentField] = useState<Field | null>(
+    formDataClone.currentField
+  );
   const [form, setForm] = useState(formDataClone.form);
   const [fields, setFields] = useState<Field[]>(formDataClone.fields);
 
@@ -207,7 +208,7 @@ export default function SaveForm() {
         <Block className="pr-2">
           <div className="grid grid-rows-[1fr_50px] gap-2 h-full">
             <Scroll>
-              <Fields fields={fields} />
+              <Fields fields={fields} setFields={setFields} setCurrentField={setCurrentField} setSelected={setSelected}/>
             </Scroll>
             <Recycle />
           </div>
@@ -232,7 +233,7 @@ export default function SaveForm() {
             </Tab>
             <Tab key="form" title="Form" className="px-0 pb-0">
               <Scroll>
-                <Form form={form} setForm={setForm}/>
+                <Form form={form} setForm={setForm} />
               </Scroll>
             </Tab>
             <Tab key="property" title="Property" className="px-0 pb-0">

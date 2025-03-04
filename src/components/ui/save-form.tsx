@@ -53,13 +53,6 @@ export default function SaveForm() {
     // console.log(controls)
   };
 
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
-
   // get draggable item
   const getDraggableItem = (currentId: string): DraggableItem => {
     let area = null;
@@ -180,8 +173,21 @@ export default function SaveForm() {
         currentActiveItem.area == "field" &&
         currentOverItem.area == "recycle"
       ) {
+        // 如果只剩一个元素，则不允许删除
+        if (fields.length <= 1) {
+          return; // 直接返回，不执行删除操作
+        }
+
         const newFiledItems = [...fields];
+        const removedField = newFiledItems[currentActiveItem.id];
         newFiledItems.splice(currentActiveItem.id, 1);
+
+        // 如果删除的是激活状态的字段，则激活第一个字段
+        if (removedField.active && newFiledItems.length > 0) {
+          newFiledItems[0] = { ...newFiledItems[0], active: true };
+          setCurrentField(newFiledItems[0]);
+        }
+
         setFields(newFiledItems);
       }
     }
@@ -208,7 +214,12 @@ export default function SaveForm() {
         <Block className="pr-2">
           <div className="grid grid-rows-[1fr_50px] gap-2 h-full">
             <Scroll>
-              <Fields fields={fields} setFields={setFields} setCurrentField={setCurrentField} setSelected={setSelected}/>
+              <Fields
+                fields={fields}
+                setFields={setFields}
+                setCurrentField={setCurrentField}
+                setSelected={setSelected}
+              />
             </Scroll>
             <Recycle />
           </div>

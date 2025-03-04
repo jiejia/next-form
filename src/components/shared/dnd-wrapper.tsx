@@ -25,12 +25,19 @@ export default function DndWrapper({
                                        handleDragStart,
                                        handleDragMove
                                    }: DndWrapperProps) {
+
     const sensors = useSensors(
-        useSensor(PointerSensor),
+        useSensor(PointerSensor, {
+            activationConstraint: {
+                delay: 100,
+                tolerance: 1,
+            },
+        }),
         useSensor(KeyboardSensor, {
-            coordinateGetter: sortableKeyboardCoordinates
+            coordinateGetter: sortableKeyboardCoordinates,
         })
     );
+
 
     return (
         <DndContext

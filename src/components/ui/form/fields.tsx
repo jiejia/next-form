@@ -1,65 +1,79 @@
-import {Field} from "@/types/form";
-import {DndDroppable} from "@/components/shared/dnd-droppable";
-import {SortableContext, verticalListSortingStrategy} from "@dnd-kit/sortable";
-import {DndSortableItem} from "@/components/shared/dnd-sortable-item";
+import { Field } from "@/types/form";
+import { DndDroppable } from "@/components/shared/dnd-droppable";
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { DndSortableItem } from "@/components/shared/dnd-sortable-item";
 import React from "react";
 import clsx from "clsx";
 
-export default function Fields({fields, setFields, setCurrentField, setSelected}: { fields: Field[], setFields: (fields: Field[]) => void , setCurrentField: (field: Field) => void, setSelected: (selected: string) => void}) {
+export default function Fields({
+  fields,
+  setFields,
+  setCurrentField,
+  setSelected,
+}: {
+  fields: Field[];
+  setFields: (fields: Field[]) => void;
+  setCurrentField: (field: Field) => void;
+  setSelected: (selected: string) => void;
+}) {
+  const handleFieldClick = (
+    e: React.MouseEvent<HTMLElement>,
+    index: number
+  ) => {
 
-    const handleFieldClick = (e: any) => {
-        // console.log(fields, currentField)
-        console.log(e.currentTarget)
 
-        const uuid = e.currentTarget.getAttribute('data-rbd-draggable-id')
-        
-        const updatedFields = fields.map((field: any) => {
-            if (field.uuid === uuid) {
-                return {...field, active: true}; // 注意：这会把匹配到的field设置为active: true，其他则为false
-            } else {
-                return {...field, active: false};
-            }
-        });
+    const updatedFields = fields.map((field: Field, key:number) => {
+      if (key == index) {
+        return { ...field, active: true };
+      } else {
+        return { ...field, active: false };
+      }
+    });
 
-        fields.forEach((item: Field) => {
-            if (item.uuid == uuid)
-                setCurrentField(item)
-        });
+    fields.forEach((item: Field, key:number) => {
+      if (key == index) setCurrentField(item);
+    });
 
-        setFields(updatedFields);
-        setSelected('property')
-    }
+    setFields(updatedFields);
+    setSelected("property");
+  };
 
-    return (
-        <DndDroppable
-            id={"fields-" + fields.length}
-            className="h-full"
+  return (
+    <DndDroppable id={"fields-" + fields.length} className="h-full">
+      <SortableContext
+        items={fields.map((_, index) => index)}
+        strategy={verticalListSortingStrategy}
+      >
+        <ul
+          id="fields"
+          className="grid grid-cols-1 gap-2 text-left indent-1 text-xs content-start h-full"
         >
-            <SortableContext
-                items={fields.map((_, index) => index)}
-                strategy={verticalListSortingStrategy}
+          {fields.map((item, index) => (
+            <DndSortableItem
+              key={index}
+              id={"field-" + index}
+              className={clsx(
+                "p-2 bg-content2 rounded-lg border-default border-0 relative z-40",
+                {
+                  "outline -outline-offset-2 outline-2 outline-primary":
+                    item.active,
+                }
+              )}
+              onClick={(e) => handleFieldClick(e, index)}
             >
-                <ul
-                    id="fields"
-                    className="grid grid-cols-1 gap-2 text-left indent-1 text-xs content-start h-full"
-                >
-                    {fields.map((item, index) => (
-                        <DndSortableItem
-                            key={index}
-                            id={"field-" + index}
-                            className={clsx('p-2 bg-content2 rounded-lg border-default border-0 relative z-40', {"outline -outline-offset-2 outline-2 outline-primary": item.active})}
-                            onClick={handleFieldClick}
-                        >
-                        <span className="text-sm">
-                          {index + 1}.{item.title}
-                        </span>
-                            <span className="absolute right-4 bottom-2 text-default-400">
-                          {item.controlType}
-                        </span>
-                        </DndSortableItem>
-                    ))}
-                </ul>
-            </SortableContext>
-        </DndDroppable>
-    );
+              <span className="text-sm">
+                {index + 1}.{item.title}
+              </span>
+              <span className="absolute right-4 bottom-2 text-default-400">
+                {item.controlType}
+              </span>
+            </DndSortableItem>
+          ))}
+        </ul>
+      </SortableContext>
+    </DndDroppable>
+  );
 }

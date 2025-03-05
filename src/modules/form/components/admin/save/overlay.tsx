@@ -1,8 +1,8 @@
 import {DragOverlay} from "@dnd-kit/core";
-import {Item} from "@/components/shared/item";
+import {Item} from "@/modules/common/components/shared/item";
 import Image from "next/image";
 import React from "react";
-import {Control, DraggableItem, Field} from "@/types/form";
+import {Control, DraggableItem, Field} from "@/modules/form/types/form";
 import clsx from "clsx";
 
 

@@ -1,5 +1,5 @@
 
-import { Control } from '@/types/form';
+import { Control } from '@/modules/form/types/form';
 import fs from "fs";
 import path from "path";
 

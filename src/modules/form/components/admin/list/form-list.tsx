@@ -12,13 +12,13 @@ import {
     Button,
     Selection
 } from "@nextui-org/react";
-import Block from "@/components/shared/block";
+import Block from "@/modules/common/components/shared/block";
 import React from "react";
 import {Pagination} from "@nextui-org/react";
 import {Input} from "@nextui-org/react";
 import {Select, SelectItem} from "@nextui-org/react";
 import { EyeIcon, PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
-import Scroll from "@/components/shared/scroll";
+import Scroll from "@/modules/common/components/shared/scroll";
 
 interface RowItem {
     key: string;

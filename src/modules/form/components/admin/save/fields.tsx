@@ -1,10 +1,10 @@
-import { Field } from "@/types/form";
-import { DndDroppable } from "@/components/shared/dnd-droppable";
+import { Field } from "@/modules/form/types/form";
+import { DndDroppable } from "@/modules/common/components/shared/dnd-droppable";
 import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { DndSortableItem } from "@/components/shared/dnd-sortable-item";
+import { DndSortableItem } from "@/modules/common/components/shared/dnd-sortable-item";
 import React from "react";
 import clsx from "clsx";
 
@@ -23,9 +23,7 @@ export default function Fields({
     e: React.MouseEvent<HTMLElement>,
     index: number
   ) => {
-
-
-    const updatedFields = fields.map((field: Field, key:number) => {
+    const updatedFields = fields.map((field: Field, key: number) => {
       if (key == index) {
         return { ...field, active: true };
       } else {
@@ -33,7 +31,7 @@ export default function Fields({
       }
     });
 
-    fields.forEach((item: Field, key:number) => {
+    fields.forEach((item: Field, key: number) => {
       if (key == index) setCurrentField(item);
     });
 

@@ -1,6 +1,6 @@
 import {v4 as uuidV4} from 'uuid';
 
-import {Field, Form} from "@/types/form"
+import {Field, Form} from "@/modules/form/types/form"
 
 const fields: Field[] = [
     {

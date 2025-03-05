@@ -1,5 +1,5 @@
-import Sidebar from "@/components/ui/sidebar";
-import Header from "@/components/ui/header";
+import Sidebar from "@/modules/common/components/admin/sidebar";
+import Header from "@/modules/common/components/admin/header";
 
 export default function DashboardLayout({children, breadcrumbs, menuItemId}: {
     children: React.ReactNode,

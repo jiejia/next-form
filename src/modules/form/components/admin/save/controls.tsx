@@ -1,8 +1,8 @@
 import {SortableContext, verticalListSortingStrategy} from "@dnd-kit/sortable";
-import {DndSortableItem} from "@/components/shared/dnd-sortable-item";
+import {DndSortableItem} from "@/modules/common/components/shared/dnd-sortable-item";
 import Image from "next/image";
 import React from "react";
-import {Control} from "@/types/form";
+import {Control} from "@/modules/form/types/form";
 
 
 export default function Controls({controls}: { controls: Control[] }) {

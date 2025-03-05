@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Block from "@/components/shared/block";
+import Block from "@/modules/common/components/shared/block";
 import { Tabs, Tab } from "@nextui-org/react";
-import Scroll from "@/components/shared/scroll";
+import Scroll from "@/modules/common/components/shared/scroll";
 
 import {
   KeyboardSensor,
@@ -16,17 +16,17 @@ import {
 } from "@dnd-kit/core";
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { v4 as uuidV4 } from "uuid";
-import type { DraggableItem, Control, Field } from "@/types/form";
-import { getControlConfigs } from "@/services/form-service";
-import Controls from "@/components/ui/form/controls";
-import Fields from "@/components/ui/form/fields";
-import Property from "@/components/ui/form/property";
-import Form from "@/components/ui/form/form";
-import Recycle from "@/components/ui/form/recycle";
-import DndWrapper from "@/components/shared/dnd-wrapper";
-import Overlay from "@/components/ui/form/overlay";
-import Actions from "@/components/ui/form/actions";
-import { formData } from "@/data/form";
+import type { DraggableItem, Control, Field } from "@/modules/form/types/form";
+import { getControlConfigs } from "@/modules/form/services/form-service";
+import Controls from "@/modules/form/components/admin/save/controls";
+import Fields from "@/modules/form/components/admin/save/fields";
+import Property from "@/modules/form/components/admin/save/property";
+import Form from "@/modules/form/components/admin/save/form";
+import Recycle from "@/modules/form/components/admin/save/recycle";
+import DndWrapper from "@/modules/common/components/shared/dnd-wrapper";
+import Overlay from "@/modules/form/components/admin/save/overlay";
+import Actions from "@/modules/form/components/admin/save/actions";
+import { formData } from "@/modules/form/data/form";
 import _ from "lodash";
 
 export default function SaveForm() {

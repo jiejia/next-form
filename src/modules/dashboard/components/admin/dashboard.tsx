@@ -1,4 +1,4 @@
-import Block from "@/components/shared/block";
+import Block from "@/modules/common/components/shared/block";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { FaWpforms, FaUsers, FaCheckCircle, FaClock } from 'react-icons/fa';
 

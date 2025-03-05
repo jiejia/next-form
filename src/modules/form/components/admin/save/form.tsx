@@ -7,7 +7,7 @@ import {
   Textarea,
 } from "@nextui-org/react";
 import React from "react";
-import type { Form } from "@/types/form";
+import type { Form } from "@/modules/form/types/form";
 
 export default function Form({
   form,

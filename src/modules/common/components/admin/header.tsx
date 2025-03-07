@@ -1,10 +1,10 @@
 'use client'
 
-import Block from "@/components/shared/block";
+import Block from "@/modules/common/components/shared/block";
 import Link from "next/link";
 import {Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger} from "@nextui-org/react";
 
-export default function Sidebar({breadcrumbs = <></>}: { breadcrumbs: React.ReactNode }) {
+export default function Header({breadcrumbs = <></>}: { breadcrumbs: React.ReactNode }) {
 
     return (
         <header>

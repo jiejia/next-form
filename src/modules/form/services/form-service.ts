@@ -1,7 +1,7 @@
 'use server';
 
 import path from "path";
-import { CommonService } from "@/services/common-service";
+import { CommonService } from "@/modules/common/services/common-service";
 
 /**
  * Get control configs

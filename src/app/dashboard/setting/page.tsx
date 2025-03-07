@@ -1,7 +1,7 @@
 import DashboardLayout from "@/app/dashboard/dashboard-layout";
 import Link from "next/link";
 import React from "react";
-import SaveSetting from "@/components/ui/save-setting";
+import SaveSetting from "@/modules/setting/components/admin/save/save-setting";
 
 export default function Setting() {
 

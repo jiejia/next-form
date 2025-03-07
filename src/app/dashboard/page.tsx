@@ -1,7 +1,7 @@
 'use client';
 import React from "react";
 import DashboardLayout from '@/app/dashboard/dashboard-layout';
-import DashboardUI from '@/components/ui/dashboard';
+import DashboardUI from '@/modules/dashboard/components/statistics/dashboard';
 
 export default function Dashboard() {
     return (

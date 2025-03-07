@@ -1,7 +1,7 @@
 import DashboardLayout from "@/app/dashboard/dashboard-layout";
 import React from "react";
 import Link from "next/link";
-import SaveForm from "@/components/ui/save-form";
+import SaveForm from "@/modules/form/components/admin/save/save-form";
 
 export default function Create() {
     return (

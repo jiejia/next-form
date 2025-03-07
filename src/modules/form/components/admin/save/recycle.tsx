@@ -1,4 +1,4 @@
-import {DndDroppable} from "@/components/shared/dnd-droppable";
+import {DndDroppable} from "@/modules/common/components/shared/dnd-droppable";
 import Image from "next/image";
 import React from "react";
 

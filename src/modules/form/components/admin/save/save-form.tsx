@@ -33,7 +33,7 @@ export default function SaveForm() {
 
   const formDataClone = _.cloneDeep(formData);
 
-  const [currentField, setCurrentField] = useState<Field | null>(
+  const [currentField, setCurrentField] = useState<Field>(
     formDataClone.currentField
   );
   const [form, setForm] = useState(formDataClone.form);
@@ -246,7 +246,7 @@ export default function SaveForm() {
             </Tab>
             <Tab key="property" title="Property" className="px-0 pb-0">
               <Scroll>
-                <Property />
+                <Property currentField={currentField}/>
               </Scroll>
             </Tab>
           </Tabs>

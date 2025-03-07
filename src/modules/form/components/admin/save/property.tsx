@@ -1,8 +1,9 @@
 import {cn, Input, Switch} from "@nextui-org/react";
 import React from "react";
+import type { Field } from "@/modules/form/types/form";
 
 
-export default function Property() {
+export default function Property({ currentField } : { currentField: Field }) {
     return (
         <div className="grid grid-flow-row gap-3 content-start">
             <Input

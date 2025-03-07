@@ -6,15 +6,10 @@ import { Tabs, Tab } from "@nextui-org/react";
 import Scroll from "@/modules/common/components/shared/scroll";
 
 import {
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
   DragStartEvent,
   DragEndEvent,
   DragMoveEvent,
 } from "@dnd-kit/core";
-import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { v4 as uuidV4 } from "uuid";
 import type { DraggableItem, Control, Field } from "@/modules/form/types/form";
 import { getControlConfigs } from "@/modules/form/services/form-service";
@@ -36,7 +31,7 @@ export default function SaveForm() {
 
   const formDataClone = _.cloneDeep(formData);
 
-  const [currentField, setCurrentField] = useState<Field | null>(
+  const [currentField, setCurrentField] = useState<Field>(
     formDataClone.currentField
   );
   const [form, setForm] = useState(formDataClone.form);
@@ -249,7 +244,7 @@ export default function SaveForm() {
             </Tab>
             <Tab key="property" title="Property" className="px-0 pb-0">
               <Scroll>
-                <Property />
+                <Property currentField={currentField}/>
               </Scroll>
             </Tab>
           </Tabs>

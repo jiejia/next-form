@@ -1,0 +1,112 @@
+{
+  "Dashboard": {
+    "Email": "电子邮件",
+    "password": "密码",
+    "Save": "保存",
+    "Reset": "重置",
+    "Create": "创建",
+    "Submit": "提交",
+    "Edit": "编辑",
+    "Detail": "详情",
+    "Delete": "删除",
+    "Log Out": "登出",
+    "Profile": "个人信息",
+    "Signed in as": "登录用户",
+    "Username": "用户名",
+    "Updated": "更新于",
+
+    "login": "登陆",
+    "forget password": "忘记密码",
+    "enter your password": "输入您的密码",
+    "enter your email": "输入您的电子邮件",
+
+    "send": "发送",
+
+    "The Next Form": "The Next Form",
+    "Dashboard": "控制面板",
+    "Forms": "表单",
+    "Setting": "设置",
+
+    "Powered By TheNextForm": "由 TheNextForm 驱动",
+
+    "Default Language": "默认语言",
+    "Select A Language": "请选择一个语言",
+
+    "Search By Title": "搜索",
+    "Sort": "排序",
+    "Created desc": "按创建时间倒序",
+    "Created asc": "按创建时间顺序",
+    "Status": "状态",
+    "Enabled": "开启",
+    "Disabled": "关闭",
+    "Action": "操作",
+
+    "Form": "表单",
+    "Enable": "开启",
+    "Description": "描述",
+    "Enter form description": "输入描述",
+    "Sequential numbering style": "序号风格",
+    "Get access to new features before they are released.": "Get access to new features before they are released.",
+    "Controls": "控件",
+    "UUID": "UUID",
+    "Title": "标题",
+    "Enter field Title": "输入标题",
+    "Regex": "正则表达式",
+    "Enter field Regex": "输入正则表达式",
+    "Enter field Description": "输入描述",
+    "Required": "必填",
+    "Placeholder": "占位符",
+    "Default Value": "默认值",
+    "Length": "长度",
+    "Length Min-Max": "长度 最大值-最小值",
+    "Rows": "行数",
+    "Cols": "列数",
+    "Multiple": "多选",
+    "Options": "选项",
+    "None": "无",
+    "Arabic numerals": "阿拉伯数字",
+    "Property": "属性",
+
+    "Input Text": "文本框",
+    "Textarea": "文本域",
+    "Select": "下拉选项",
+    "Checkbox": "复选框",
+    "Radio": "单选框",
+    "Date": "日期",
+
+    "Old Password": "当前密码",
+    "New Password": "新密码",
+    "Password Confirmation": "确认密码",
+
+    "Save successfully": "保存成功",
+    "Are you sure to delete it?": "确认删除吗?",
+    "An unknown error occurred": "未知错误",
+    "Form created successfully": "表单创建成功",
+    "Form updated successfully": "表单更新成功",
+    "Delete successfully": "删除成功"
+
+  },
+  "Front": {
+    "Submit": "提交",
+    "Reset": "重置",
+    "Please fill in the": "请填写",
+    "Invalid date-time format. Expected format: ": "日期时间格式无效。预期的格式: "
+
+  },
+  "Message": {
+    "Invalid credentials": "凭据无效",
+    "Form has submissions": "表单已有数据提交",
+    "Form title can not be empty": "表单标题不能为空",
+    "Form title can be up to 255 characters": "表单标题最多可以有255个字符",
+    "Form with this title already exists": "已存在此标题的表单",
+    "no authentication": "未认证",
+    "Old password must be at most 32 characters": "旧密码最多可以有32个字符",
+    "Old password cannot be empty": "旧密码不能为空",
+    "New password must be at most 32 characters": "新密码最多可以有32个字符",
+    "New password must be at least 6 characters": "新密码至少需要6个字符",
+    "Confirm password don't match": "确认密码不匹配",
+    "The new password cannot be the same as the old password.": "新密码不能与旧密码相同。",
+    "User not found": "未找到用户",
+    "Old password is incorrect": "旧密码不正确"
+  }
+}

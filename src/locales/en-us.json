@@ -54,6 +54,8 @@
     "Regex": "Regex",
     "Enter field Regex": "Enter field Regex",
     "Enter field Description": "Enter field Description",
+    "Enter field Placeholder": "Enter field Placeholder",
+    "Enter field Default Value": "Enter field Default Value",
     "Required": "Required",
     "Placeholder": "Placeholder",
     "Default Value": "Default Value",

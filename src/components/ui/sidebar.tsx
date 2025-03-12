@@ -1,10 +1,10 @@
 'use client'
 
-import Block from '@/modules/common/components/shared/block';
+import Block from "@/components/shared/block";
 import Link from "next/link";
 import Image from "next/image";
 import {Select, SelectItem} from "@nextui-org/react";
-import Copyright from "@/modules/common/components/admin/copyright";
+import Copyright from "@/components/ui/copyright";
 import clsx from "clsx";
 
 export default function Sidebar({menuItemId}: { menuItemId: number }) {

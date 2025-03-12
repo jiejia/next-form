@@ -1,10 +1,10 @@
-import { Field } from "@/modules/form/types/form";
-import { DndDroppable } from "@/modules/common/components/shared/dnd-droppable";
+import { Field } from "@/types/form";
+import { DndDroppable } from "@/components/shared/dnd-droppable";
 import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { DndSortableItem } from "@/modules/common/components/shared/dnd-sortable-item";
+import { DndSortableItem } from "@/components/shared/dnd-sortable-item";
 import React from "react";
 import clsx from "clsx";
 

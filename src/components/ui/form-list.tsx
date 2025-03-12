@@ -20,6 +20,7 @@ import {Select, SelectItem} from "@nextui-org/react";
 import { EyeIcon, PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import Scroll from "@/modules/common/components/shared/scroll";
 
+
 interface RowItem {
     key: string;
     id: string;

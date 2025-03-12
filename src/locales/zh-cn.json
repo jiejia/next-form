@@ -54,6 +54,8 @@
     "Regex": "正则表达式",
     "Enter field Regex": "输入正则表达式",
     "Enter field Description": "输入描述",
+    "Enter field Placeholder": "输入占位符",
+    "Enter field Default Value": "输入默认值",
     "Required": "必填",
     "Placeholder": "占位符",
     "Default Value": "默认值",

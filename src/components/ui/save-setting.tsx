@@ -1,6 +1,6 @@
 'use client'
 
-import Block from '@/modules/common/components/shared/block';
+import Block from "@/components/shared/block";
 import {Button, Tab, Tabs, Switch, Input, RadioGroup, Radio} from "@nextui-org/react";
 import React from "react";
 import {Select, SelectItem} from "@nextui-org/react";

@@ -1,4 +1,4 @@
-import {cn, Input, Switch} from "@nextui-org/react";
+import {cn, Input, Switch} from "@heroui/react";
 import React from "react";
 
 

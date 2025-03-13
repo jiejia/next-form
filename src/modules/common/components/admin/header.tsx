@@ -2,7 +2,7 @@
 
 import Block from "@/modules/common/components/shared/block";
 import Link from "next/link";
-import {Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger} from "@nextui-org/react";
+import {Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger} from "@heroui/react";
 
 export default function Header({breadcrumbs = <></>}: { breadcrumbs: React.ReactNode }) {
 

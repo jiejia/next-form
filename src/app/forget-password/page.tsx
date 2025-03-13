@@ -2,9 +2,9 @@
 
 import LoginLayout from '@/app/login/layout';
 import Block from '@/modules/common/components/shared/block';
-import {Input, Button} from "@nextui-org/react";
+import {Input, Button} from "@heroui/react";
 import Image from "next/image";
-import {Link} from "@nextui-org/link";
+import {Link} from "@heroui/link";
 
 export default function ForgetPassword() {
     return (

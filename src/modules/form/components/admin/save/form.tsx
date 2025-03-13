@@ -5,7 +5,7 @@ import {
   SelectItem,
   Switch,
   Textarea,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import React from "react";
 import type { Form } from "@/modules/form/types/form";
 

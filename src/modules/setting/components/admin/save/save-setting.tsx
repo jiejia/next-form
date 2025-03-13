@@ -1,9 +1,9 @@
 'use client'
 
 import Block from '@/modules/common/components/shared/block';
-import {Button, Tab, Tabs, Switch, Input, RadioGroup, Radio} from "@nextui-org/react";
+import {Button, Tab, Tabs, Switch, Input, RadioGroup, Radio} from "@heroui/react";
 import React from "react";
-import {Select, SelectItem} from "@nextui-org/react";
+import {Select, SelectItem} from "@heroui/react";
 
 export default function SaveSetting() {
     const languages = [

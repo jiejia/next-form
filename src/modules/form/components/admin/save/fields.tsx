@@ -1,4 +1,4 @@
-import { Field,Form } from "@/modules/form/types/form";
+import { Field, Form } from "@/modules/form/types/form";
 import { DndDroppable } from "@/modules/common/components/shared/dnd-droppable";
 import {
   SortableContext,
@@ -9,13 +9,14 @@ import React from "react";
 import clsx from "clsx";
 
 export default function Fields({
-  fields, form,
+  fields,
+  form,
   setFields,
   setCurrentField,
   setSelected,
 }: {
   fields: Field[];
-  form: Form,
+  form: Form;
   setFields: (fields: Field[]) => void;
   setCurrentField: (field: Field) => void;
   setSelected: (selected: string) => void;
@@ -24,9 +25,7 @@ export default function Fields({
     e: React.MouseEvent<HTMLElement>,
     index: number
   ) => {
-
-
-    const updatedFields = fields.map((field: Field, key:number) => {
+    const updatedFields = fields.map((field: Field, key: number) => {
       if (key == index) {
         return { ...field, active: true };
       } else {
@@ -34,7 +33,7 @@ export default function Fields({
       }
     });
 
-    fields.forEach((item: Field, key:number) => {
+    fields.forEach((item: Field, key: number) => {
       if (key == index) setCurrentField(item);
     });
 
@@ -42,20 +41,20 @@ export default function Fields({
     setSelected("property");
   };
 
-  const  getNumberingStyle = (numberingStyle:number, index:number) => {
+  const getNumberingStyle = (numberingStyle: number, index: number) => {
     if (numberingStyle == 0) {
-      return <span>&nbsp;</span>
+      return <span>&nbsp;</span>;
     } else if (numberingStyle == 1) {
-      return <span>{index + 1}.</span>
+      return <span>{index + 1}.</span>;
     }
-  }
+  };
 
-  const  truncateString = (str: string, maxLength: number = 255): string => {
+  const truncateString = (str: string, maxLength: number = 255): string => {
     if (str.length > maxLength) {
-      return str.slice(0, maxLength - 3) + '...';
+      return str.slice(0, maxLength - 3) + "...";
     }
     return str;
-  }
+  };
 
   return (
     <DndDroppable id={"fields-" + fields.length} className="h-full">
@@ -80,8 +79,9 @@ export default function Fields({
               )}
               onClick={(e) => handleFieldClick(e, index)}
             >
-              <span className="text-sm">
-                {getNumberingStyle(form.numberingStyle,index)}{truncateString(item.title, 30)}
+              <span className="text-sm truncate block pr-24">
+                {getNumberingStyle(form.numberingStyle, index)}
+                {item.title}
               </span>
               <span className="absolute right-4 bottom-2 text-default-400">
                 {item.controlType}

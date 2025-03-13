@@ -11,12 +11,12 @@ import {
     Tooltip,
     Button,
     Selection
-} from "@nextui-org/react";
+} from "@heroui/react";
 import Block from '@/modules/common/components/shared/block';
 import React from "react";
-import {Pagination} from "@nextui-org/react";
-import {Input} from "@nextui-org/react";
-import {Select, SelectItem} from "@nextui-org/react";
+import {Pagination} from "@heroui/react";
+import {Input} from "@heroui/react";
+import {Select, SelectItem} from "@heroui/react";
 import { EyeIcon, PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import Scroll from "@/modules/common/components/shared/scroll";
 

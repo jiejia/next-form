@@ -3,7 +3,7 @@
 import Block from "@/components/shared/block";
 import Link from "next/link";
 import Image from "next/image";
-import {Select, SelectItem} from "@nextui-org/react";
+import {Select, SelectItem} from "@heroui/react";
 import Copyright from "@/components/ui/copyright";
 import clsx from "clsx";
 

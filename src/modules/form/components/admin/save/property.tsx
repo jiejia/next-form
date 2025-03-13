@@ -1,6 +1,6 @@
 import React, { ChangeEvent } from "react";
 import type { Field } from "@/modules/form/types/form";
-import { Slider, Input, Button, Checkbox, Switch, cn } from "@nextui-org/react";
+import { Slider, Input, Button, Checkbox, Switch, cn } from "@heroui/react";
 import clsx from "clsx";
 import { useTranslations } from "next-intl";
 

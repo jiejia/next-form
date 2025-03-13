@@ -1,9 +1,9 @@
 'use client'
 
 import Block from '@/modules/common/components/shared/block';
-import {Input, Button, Checkbox} from "@nextui-org/react";
+import {Input, Button, Checkbox} from "@heroui/react";
 import Image from "next/image";
-import {Link} from "@nextui-org/link";
+import {Link} from "@heroui/link";
 
 export default function Login() {
     return (

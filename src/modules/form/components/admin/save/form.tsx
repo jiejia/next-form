@@ -80,22 +80,22 @@ export default function Form({
         </SelectItem>
       </Select>
       <Switch
-          classNames={{
-              base: cn(
-                  "inline-flex flex-row-reverse w-full max-w-md bg-content2 hover:bg-content2 items-center",
-                  "justify-between cursor-pointer rounded-lg gap-2 px-3 py-4 border-2 border-transparent"
-              ),
-              wrapper: "p-0 h-4 overflow-visible",
-              thumb: cn(
-                  "w-6 h-6 border-2 shadow-lg",
-                  "group-data-[hover=true]:border-primary",
-                  //selected
-                  "group-data-[selected=true]:ml-6",
-                  // pressed
-                  "group-data-[pressed=true]:w-7",
-                  "group-data-[selected]:group-data-[pressed]:ml-4"
-              ),
-          }}
+        classNames={{
+          base: cn(
+            "inline-flex flex-row-reverse w-full max-w-full bg-content2 hover:bg-content2 items-center",
+            "justify-between cursor-pointer rounded-lg gap-2 px-3 py-4 border-2 border-transparent"
+          ),
+          wrapper: "p-0 h-4 overflow-visible",
+          thumb: cn(
+            "w-6 h-6 border-2 shadow-lg",
+            "group-data-[hover=true]:border-primary",
+            //selected
+            "group-data-[selected=true]:ml-6",
+            // pressed
+            "group-data-[pressed=true]:w-7",
+            "group-data-[selected]:group-data-[pressed]:ml-4"
+          ),
+        }}
         size="md"
         isSelected={form.enabled}
         onChange={handleEnabledChange}

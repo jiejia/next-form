@@ -1,4 +1,4 @@
-import { Field } from "@/modules/form/types/form";
+import { Field,Form } from "@/modules/form/types/form";
 import { DndDroppable } from "@/modules/common/components/shared/dnd-droppable";
 import {
   SortableContext,
@@ -9,12 +9,13 @@ import React from "react";
 import clsx from "clsx";
 
 export default function Fields({
-  fields,
+  fields, form,
   setFields,
   setCurrentField,
   setSelected,
 }: {
   fields: Field[];
+  form: Form,
   setFields: (fields: Field[]) => void;
   setCurrentField: (field: Field) => void;
   setSelected: (selected: string) => void;
@@ -41,6 +42,21 @@ export default function Fields({
     setSelected("property");
   };
 
+  const  getNumberingStyle = (numberingStyle:number, index:number) => {
+    if (numberingStyle == 0) {
+      return <span>&nbsp;</span>
+    } else if (numberingStyle == 1) {
+      return <span>{index + 1}.</span>
+    }
+  }
+
+  const  truncateString = (str: string, maxLength: number = 255): string => {
+    if (str.length > maxLength) {
+      return str.slice(0, maxLength - 3) + '...';
+    }
+    return str;
+  }
+
   return (
     <DndDroppable id={"fields-" + fields.length} className="h-full">
       <SortableContext
@@ -65,7 +81,7 @@ export default function Fields({
               onClick={(e) => handleFieldClick(e, index)}
             >
               <span className="text-sm">
-                {index + 1}.{item.title}
+                {getNumberingStyle(form.numberingStyle,index)}{truncateString(item.title, 30)}
               </span>
               <span className="absolute right-4 bottom-2 text-default-400">
                 {item.controlType}

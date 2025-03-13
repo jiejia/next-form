@@ -215,6 +215,7 @@ export default function SaveForm() {
                         <Scroll>
                             <Fields
                                 fields={fields}
+                                form={form}
                                 setFields={setFields}
                                 setCurrentField={setCurrentField}
                                 setSelected={setSelected}

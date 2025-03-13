@@ -385,7 +385,7 @@ export default function Property({
         <Switch
           classNames={{
             base: cn(
-              "inline-flex flex-row-reverse w-full max-w-md bg-content2 hover:bg-content2 items-center",
+              "inline-flex flex-row-reverse w-full max-w-full bg-content2 hover:bg-content2 items-center",
               "justify-between cursor-pointer rounded-lg gap-2 px-3 py-4 border-2 border-transparent"
             ),
             wrapper: "p-0 h-4 overflow-visible",
@@ -440,7 +440,7 @@ export default function Property({
             minValue={0}
             value={currentField.config.length}
             onChange={handleLengthChange}
-            className="max-w-md overflow-hidden"
+            className="max-w-full overflow-hidden"
             classNames={{
               label: "text-tiny text-default-600",
               value: "text-tiny text-default-600",
@@ -464,7 +464,7 @@ export default function Property({
               currentField.config.minLength,
               currentField.config.maxLength,
             ]}
-            className="max-w-md overflow-hidden"
+            className="max-w-full overflow-hidden"
             classNames={{
               label: "text-tiny text-default-600",
               value: "text-tiny text-default-600",
@@ -484,7 +484,7 @@ export default function Property({
             minValue={0}
             onChange={handleRowsChange}
             value={currentField.config.rows}
-            className="max-w-md overflow-hidden"
+            className="max-w-full overflow-hidden"
             classNames={{
               label: "text-tiny text-default-600",
               value: "text-tiny text-default-600",
@@ -503,7 +503,7 @@ export default function Property({
             minValue={0}
             onChange={handleColsChange}
             value={currentField.config.cols}
-            className="max-w-md overflow-hidden"
+            className="max-w-full overflow-hidden"
             classNames={{
               label: "text-tiny text-default-600",
               value: "text-tiny text-default-600",
@@ -518,7 +518,7 @@ export default function Property({
           <Switch
             classNames={{
               base: cn(
-                "inline-flex flex-row-reverse w-full max-w-md bg-content2 hover:bg-content2 items-center",
+                "inline-flex flex-row-reverse w-full max-w-full bg-content2 hover:bg-content2 items-center",
                 "justify-between cursor-pointer rounded-lg gap-2 px-3 py-4 border-2 border-transparent"
               ),
               wrapper: "p-0 h-4 overflow-visible",
@@ -547,19 +547,25 @@ export default function Property({
         )}
         {currentField.config.options !== undefined ? (
           <>
-            <div className="group relative touch-none tap-highlight-transparent  w-full max-w-md bg-content2 hover:bg-content2  cursor-pointer rounded-lg gap-2 px-3 py-0.5 border-2 border-transparent data-[selected=true]:border-primary">
+            <div className="group relative touch-none tap-highlight-transparent  w-full max-w-full bg-content2 hover:bg-content2  cursor-pointer rounded-lg gap-2 px-3 py-0.5 border-2 border-transparent data-[selected=true]:border-primary">
               <div className="grid grid-flow-row">
-                <p className="text-tiny text-default-600 py-1">{t("Options")}</p>
+                <p className="text-tiny text-default-600 py-1">
+                  {t("Options")}
+                </p>
               </div>
             </div>
-            <ul className="w-full bg-white grid grid-flow-row gap-2">
+            <ul className="max-w-full bg-white grid grid-flow-row gap-2">
               {(currentField.config.options as FieldOption[] | undefined)?.map(
                 (option: FieldOption, index: number) => (
-                  <li className="w-full grid grid-flow-col gap-1" key={index}>
+                  <li
+                    className="max-w-full flex items-center gap-1"
+                    key={index}
+                  >
                     <Checkbox
                       isSelected={option.selected}
                       onChange={() => handleOptionCheckClick(index)}
                       radius="full"
+                      className="flex-shrink-0"
                     ></Checkbox>
                     <Input
                       size="sm"
@@ -569,6 +575,7 @@ export default function Property({
                       minLength={0}
                       value={option.val}
                       onChange={(e) => handleOptionValChange(index, e)}
+                      className="flex-grow min-w-0"
                     />
                     <Button
                       isIconOnly
@@ -578,6 +585,7 @@ export default function Property({
                       aria-label="Plus"
                       onClick={() => handleOptionAddClick(index)}
                       variant="flat"
+                      className="flex-shrink-0"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -596,7 +604,9 @@ export default function Property({
                       isIconOnly
                       radius="full"
                       size="sm"
-                      className={clsx("", { invisible: index === 0 })}
+                      className={clsx("flex-shrink-0", {
+                        invisible: index === 0,
+                      })}
                       color="primary"
                       aria-label="Minus"
                       onClick={() => handleOptionRemoveClick(index)}

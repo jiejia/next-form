@@ -15,12 +15,17 @@ export class FormService {
     /**
      * Get control configs
      */
-    static async getControlConfigs() {
+    public static async getControlConfigs() {
         const jsonDirectory = path.join(process.cwd(), "src", "controls");
         return CommonService.loadControlsConfigFiles(jsonDirectory);
     }
 
-    static async createForm(form: Form) {
+    /**
+     * Create form
+     *
+     * @param form
+     */
+    public static async createForm(form: Form) {
         const t = await getTranslations('Message');
 
         // delete unnecessary fields' properties
@@ -65,7 +70,12 @@ export class FormService {
         revalidatePath('/dashboard/form/create');
     }
 
-    static async updateForm(form: Form) {
+    /**
+     * Update form
+     *
+     * @param form
+     */
+    public static async updateForm(form: Form) {
         // delete unnecessary fields' properties
         if (! form.fields) {
             form.fields = []
@@ -158,7 +168,12 @@ export class FormService {
         revalidatePath('/dashboard/form/' + form.id + '/edit');
     }
 
-    static async deleteForms(ids: number[]) {
+    /**
+     * Delete forms
+     *
+     * @param ids
+     */
+    public static async deleteForms(ids: number[]) {
         const t = await getTranslations('Message');
 
         for (const id of ids) {
@@ -204,23 +219,48 @@ export class FormService {
         revalidatePath('/dashboard/form');
     }
 
-    static async getForms(args: object = {}) {
+    /**
+     * Get forms
+     *
+     * @param args
+     */ 
+    public static async getForms(args: object = {}) {
         return prisma.form.findMany(args);
     }
 
-    static async getFormCount(args: object = {}) {
+    /**
+     * Get form count
+     *
+     * @param args
+     */ 
+    public static async getFormCount(args: object = {}) {
         return prisma.form.count(args);
     }
 
-    static async getFormSubmissions(args: object = {}) {
+    /**
+     * Get form submissions
+     *
+     * @param args
+     */  
+    public static async getFormSubmissions(args: object = {}) {
         return prisma.formSubmission.findMany(args);
     }
 
-    static async getFormSubmissionCount(args: object = {}) {
+    /**
+     * Get form submission count
+     *
+     * @param args
+     */  
+    public static async getFormSubmissionCount(args: object = {}) {
         return prisma.formSubmission.count(args);
     }
 
-    static async getFormById(id: number) {
+    /**
+     * Get form by id
+     *
+     * @param id
+     */  
+    public static async getFormById(id: number) {
         return prisma.form.findFirst({
             where: {id: id},
             include: {

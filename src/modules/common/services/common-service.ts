@@ -35,11 +35,18 @@ export class CommonService
         return configData;
     }
 
-    public static notify(message: string, type:string = 'Success') {
+    /**
+     * Notify message
+     *
+     * @param message
+     * @param color
+     * @param description
+     */
+    public static notify(message: string, color:"default"| "primary"| "secondary"| "success"| "warning"| "danger" = 'success', description: string = ''): void{
         addToast({
             title: message,
-            description: type,
-            color: 'primary',
+            description: description,
+            color: color
         });
     }
 }

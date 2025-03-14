@@ -9,13 +9,12 @@ import {
 } from "@dnd-kit/core";
 import {v4 as uuidV4} from "uuid";
 import _ from "lodash";
-
-import Block from "@/modules/common/components/shared//block";
-import Scroll from "@/modules/common/components/shared/scroll";
-import DndWrapper from "@/modules/common/components/shared/dnd-wrapper";
-
 import type {DraggableItem, Control, Field} from "@/modules/form/types/form";
 import {FormService} from "@/modules/form/services/form-service";
+
+import Block from "@/modules/common/components/shared/block";
+import Scroll from "@/modules/common/components/shared/scroll";
+import DndWrapper from "@/modules/common/components/shared/dnd-wrapper";
 import Controls from "@/modules/form/components/admin/save/controls";
 import Fields from "@/modules/form/components/admin/save/fields";
 import Property from "@/modules/form/components/admin/save/property";

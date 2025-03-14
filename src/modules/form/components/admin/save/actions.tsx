@@ -4,7 +4,7 @@ import { Form, Field } from "@/modules/form/types/form";
 import { FormService } from "@/modules/form/services/form-service";
 import { CommonService } from "@/modules/common/services/common-service";
 import { useTranslations } from "next-intl";
-import { notFound, useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function Actions({
   form,
@@ -50,9 +50,9 @@ export default function Actions({
         router.push("/dashboard/form");
       } catch (error) {
         if (error instanceof Error) {
-          CommonService.notify(error.message, "error");
+          CommonService.notify(error.message, "danger");
         } else {
-          CommonService.notify(t("An unknown error occurred"), "error");
+          CommonService.notify(t("An unknown error occurred"), "danger");
         }
       }
     } else {
@@ -63,9 +63,9 @@ export default function Actions({
         router.push("/dashboard/form");
       } catch (error) {
         if (error instanceof Error) {
-          CommonService.notify(error.message, "error");
+          CommonService.notify(error.message, "danger");
         } else {
-          CommonService.notify(t("An unknown error occurred"), "error");
+          CommonService.notify(t("An unknown error occurred"), "danger");
         }
       }
     }

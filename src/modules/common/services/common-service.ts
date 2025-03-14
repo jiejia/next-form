@@ -1,7 +1,7 @@
-
-import { Control } from '@/types/form';
+import { Control } from '@/modules/form/types/form';
 import fs from "fs";
 import path from "path";
+import {addToast} from "@heroui/toast";
 
 /**
  * Common service
@@ -33,5 +33,13 @@ export class CommonService
         });
 
         return configData;
+    }
+
+    public static notify(message: string, type:string = 'Success') {
+        addToast({
+            title: message,
+            description: type,
+            color: 'primary',
+        });
     }
 }

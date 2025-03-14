@@ -49,13 +49,6 @@ export default function Fields({
     }
   };
 
-  const truncateString = (str: string, maxLength: number = 255): string => {
-    if (str.length > maxLength) {
-      return str.slice(0, maxLength - 3) + "...";
-    }
-    return str;
-  };
-
   return (
     <DndDroppable id={"fields-" + fields.length} className="h-full">
       <SortableContext

@@ -15,7 +15,7 @@ import Scroll from "@/modules/common/components/shared/scroll";
 import DndWrapper from "@/modules/common/components/shared/dnd-wrapper";
 
 import type {DraggableItem, Control, Field} from "@/modules/form/types/form";
-import {getControlConfigs} from "@/modules/form/services/form-service";
+import {FormService} from "@/modules/form/services/form-service";
 import Controls from "@/modules/form/components/admin/save/controls";
 import Fields from "@/modules/form/components/admin/save/fields";
 import Property from "@/modules/form/components/admin/save/property";
@@ -45,10 +45,11 @@ export default function SaveForm() {
     const [controls, setControls] = useState<Control[]>([]);
 
     const getControl = async () => {
-        const controls = await getControlConfigs();
+        const controls = await FormService.getControlConfigs();
         setControls(controls);
         // console.log(controls)
     };
+
 
     // get draggable item
     const getDraggableItem = (currentId: string): DraggableItem => {
@@ -260,7 +261,7 @@ export default function SaveForm() {
                 <Block
                     className={"col-span-1 sm:col-span-2 xl:col-span-3 text-center pt-3"}
                 >
-                    <Actions/>
+                    <Actions form={form} fields={fields}/>
                 </Block>
                 {activeItem && (
                     <Overlay

@@ -2,7 +2,6 @@ import { Button } from "@heroui/react";
 import React, { useState } from "react";
 import { Form, Field } from "@/modules/form/types/form";
 import { FormService } from "@/modules/form/services/form-service";
-import { CommonService } from "@/modules/common/services/common-service";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import {notify} from "@/modules/common/components/admin/notify";
@@ -76,11 +75,11 @@ export default function Actions({
 
   return (
     <>
-      <Button color="primary" size="sm" variant="shadow" radius="sm">
-        Create
-      </Button>{" "}
+      <Button color="primary" size="sm" variant="shadow" radius="sm" onClick={handleSubmitSaveForm} isDisabled={isDisabled}>
+        {t('Submit')}
+      </Button>
       <Button color="primary" radius="sm" size="sm" variant="flat">
-        Reset
+        {t('Reset')}
       </Button>
     </>
   );

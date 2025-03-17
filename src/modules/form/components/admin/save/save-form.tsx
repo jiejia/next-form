@@ -258,7 +258,7 @@ export default function SaveForm() {
                     </Tabs>
                 </Block>
                 <Block
-                    className={"col-span-1 sm:col-span-2 xl:col-span-3 text-center pt-3"}
+                    className={"col-span-1 sm:col-span-2 xl:col-span-3 flex justify-center gap-2  pt-3"}
                 >
                     <Actions form={form} fields={fields}/>
                 </Block>

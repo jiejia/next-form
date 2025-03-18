@@ -386,7 +386,7 @@ export default function Property({
           classNames={{
             base: cn(
               "inline-flex flex-row-reverse w-full max-w-full bg-content2 hover:bg-content2 items-center",
-              "justify-between cursor-pointer rounded-lg gap-2 px-3 py-4 border-2 border-transparent"
+              "justify-between cursor-pointer rounded-lg gap-2 ps-3 pe-3 py-4 border-2 border-transparent"
             ),
             wrapper: "p-0 h-4 overflow-visible",
             thumb: cn(
@@ -519,7 +519,7 @@ export default function Property({
             classNames={{
               base: cn(
                 "inline-flex flex-row-reverse w-full max-w-full bg-content2 hover:bg-content2 items-center",
-                "justify-between cursor-pointer rounded-lg gap-2 px-3 py-4 border-2 border-transparent"
+                "justify-between cursor-pointer rounded-lg gap-2 ps-3 pe-3 py-4 border-2 border-transparent"
               ),
               wrapper: "p-0 h-4 overflow-visible",
               thumb: cn(

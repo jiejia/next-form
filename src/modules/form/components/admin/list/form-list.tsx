@@ -135,65 +135,46 @@ const FormList: React.FC = () => {
   );
 
   return (
-    <div className="grid grid-rows-[65px_1fr_56px] gap-4 h-full">
-      <Block className="grid grid-cols-[120px_1fr_80px] gap-2">
-        <Select
-          className="max-w-xs"
-          items={[
-            { key: "all", label: "批量操作" },
-            { key: "survey", label: "调查问卷" },
-            { key: "feedback", label: "反馈表单" },
-            { key: "registration", label: "注册表单" },
-          ]}
-          placeholder="操作"
-          size="sm"
-        >
-          {(type) => <SelectItem key={type.key}>{type.label}</SelectItem>}
-        </Select>
-        <Input
-          placeholder="搜索表单"
-          type="text"
-          size="sm"
-          className="indent-8"
-        />
-        <Button color="primary" size="sm">
-          搜索
-        </Button>
-      </Block>
-      <Block className="pr-2">
-        <Scroll>
-          <Table
-            removeWrapper
-            aria-label="表单列表"
-            selectedKeys={selectedKeys}
-            selectionMode="multiple"
-            onSelectionChange={setSelectedKeys}
-          >
-            <TableHeader columns={columns}>
-              {(column) => (
-                <TableColumn
-                  key={column.key}
-                  align="center"
-                  className="text-center"
-                >
-                  {column.label}
-                </TableColumn>
-              )}
-            </TableHeader>
-            <TableBody items={rows}>
-              {(item) => (
-                <TableRow key={item.key}>
-                  {(columnKey) => (
-                    <TableCell>
-                      {renderCell(item, columnKey as ColumnKey)}
-                    </TableCell>
-                  )}
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </Scroll>
-      </Block>
+    <div className="grid grid-rows-[1fr_56px] gap-4 h-full">
+      <div className="grid grid-cols-[100px_1fr] gap-4 h-full w-full">
+        <Block className="h-full">
+          <div></div>
+        </Block>
+        <Block className="pr-2 h-full">
+          <Scroll>
+            <Table
+              removeWrapper
+              aria-label="表单列表"
+              selectedKeys={selectedKeys}
+              selectionMode="multiple"
+              onSelectionChange={setSelectedKeys}
+            >
+              <TableHeader columns={columns}>
+                {(column) => (
+                  <TableColumn
+                    key={column.key}
+                    align="center"
+                    className="text-center"
+                  >
+                    {column.label}
+                  </TableColumn>
+                )}
+              </TableHeader>
+              <TableBody items={rows}>
+                {(item) => (
+                  <TableRow key={item.key}>
+                    {(columnKey) => (
+                      <TableCell>
+                        {renderCell(item, columnKey as ColumnKey)}
+                      </TableCell>
+                    )}
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </Scroll>
+        </Block>
+      </div>
       <Block className="grid sm:grid-cols-[80px_1fr_80px] grid-cols-[1fr] pt-3 gap-2">
         <div className="hidden sm:block justify-items-center content-center">
           Total 100

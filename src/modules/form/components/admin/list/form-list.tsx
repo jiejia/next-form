@@ -35,8 +35,12 @@ import {
   TableCellsIcon,
   PauseIcon,
   PlayIcon,
+  PlusIcon,
 } from "@heroicons/react/24/outline";
 import Scroll from "@/modules/common/components/shared/scroll";
+import { FormService } from "@/modules/form/services/form-service";
+import { useState, useEffect } from "react";
+import { PageArgs, WhereArgs } from "@/modules/form/types/list";
 
 interface RowItem {
   key: string;
@@ -68,7 +72,7 @@ const columns = [
     label: "ID",
   },
   {
-    key: "name",
+    key: "title",
     label: "表单名称",
   },
   {
@@ -80,7 +84,7 @@ const columns = [
     label: "提交数",
   },
   {
-    key: "status",
+    key: "enabled",
     label: "状态",
   },
   {
@@ -89,29 +93,23 @@ const columns = [
   },
 ];
 
-// 修改 generateRows 函数，使用固定的随机数
-const generateRows = () => {
-  const formTypes = [
-    "用户调查问卷",
-    "产品反馈表",
-    "活动报名表",
-    "满意度调查",
-    "需求收集表",
-  ];
-  const statuses = ["active", "paused", "deleted"];
-
-  return Array.from({ length: 50 }, (_, index) => ({
-    key: `${index + 1}`,
-    id: `FORM-${String(index + 1).padStart(4, "0")}`,
-    name: `${formTypes[index % formTypes.length]} ${index + 1}`,
-    created_at: `2024-01-${String(index + 1).padStart(2, "0")}`,
-    submissions: (index * 17 + 23) % 1000, // 使用确定性的计算替代随机数
-    status: statuses[index % statuses.length],
-  }));
-};
-
 const FormList: React.FC = () => {
-  const [rows] = React.useState(() => generateRows());
+  const initialData = {
+    perPage: 5,
+    sort: "id_desc",
+    status: [0, 1],
+  };
+
+  const [data, setData] = useState<PageArgs>({
+    page: 0,
+    perPage: initialData.perPage,
+    items: [],
+    count: 0,
+    keyword: "",
+    sort: initialData.sort,
+    status: initialData.status,
+  });
+
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
     new Set(["2"])
   );
@@ -276,7 +274,7 @@ const FormList: React.FC = () => {
           ))}
         </TableHeader>
         <TableBody>
-          {rows.map((row) => (
+          {data.items.map((row) => (
             <TableRow key={row.key}>
               {visibleColumnsArray.map((column) => (
                 <TableCell key={column.key}>
@@ -288,6 +286,92 @@ const FormList: React.FC = () => {
         </TableBody>
       </Table>
     );
+  };
+
+  useEffect(() => {
+    pageForms();
+  }, []); // 空依赖数组确保仅在组件挂载时执行一次
+
+  const pageForms = async (
+    page: number = 1,
+    keyword: string = "",
+    perPage: number = initialData.perPage,
+    sort: string = initialData.sort,
+    status: number[] = initialData.status
+  ) => {
+    // search conditions
+    let where: WhereArgs = {
+      title: {
+        contains: "",
+      },
+      OR: [],
+    };
+
+    if (keyword != "") {
+      where.title.contains = keyword;
+    }
+
+    const sorts: object = {
+      id_desc: {
+        id: "desc",
+      },
+      id_asc: {
+        id: "asc",
+      },
+    };
+
+    const conditions = {
+      0: {
+        enabled: false,
+      },
+      1: {
+        enabled: true,
+      },
+    };
+
+    let statusWhere: object[] = [];
+
+    for (const [key, value] of Object.entries(conditions)) {
+      if (key in status) {
+        statusWhere.push(value);
+      }
+    }
+
+    where.OR = statusWhere;
+
+    // console.log(statusWhere)
+
+    const rows = await FormService.getForms({
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        enabled: true,
+        createdAt: true,
+      },
+      orderBy: [sorts[sort.toString()]],
+      where: where,
+      skip: perPage * (page - 1),
+      take: perPage,
+    });
+
+    const formCount = await FormService.getFormCount({
+      where: where,
+    });
+
+    // console.log(where, formCount)
+
+    setData({
+      ...data,
+      count: formCount,
+      items: rows,
+      page: page,
+      perPage: perPage,
+      keyword: keyword,
+      sort: sort,
+      status: status,
+    });
+    console.log(data);
   };
 
   return (
@@ -383,6 +467,16 @@ const FormList: React.FC = () => {
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
+            <Button
+              isIconOnly
+              size="sm"
+              variant="flat"
+              color="primary"
+              as="a"
+              href="/dashboard/form/create"
+            >
+              <PlusIcon className="h-5 w-5" />
+            </Button>
           </div>
         </div>
       </Block>

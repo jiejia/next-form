@@ -17,10 +17,11 @@ model Form {
   description    String    @db.VarChar(255) @map("description")
   enabled        Boolean   @map("enabled")
   numberingStyle Int       @map("numbering_style")
-  fields         Field[]
   createdAt      DateTime  @default(now()) @map("created_at")
   updatedAt      DateTime  @updatedAt @map("updated_at")
   deletedAt      DateTime? @map("deleted_at")
+  fields         Field[]
+  submissions    FormSubmission[]
 
   @@map("forms")
 }
@@ -53,6 +54,7 @@ model FormSubmission {
   data      Json      @map("data")
   createdAt DateTime  @default(now()) @map("created_at")
   deletedAt DateTime? @map("deleted_at")
+  form      Form      @relation(fields: [formId], references: [id])
 
   @@map("form_submissions")
 }

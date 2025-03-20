@@ -1,6 +1,6 @@
 export type WhereArgs = {
     title: Contain;
-    OR: string[];
+    OR: Array<{enabled: boolean}>;
 }
 
 export type Contain = {
@@ -10,7 +10,7 @@ export type Contain = {
 export type PageArgs = {
     page: number,
     perPage: number,
-    items: object[],
+    items: RowItem[],
     count: number,
     keyword: string,
     sort: string

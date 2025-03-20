@@ -41,29 +41,19 @@ import Scroll from "@/modules/common/components/shared/scroll";
 import { FormService } from "@/modules/form/services/form-service";
 import { useState, useEffect } from "react";
 import { PageArgs, WhereArgs } from "@/modules/form/types/list";
+import { format } from "date-fns";
+import { Form } from "@prisma/client";
 
-interface RowItem {
-  key: string;
-  id: string;
-  name: string;
-  created_at: string;
-  submissions: number;
-  status: string;
-  actions?: string;
-}
-
-type ColumnKey = keyof RowItem | "actions";
+type ColumnKey = keyof Form | "actions";
 
 const statusColorMap: Record<string, "success" | "warning" | "danger"> = {
-  active: "success",
-  paused: "warning",
-  deleted: "danger",
+  true: "success",
+  false: "danger",
 };
 
-const statusTextMap = {
-  active: "进行中",
-  paused: "已暂停",
-  deleted: "已删除",
+const statusTextMap: Record<string, string> = {
+  true: "已开启",
+  false: "已关闭",
 };
 
 const columns = [
@@ -95,13 +85,14 @@ const columns = [
 
 const FormList: React.FC = () => {
   const initialData = {
-    perPage: 5,
+    perPage: 20,
     sort: "id_desc",
     status: [0, 1],
   };
 
+  const [perPage, setPerPage] = useState<number>(initialData.perPage);
   const [data, setData] = useState<PageArgs>({
-    page: 0,
+    page: 1,
     perPage: initialData.perPage,
     items: [],
     count: 0,
@@ -137,9 +128,9 @@ const FormList: React.FC = () => {
   };
 
   const renderCell = React.useCallback(
-    (item: RowItem, columnKey: ColumnKey) => {
+    (item: Form, columnKey: ColumnKey) => {
       const cellValue =
-        columnKey === "actions" ? undefined : item[columnKey as keyof RowItem];
+        columnKey === "actions" ? undefined : item[columnKey as keyof Form];
 
       switch (columnKey) {
         case "id":
@@ -148,16 +139,16 @@ const FormList: React.FC = () => {
               {cellValue}
             </div>
           );
-        case "status":
+        case "enabled":
           return (
             <div className="flex justify-center">
               <Chip
                 className="capitalize"
-                color={statusColorMap[cellValue as keyof typeof statusColorMap]}
+                color={statusColorMap[String(cellValue)]}
                 size="sm"
                 variant="flat"
               >
-                {statusTextMap[cellValue as keyof typeof statusTextMap]}
+                {statusTextMap[String(cellValue)]}
               </Chip>
             </div>
           );
@@ -207,7 +198,7 @@ const FormList: React.FC = () => {
           return <div className="text-center">{cellValue}</div>;
         case "created_at":
           return <div className="text-center">{cellValue}</div>;
-        case "name":
+        case "title":
           return <div className="text-center">{cellValue}</div>;
         default:
           return <div className="text-center">{cellValue}</div>;
@@ -275,7 +266,7 @@ const FormList: React.FC = () => {
         </TableHeader>
         <TableBody>
           {data.items.map((row) => (
-            <TableRow key={row.key}>
+            <TableRow key={row.id}>
               {visibleColumnsArray.map((column) => (
                 <TableCell key={column.key}>
                   {renderCell(row, column.key as ColumnKey)}
@@ -289,8 +280,15 @@ const FormList: React.FC = () => {
   };
 
   useEffect(() => {
-    pageForms();
-  }, []); // 空依赖数组确保仅在组件挂载时执行一次
+    setPerPage(initialData.perPage);
+    pageForms(
+      data.page,
+      data.keyword,
+      initialData.perPage,
+      data.sort,
+      data.status
+    );
+  }, []);
 
   const pageForms = async (
     page: number = 1,
@@ -300,7 +298,7 @@ const FormList: React.FC = () => {
     status: number[] = initialData.status
   ) => {
     // search conditions
-    let where: WhereArgs = {
+    const where: WhereArgs = {
       title: {
         contains: "",
       },
@@ -311,7 +309,7 @@ const FormList: React.FC = () => {
       where.title.contains = keyword;
     }
 
-    const sorts: object = {
+    const sorts: Record<string, object> = {
       id_desc: {
         id: "desc",
       },
@@ -329,11 +327,11 @@ const FormList: React.FC = () => {
       },
     };
 
-    let statusWhere: object[] = [];
+    const statusWhere: { enabled: boolean }[] = [];
 
     for (const [key, value] of Object.entries(conditions)) {
-      if (key in status) {
-        statusWhere.push(value);
+      if (status.includes(Number(key))) {
+        statusWhere.push(value as { enabled: boolean });
       }
     }
 
@@ -349,29 +347,60 @@ const FormList: React.FC = () => {
         enabled: true,
         createdAt: true,
       },
-      orderBy: [sorts[sort.toString()]],
+      orderBy: [sorts[sort] || sorts["id_desc"]],
       where: where,
       skip: perPage * (page - 1),
       take: perPage,
     });
 
+    // 转换数据格式以匹配RowItem接口
+    const formattedRows: Form[] = rows.map((row) => ({
+      key: row.id,
+      id: row.id,
+      title: row.title,
+      created_at: format(new Date(row.createdAt), "yyyy-MM-dd HH:mm:ss"),
+      submissions: 0, // 这里缺少实际提交数据，暂时填充0
+      enabled: String(row.enabled),
+    }));
+
     const formCount = await FormService.getFormCount({
       where: where,
     });
 
-    // console.log(where, formCount)
-
     setData({
       ...data,
       count: formCount,
-      items: rows,
+      items: formattedRows,
       page: page,
       perPage: perPage,
       keyword: keyword,
       sort: sort,
       status: status,
     });
-    console.log(data);
+  };
+
+  // Handle pagination page change
+  const handlePageChange = (newPage: number) => {
+    pageForms(newPage, data.keyword, data.perPage, data.sort, data.status);
+  };
+
+  // Handle search input
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setData({ ...data, keyword: e.target.value });
+  };
+
+  // Handle search submission
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    pageForms(1, data.keyword, data.perPage, data.sort, data.status);
+  };
+
+  // Handle key press on search input
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      pageForms(1, data.keyword, data.perPage, data.sort, data.status);
+    }
   };
 
   return (
@@ -379,15 +408,20 @@ const FormList: React.FC = () => {
       <Block className="h-full pt-3">
         <div className="grid grid-cols-[1fr_auto] items-center gap-2">
           <div>
-            <Input
-              label=""
-              type="text"
-              size="sm"
-              placeholder="搜索表单..."
-              startContent={
-                <SearchIcon className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
-              }
-            />
+            <form onSubmit={handleSearchSubmit}>
+              <Input
+                label=""
+                type="text"
+                size="sm"
+                placeholder="搜索表单..."
+                value={data.keyword}
+                onChange={handleSearch}
+                onKeyDown={handleKeyPress}
+                startContent={
+                  <SearchIcon className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
+                }
+              />
+            </form>
           </div>
           <div className="grid grid-flow-col gap-2">
             <Button
@@ -485,18 +519,34 @@ const FormList: React.FC = () => {
       </Block>
       <Block className="grid sm:grid-cols-[80px_1fr_80px] grid-cols-[1fr] pt-3 gap-2">
         <div className="hidden sm:block justify-items-center content-center">
-          Total 100
+          Total {data.count}
         </div>
         <div className="justify-items-center content-center">
-          <Pagination showControls initialPage={1} total={100} size="sm" loop />
+          <Pagination
+            showControls
+            page={data.page}
+            total={Math.ceil(data.count / data.perPage)}
+            onChange={handlePageChange}
+            size="sm"
+            loop
+          />
         </div>
         <div className="hidden sm:block justify-items-center content-center">
           <Select
-            isRequired
+            disallowEmptySelection
+            selectionMode="single"
             className="max-w-xs"
             placeholder="每页条数"
             size="sm"
-            defaultSelectedKeys={["20"]}
+            selectedKeys={new Set([perPage.toString()])}
+            onSelectionChange={(selection) => {
+              const selected = Array.from(selection);
+              if (selected.length > 0) {
+                const newPerPage = parseInt(selected[0].toString());
+                setPerPage(newPerPage);
+                pageForms(1, data.keyword, newPerPage, data.sort, data.status);
+              }
+            }}
           >
             {[20, 30, 50, 100].map((size) => (
               <SelectItem key={size}>{size}</SelectItem>

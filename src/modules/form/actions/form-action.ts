@@ -213,6 +213,7 @@ export async function getForms(args: object = {}) {
     return prisma.form.findMany(args);
 }
 
+
 /**
  * Get form count
  *

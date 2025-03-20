@@ -210,8 +210,17 @@ export async function deleteForms(ids: number[]) {
  * @param args
  */
 export async function getForms(args: object = {}) {
-    return prisma.form.findMany(args);
-}
+    return prisma.form.findMany({
+        ...args,
+        include: {
+            ...((args as any).include || {}),
+            _count: {
+                select: {
+                    submissions: true
+                }
+            }
+        }
+    });}
 
 
 /**

@@ -43,8 +43,7 @@ import { useState, useEffect } from "react";
 import { PageArgs, WhereArgs } from "@/modules/form/types/list";
 import { format } from "date-fns";
 import { Form } from "@prisma/client";
-
-type ColumnKey = keyof Form | "actions";
+import clsx from "clsx";
 
 const statusColorMap: Record<string, "success" | "warning" | "danger"> = {
   true: "success",
@@ -66,7 +65,7 @@ const columns = [
     label: "表单名称",
   },
   {
-    key: "created_at",
+    key: "createdAt",
     label: "创建时间",
   },
   {
@@ -90,7 +89,6 @@ const FormList: React.FC = () => {
     status: [0, 1],
   };
 
-  const [perPage, setPerPage] = useState<number>(initialData.perPage);
   const [data, setData] = useState<PageArgs>({
     page: 1,
     perPage: initialData.perPage,
@@ -127,85 +125,81 @@ const FormList: React.FC = () => {
     });
   };
 
-  const renderCell = React.useCallback(
-    (item: Form, columnKey: ColumnKey) => {
-      const cellValue =
-        columnKey === "actions" ? undefined : item[columnKey as keyof Form];
+  const renderCell = React.useCallback((item: Form, columnKey: string) => {
+    const cellValue = columnKey === "actions" ? undefined : item[columnKey];
 
-      switch (columnKey) {
-        case "id":
-          return (
-            <div className="text-center font-mono text-xs text-gray-500">
-              {cellValue}
-            </div>
-          );
-        case "enabled":
-          return (
-            <div className="flex justify-center">
-              <Chip
-                className="capitalize"
-                color={statusColorMap[String(cellValue)]}
-                size="sm"
-                variant="flat"
-              >
-                {statusTextMap[String(cellValue)]}
-              </Chip>
-            </div>
-          );
-        case "actions":
-          return (
-            <div className="flex justify-center">
-              <Dropdown placement="bottom-end">
-                <DropdownTrigger>
-                  <Button
-                    isIconOnly
-                    size="sm"
-                    variant="light"
-                    className="text-default-400 cursor-pointer active:opacity-50"
-                  >
-                    <EllipsisVerticalIcon className="h-5 w-5" />
-                  </Button>
-                </DropdownTrigger>
-                <DropdownMenu aria-label="表单操作">
-                  <DropdownItem
-                    key="view"
-                    description="查看此表单的详细信息"
-                    startContent={<EyeIcon className="h-4 w-4" />}
-                  >
-                    查看详情
-                  </DropdownItem>
-                  <DropdownItem
-                    key="edit"
-                    description="编辑此表单"
-                    startContent={<PencilSquareIcon className="h-4 w-4" />}
-                  >
-                    编辑表单
-                  </DropdownItem>
-                  <DropdownItem
-                    key="delete"
-                    description="永久删除此表单"
-                    color="danger"
-                    className="text-danger"
-                    startContent={<TrashIcon className="h-4 w-4" />}
-                  >
-                    删除表单
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
-            </div>
-          );
-        case "submissions":
-          return <div className="text-center">{cellValue}</div>;
-        case "created_at":
-          return <div className="text-center">{cellValue}</div>;
-        case "title":
-          return <div className="text-center">{cellValue}</div>;
-        default:
-          return <div className="text-center">{cellValue}</div>;
-      }
-    },
-    []
-  );
+    switch (columnKey) {
+      case "id":
+        return (
+          <div className="text-center font-mono text-xs text-gray-500">
+            {String(cellValue)}
+          </div>
+        );
+      case "enabled":
+        return (
+          <div className="flex justify-center">
+            <Chip
+              className="capitalize"
+              color={statusColorMap[String(cellValue)]}
+              size="sm"
+              variant="flat"
+            >
+              {statusTextMap[String(cellValue)]}
+            </Chip>
+          </div>
+        );
+      case "actions":
+        return (
+          <div className="flex justify-center">
+            <Dropdown placement="bottom-end">
+              <DropdownTrigger>
+                <Button
+                  isIconOnly
+                  size="sm"
+                  variant="light"
+                  className="text-default-400 cursor-pointer active:opacity-50"
+                >
+                  <EllipsisVerticalIcon className="h-5 w-5" />
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu aria-label="表单操作">
+                <DropdownItem
+                  key="view"
+                  description="查看此表单的详细信息"
+                  startContent={<EyeIcon className="h-4 w-4" />}
+                >
+                  查看详情
+                </DropdownItem>
+                <DropdownItem
+                  key="edit"
+                  description="编辑此表单"
+                  startContent={<PencilSquareIcon className="h-4 w-4" />}
+                >
+                  编辑表单
+                </DropdownItem>
+                <DropdownItem
+                  key="delete"
+                  description="永久删除此表单"
+                  color="danger"
+                  className="text-danger"
+                  startContent={<TrashIcon className="h-4 w-4" />}
+                >
+                  删除表单
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </div>
+        );
+      case "submissions":
+        return <div className="text-center">{String(cellValue)}</div>;
+      case "created_at":
+        return <div className="text-center">{String(cellValue)}</div>;
+      case "title":
+        return <div className="text-center">{String(cellValue)}</div>;
+      default:
+        return <div className="text-center">{String(cellValue)}</div>;
+    }
+  }, []);
 
   const SearchIcon = (props: React.SVGProps<SVGSVGElement>) => {
     return (
@@ -269,7 +263,7 @@ const FormList: React.FC = () => {
             <TableRow key={row.id}>
               {visibleColumnsArray.map((column) => (
                 <TableCell key={column.key}>
-                  {renderCell(row, column.key as ColumnKey)}
+                  {renderCell(row, column.key)}
                 </TableCell>
               ))}
             </TableRow>
@@ -280,11 +274,10 @@ const FormList: React.FC = () => {
   };
 
   useEffect(() => {
-    setPerPage(initialData.perPage);
     pageForms(
       data.page,
       data.keyword,
-      initialData.perPage,
+      data.perPage,
       data.sort,
       data.status
     );
@@ -293,9 +286,9 @@ const FormList: React.FC = () => {
   const pageForms = async (
     page: number = 1,
     keyword: string = "",
-    perPage: number = initialData.perPage,
-    sort: string = initialData.sort,
-    status: number[] = initialData.status
+    perPage: number = data.perPage,
+    sort: string = data.sort,
+    status: number[] = data.status
   ) => {
     // search conditions
     const where: WhereArgs = {
@@ -354,13 +347,17 @@ const FormList: React.FC = () => {
     });
 
     // 转换数据格式以匹配RowItem接口
-    const formattedRows: Form[] = rows.map((row) => ({
-      key: row.id,
+    const formattedRows: object[] = rows.map((row) => ({
       id: row.id,
+      uuid: row.uuid,
       title: row.title,
-      created_at: format(new Date(row.createdAt), "yyyy-MM-dd HH:mm:ss"),
-      submissions: 0, // 这里缺少实际提交数据，暂时填充0
+      description: row.description,
+      numberingStyle: row.numberingStyle,
+      createdAt: format(new Date(row.createdAt), "yyyy-MM-dd HH:mm:ss"),
+      updatedAt: row.updatedAt,
+      deletedAt: row.deletedAt,
       enabled: String(row.enabled),
+      submissions: 0,
     }));
 
     const formCount = await FormService.getFormCount({
@@ -401,6 +398,10 @@ const FormList: React.FC = () => {
       e.preventDefault();
       pageForms(1, data.keyword, data.perPage, data.sort, data.status);
     }
+  };
+
+  const handlePerPageChange = async (e: any) => {
+    await pageForms(1, data.keyword, parseInt(e.target.value));
   };
 
   return (
@@ -523,12 +524,14 @@ const FormList: React.FC = () => {
         </div>
         <div className="justify-items-center content-center">
           <Pagination
-            showControls
-            page={data.page}
-            total={Math.ceil(data.count / data.perPage)}
-            onChange={handlePageChange}
-            size="sm"
-            loop
+              showControls
+              showShadow
+              color="primary"
+              page={data.page}
+              total={Math.max(1, Math.ceil(data.count / data.perPage))}
+              onChange={(page) => handlePageChange(page)}
+              size={"sm"}
+              className={clsx('', {"invisible": Math.ceil(data.count / data.perPage) == 0})}
           />
         </div>
         <div className="hidden sm:block justify-items-center content-center">
@@ -536,20 +539,14 @@ const FormList: React.FC = () => {
             disallowEmptySelection
             selectionMode="single"
             className="max-w-xs"
-            placeholder="每页条数"
             size="sm"
-            selectedKeys={new Set([perPage.toString()])}
-            onSelectionChange={(selection) => {
-              const selected = Array.from(selection);
-              if (selected.length > 0) {
-                const newPerPage = parseInt(selected[0].toString());
-                setPerPage(newPerPage);
-                pageForms(1, data.keyword, newPerPage, data.sort, data.status);
-              }
-            }}
+            defaultSelectedKeys={[data.perPage.toString()]}
+            onChange={handlePerPageChange}
           >
             {[20, 30, 50, 100].map((size) => (
-              <SelectItem key={size}>{size}</SelectItem>
+              <SelectItem key={size} textValue={size.toString()}>
+                {size}
+              </SelectItem>
             ))}
           </Select>
         </div>

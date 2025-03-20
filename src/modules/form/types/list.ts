@@ -10,7 +10,7 @@ export type Contain = {
 export type PageArgs = {
     page: number,
     perPage: number,
-    items: RowItem[],
+    items: object[],
     count: number,
     keyword: string,
     sort: string

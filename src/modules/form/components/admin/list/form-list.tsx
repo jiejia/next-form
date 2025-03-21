@@ -357,7 +357,7 @@ const FormList: React.FC = () => {
       updatedAt: row.updatedAt,
       deletedAt: row.deletedAt,
       enabled: String(row.enabled),
-      submissions: 0,
+      submissions: row._count.submissions,
     }));
 
     const formCount = await FormService.getFormCount({

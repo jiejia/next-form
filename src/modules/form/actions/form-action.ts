@@ -8,6 +8,7 @@ import {revalidatePath} from 'next/cache';
 import {v4 as uuidV4} from 'uuid';
 import {FormSchema} from "@/modules/form/validators/form";
 import prisma from "@/lib/prisma";
+import {QueryArgs} from "@/modules/common/types/prisma";
 
 /**
  * Get control configs
@@ -209,19 +210,37 @@ export async function deleteForms(ids: number[]) {
  *
  * @param args
  */
-export async function getForms(args: object = {}) {
-    return prisma.form.findMany({
-        ...args,
-        include: {
-            ...((args as any).include || {}),
-            _count: {
-                select: {
-                    submissions: true
+export async function getForms(args: QueryArgs = {}) {
+    const hasSelect = args.select !== undefined;
+    
+    if (hasSelect) {
+        // If select is used, add _count to the select object
+        return prisma.form.findMany({
+            ...args,
+            select: {
+                ...args.select,
+                _count: {
+                    select: {
+                        submissions: true
+                    }
                 }
             }
-        }
-    });}
-
+        });
+    } else {
+        // If no select, use include as before
+        return prisma.form.findMany({
+            ...args,
+            include: {
+                ...(args.include || {}),
+                _count: {
+                    select: {
+                        submissions: true
+                    }
+                }
+            }
+        });
+    }
+}
 
 /**
  * Get form count
@@ -267,3 +286,4 @@ export async function getFormById(id: number) {
         },
     });
 }
+

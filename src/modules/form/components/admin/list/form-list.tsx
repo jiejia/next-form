@@ -45,80 +45,12 @@ import { useState, useEffect } from "react";
 import { PageArgs, WhereArgs } from "@/modules/form/types/list";
 import { format } from "date-fns";
 import clsx from "clsx";
+import { PrismaFormResult, FormWithSubmissions } from "@/modules/form/types/list";
+import { statusColorMap, statusTextMap , columns, initialData, sortOptions} from "@/modules/form/constants/list";
 
-// Type for Prisma form result with count
-interface PrismaFormResult {
-  id: number;
-  uuid: string;
-  title: string;
-  description: string;
-  enabled: boolean;
-  numberingStyle: number;
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt: Date | null;
-  _count: {
-    submissions: number;
-  };
-}
-
-// Type for form rows with submissions count
-interface FormWithSubmissions {
-  id: number;
-  uuid: string;
-  title: string;
-  description: string;
-  numberingStyle: number;
-  createdAt: string;
-  updatedAt: Date;
-  deletedAt: Date | null;
-  enabled: string;
-  submissions: number;
-}
-
-const statusColorMap: Record<string, "success" | "warning" | "danger"> = {
-  true: "success",
-  false: "danger",
-};
-
-const statusTextMap: Record<string, string> = {
-  true: "已开启",
-  false: "已关闭",
-};
-
-const columns = [
-  {
-    key: "id",
-    label: "ID",
-  },
-  {
-    key: "title",
-    label: "表单名称",
-  },
-  {
-    key: "createdAt",
-    label: "创建时间",
-  },
-  {
-    key: "submissions",
-    label: "提交数",
-  },
-  {
-    key: "enabled",
-    label: "状态",
-  },
-  {
-    key: "actions",
-    label: "操作",
-  },
-];
 
 const FormList: React.FC = () => {
-  const initialData = {
-    perPage: 20,
-    sort: "id_desc",
-    status: [0, 1],
-  };
+
 
   const [data, setData] = useState<PageArgs<FormWithSubmissions>>({
     page: 1,
@@ -141,18 +73,6 @@ const FormList: React.FC = () => {
   const [visibleColumns, setVisibleColumns] = React.useState<Set<string>>(
     new Set(columns.map((col) => col.key))
   );
-
-  // Sort options
-  const sortOptions = [
-    { key: "id_desc", text: "按ID/创建时间倒序" },
-    { key: "id_asc", text: "按ID/创建时间顺序" },
-    { key: "title_desc", text: "按名称倒序" },
-    { key: "title_asc", text: "按名称顺序" },
-    { key: "submissions_desc", text: "按提交数倒序" },
-    { key: "submissions_asc", text: "按提交数顺序" },
-    { key: "enabled_desc", text: "按状态倒序" },
-    { key: "enabled_asc", text: "按状态顺序" },
-  ];
 
   // Handle sort selection
   const handleSortChange = (sortKey: string) => {

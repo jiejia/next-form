@@ -29,3 +29,33 @@ export type PageArgs<T = object> = {
     dateFrom: string,
     dateTo: string
 }
+
+// Type for Prisma form result with count
+export type PrismaFormResult =  {
+    id: number;
+    uuid: string;
+    title: string;
+    description: string;
+    enabled: boolean;
+    numberingStyle: number;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt: Date | null;
+    _count: {
+        submissions: number;
+    };
+}
+
+// Type for form rows with submissions count
+export type FormWithSubmissions = {
+    id: number;
+    uuid: string;
+    title: string;
+    description: string;
+    numberingStyle: number;
+    createdAt: string;
+    updatedAt: Date;
+    deletedAt: Date | null;
+    enabled: string;
+    submissions: number;
+}

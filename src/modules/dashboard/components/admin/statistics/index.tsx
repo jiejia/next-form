@@ -1,4 +1,4 @@
-import Block from "@/modules/common/components/shared/block";
+import Block from '@/modules/common/components/shared/block';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { FaWpforms, FaUsers, FaCheckCircle, FaClock } from 'react-icons/fa';
 
@@ -12,7 +12,7 @@ const submissionData = [
     { name: 'Sun', submissions: 15 },
 ];
 
-export default function Dashboard() {
+export default function Index() {
     return (
         <div className="grid md:grid-rows-[2fr_5fr_5fr] grid-rows-[4fr_8fr]  gap-4 h-full">
             <div className="grid md:grid-cols-[1fr_1fr_1fr_1fr] grid-cols-[1fr_1fr]  gap-4">

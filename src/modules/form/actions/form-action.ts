@@ -156,7 +156,7 @@ export async function updateForm(form: Form) {
 
     // reset page cache
     revalidatePath('/dashboard/form');
-    revalidatePath('/dashboard/form/' + form.id + '/edit');
+    revalidatePath('/dashboard/form/' + form.id + '/[id]');
 }
 
 /**

@@ -5,22 +5,12 @@ import {
   CheckCircleIcon,
   XCircleIcon,
   DocumentTextIcon,
-  EyeIcon,
-  PencilSquareIcon,
-  TrashIcon,
-  EllipsisVerticalIcon,
 } from "@heroicons/react/24/outline";
 import { Selection } from "@heroui/react";
 import Block from "@/modules/common/components/shared/block";
 import Scroll from "@/modules/common/components/shared/scroll";
-import {
-  Button,
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
-  Checkbox,
-} from "@heroui/react";
+import { Checkbox } from "@heroui/react";
+import DataActionMenu from "./data-action-menu";
 
 interface DataListProps {
   data: PageArgs<FormWithSubmissions>;
@@ -152,45 +142,7 @@ const DataList: React.FC<DataListProps> = ({
                     className="mt-4 pt-3 border-t flex justify-end"
                     onClick={stopPropagation}
                   >
-                    <Dropdown placement="bottom-end">
-                      <DropdownTrigger>
-                        <Button
-                          isIconOnly
-                          size="sm"
-                          variant="light"
-                          className="text-default-400 cursor-pointer active:opacity-50"
-                        >
-                          <EllipsisVerticalIcon className="h-5 w-5" />
-                        </Button>
-                      </DropdownTrigger>
-                      <DropdownMenu aria-label="表单操作">
-                        <DropdownItem
-                          key="view"
-                          description="查看此表单的详细信息"
-                          startContent={<EyeIcon className="h-4 w-4" />}
-                        >
-                          查看详情
-                        </DropdownItem>
-                        <DropdownItem
-                          key="edit"
-                          description="编辑此表单"
-                          startContent={
-                            <PencilSquareIcon className="h-4 w-4" />
-                          }
-                        >
-                          编辑表单
-                        </DropdownItem>
-                        <DropdownItem
-                          key="delete"
-                          description="永久删除此表单"
-                          color="danger"
-                          className="text-danger"
-                          startContent={<TrashIcon className="h-4 w-4" />}
-                        >
-                          删除表单
-                        </DropdownItem>
-                      </DropdownMenu>
-                    </Dropdown>
+                    <DataActionMenu formId={form.id} />
                   </div>
                 </div>
               </div>

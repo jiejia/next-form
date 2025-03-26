@@ -34,7 +34,7 @@ async function seedMenuItem() {
     await prisma.MenuItem.createMany({
         data: [
             {
-                title: 'Dashboard',
+                title: 'Index',
                 url: '/dashboard',
                 icon: 'dashboard.svg',
                 parentId: null

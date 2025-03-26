@@ -10,8 +10,6 @@ import {
 import {v4 as uuidV4} from "uuid";
 import _ from "lodash";
 import type {DraggableItem, Control, Field} from "@/modules/form/types/form";
-import {FormService} from "@/modules/form/services/form-service";
-
 import Block from "@/modules/common/components/shared/block";
 import Scroll from "@/modules/common/components/shared/scroll";
 import DndWrapper from "@/modules/common/components/shared/dnd-wrapper";
@@ -24,11 +22,52 @@ import Overlay from "@/modules/form/components/admin/save/overlay";
 import Actions from "@/modules/form/components/admin/save/actions";
 
 import {formData} from "@/modules/form/data/form";
+import {FormService} from "@/modules/form/services/form-service";
+import {isNotEmpty} from "@/lib/utils";
+import {notFound, useRouter,usePathname } from 'next/navigation'
 
-export default function Index() {
+
+export default function Index(props:any) {
     useEffect(() => {
         getControl();
     }, []);
+
+    const initData = async () => {
+        // console.log(isNotEmpty(props.id))
+        if (isNotEmpty(props.id)) {
+            const formData = await FormService.getFormById(parseInt(props.id));
+            if (! formData) {
+                notFound();
+            }
+            const newInitialData = {
+                fields: formData.fields as Field[],
+                currentField: formData.fields[0] as Field,
+                form : {
+                    id: formData.id,
+                    title: formData.title,
+                    description: formData.description,
+                    enabled: formData.enabled,
+                    numberingStyle: formData.numberingStyle
+                }
+            }
+            newInitialData.currentField.active = true
+
+            setFields(newInitialData.fields)
+            setCurrentField(newInitialData.currentField)
+            setForm(newInitialData.form)
+        } else {
+            const uuid = uuidV4()
+            const newInitialData = _.cloneDeep(formData);
+
+            newInitialData.currentField.uuid = uuid
+            newInitialData.fields[0].uuid = uuid
+
+            setFields(newInitialData.fields)
+            setCurrentField(newInitialData.currentField)
+            setForm(newInitialData.form)
+        }
+    }
+
 
     const formDataClone = _.cloneDeep(formData);
 

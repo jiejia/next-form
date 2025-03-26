@@ -25,7 +25,7 @@ import Actions from "@/modules/form/components/admin/save/actions";
 
 import {formData} from "@/modules/form/data/form";
 
-export default function SaveForm() {
+export default function Index() {
     useEffect(() => {
         getControl();
     }, []);

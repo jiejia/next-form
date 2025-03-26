@@ -75,7 +75,7 @@ const DataList: React.FC<DataListProps> = ({
     <Block className="pr-2 h-full">
       <Scroll>
         <div className="relative p-0 z-30">
-          <div className="z-30 sticky top-0 left-0 z-10 bg-gray-50 p-2 mb-4 rounded-lg flex items-center w-full">
+          <div className="z-30 sticky top-0 left-0 bg-gray-50 p-2 mb-4 rounded-lg flex items-center w-full">
             <Checkbox
               isSelected={isAllSelected()}
               onValueChange={toggleSelectAll}
@@ -100,9 +100,17 @@ const DataList: React.FC<DataListProps> = ({
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center gap-2">
                       <DocumentTextIcon className="h-5 w-5 text-gray-500 flex-shrink-0" />
-                      <h3 className="text-lg font-medium text-gray-900 truncate max-w-[200px]">
-                        {form.title}
-                      </h3>
+                      <div className="flex flex-col">
+                        <div className="flex items-center gap-1">
+                          <span className="font-mono text-base font-medium text-gray-600">
+                            #{form.id}
+                          </span>
+                          <span className="text-gray-400 mx-1">·</span>
+                          <h3 className="text-lg font-medium text-gray-900 truncate max-w-[160px]">
+                            {form.title}
+                          </h3>
+                        </div>
+                      </div>
                     </div>
                     <div className="flex items-center gap-2">
                       {form.enabled === "true" ? (

@@ -17,7 +17,7 @@ import DataTable from "./data-table";
 import DataList from "./data-list";
 import AdvancedSearchModal from "./advanced-search-modal";
 
-const FormList: React.FC = () => {
+const Index: React.FC = () => {
   const [data, setData] = useState<PageArgs<FormWithSubmissions>>({
     page: 1,
     perPage: initialData.perPage,
@@ -39,7 +39,7 @@ const FormList: React.FC = () => {
   const [visibleColumns, setVisibleColumns] = React.useState<Set<string>>(
     new Set(columns.map((col) => col.key))
   );
-  const [viewMode, setViewMode] = React.useState<"table" | "grid">("table");
+  const [viewMode, setViewMode] = React.useState<"table" | "grid">("grid");
 
   // Handle sort selection
   const handleSortChange = (sortKey: string) => {
@@ -498,4 +498,4 @@ const FormList: React.FC = () => {
   );
 };
 
-export default FormList;
+export default Index;

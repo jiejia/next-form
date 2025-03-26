@@ -21,6 +21,9 @@ import {
   ArrowsUpDownIcon,
   EllipsisVerticalIcon,
   TrashIcon,
+  MagnifyingGlassIcon,
+  ViewColumnsIcon,
+  Squares2X2Icon,
 } from "@heroicons/react/24/outline";
 import { PageArgs } from "@/modules/form/types/list";
 import { FormWithSubmissions } from "@/modules/form/types/list";
@@ -36,37 +39,9 @@ interface ActionProps {
   setIsFilterOpen: React.Dispatch<React.SetStateAction<boolean>>;
   visibleColumns: Set<string>;
   handleColumnVisibilityChange: (key: string, isVisible: boolean) => void;
+  viewMode: "table" | "grid";
+  setViewMode: React.Dispatch<React.SetStateAction<"table" | "grid">>;
 }
-
-const SearchIcon = (props: React.SVGProps<SVGSVGElement>) => {
-  return (
-    <svg
-      aria-hidden="true"
-      fill="none"
-      focusable="false"
-      height="1em"
-      role="presentation"
-      viewBox="0 0 24 24"
-      width="1em"
-      {...props}
-    >
-      <path
-        d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="2"
-      />
-      <path
-        d="M22 22L20 20"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="2"
-      />
-    </svg>
-  );
-};
 
 const Action: React.FC<ActionProps> = ({
   data,
@@ -78,6 +53,8 @@ const Action: React.FC<ActionProps> = ({
   setIsFilterOpen,
   visibleColumns,
   handleColumnVisibilityChange,
+  viewMode,
+  setViewMode,
 }) => {
   return (
     <Block className="h-full pt-3">
@@ -92,9 +69,7 @@ const Action: React.FC<ActionProps> = ({
               value={data.keyword}
               onChange={handleSearch}
               onKeyDown={handleKeyPress}
-              startContent={
-                <SearchIcon className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
-              }
+              startContent={<MagnifyingGlassIcon className="h-5 w-5" />}
             />
           </form>
         </div>
@@ -119,6 +94,40 @@ const Action: React.FC<ActionProps> = ({
           >
             <FunnelIcon className="h-5 w-5" />
           </Button>
+          {viewMode === "table" && (
+            <Dropdown placement="bottom-end" closeOnSelect={false}>
+              <DropdownTrigger>
+                <Button
+                  isIconOnly
+                  size="sm"
+                  variant="flat"
+                  className="text-default-600"
+                  title="显示列设置"
+                >
+                  <TableCellsIcon className="h-5 w-5" />
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu aria-label="显示列设置">
+                {columns.map((column) => (
+                  <DropdownItem key={column.key} textValue={column.label}>
+                    <Checkbox
+                      isSelected={visibleColumns.has(column.key)}
+                      onValueChange={(checked) =>
+                        handleColumnVisibilityChange(column.key, checked)
+                      }
+                      isDisabled={
+                        column.key === "id" || column.key === "actions"
+                      }
+                    >
+                      {column.label}
+                      {(column.key === "id" || column.key === "actions") &&
+                        " (必选)"}
+                    </Checkbox>
+                  </DropdownItem>
+                ))}
+              </DropdownMenu>
+            </Dropdown>
+          )}
           <Dropdown placement="bottom-end">
             <DropdownTrigger>
               <Button
@@ -144,36 +153,20 @@ const Action: React.FC<ActionProps> = ({
               ))}
             </DropdownMenu>
           </Dropdown>
-          <Dropdown placement="bottom-end" closeOnSelect={false}>
-            <DropdownTrigger>
-              <Button
-                isIconOnly
-                size="sm"
-                variant="flat"
-                className="text-default-600"
-                title="显示列设置"
-              >
-                <TableCellsIcon className="h-5 w-5" />
-              </Button>
-            </DropdownTrigger>
-            <DropdownMenu aria-label="显示列设置">
-              {columns.map((column) => (
-                <DropdownItem key={column.key} textValue={column.label}>
-                  <Checkbox
-                    isSelected={visibleColumns.has(column.key)}
-                    onValueChange={(checked) =>
-                      handleColumnVisibilityChange(column.key, checked)
-                    }
-                    isDisabled={column.key === "id" || column.key === "actions"}
-                  >
-                    {column.label}
-                    {(column.key === "id" || column.key === "actions") &&
-                      " (必选)"}
-                  </Checkbox>
-                </DropdownItem>
-              ))}
-            </DropdownMenu>
-          </Dropdown>
+          <Button
+            isIconOnly
+            size="sm"
+            variant="flat"
+            className="text-default-600"
+            onClick={() => setViewMode(viewMode === "table" ? "grid" : "table")}
+            title={viewMode === "table" ? "切换到网格视图" : "切换到表格视图"}
+          >
+            {viewMode === "table" ? (
+              <Squares2X2Icon className="h-5 w-5" />
+            ) : (
+              <ViewColumnsIcon className="h-5 w-5" />
+            )}
+          </Button>
           <Dropdown placement="bottom-end">
             <DropdownTrigger>
               <Button
@@ -211,6 +204,7 @@ const Action: React.FC<ActionProps> = ({
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>
+
           <Button
             isIconOnly
             size="sm"

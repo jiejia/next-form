@@ -1,17 +1,6 @@
 "use client";
 
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  Selection,
-  Input,
-  Select,
-  SelectItem,
-} from "@heroui/react";
+import { Selection } from "@heroui/react";
 import React from "react";
 import { FormService } from "@/modules/form/services/form-service";
 import { useState, useEffect } from "react";
@@ -25,6 +14,7 @@ import { columns, initialData } from "@/modules/form/constants/list";
 import Action from "./action";
 import Paging from "./paging";
 import DataTable from "./data-table";
+import DataList from "./data-list";
 import AdvancedSearchModal from "./advanced-search-modal";
 
 const FormList: React.FC = () => {
@@ -49,6 +39,7 @@ const FormList: React.FC = () => {
   const [visibleColumns, setVisibleColumns] = React.useState<Set<string>>(
     new Set(columns.map((col) => col.key))
   );
+  const [viewMode, setViewMode] = React.useState<"table" | "grid">("table");
 
   // Handle sort selection
   const handleSortChange = (sortKey: string) => {
@@ -471,13 +462,23 @@ const FormList: React.FC = () => {
         setIsFilterOpen={setIsFilterOpen}
         visibleColumns={visibleColumns}
         handleColumnVisibilityChange={handleColumnVisibilityChange}
+        viewMode={viewMode}
+        setViewMode={setViewMode}
       />
-      <DataTable
-        data={data}
-        selectedKeys={selectedKeys}
-        setSelectedKeys={setSelectedKeys}
-        visibleColumns={visibleColumns}
-      />
+      {viewMode === "table" ? (
+        <DataTable
+          data={data}
+          selectedKeys={selectedKeys}
+          setSelectedKeys={setSelectedKeys}
+          visibleColumns={visibleColumns}
+        />
+      ) : (
+        <DataList
+          data={data}
+          selectedKeys={selectedKeys}
+          setSelectedKeys={setSelectedKeys}
+        />
+      )}
       <Paging
         count={data.count}
         page={data.page}

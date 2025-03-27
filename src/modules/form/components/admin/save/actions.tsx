@@ -14,7 +14,7 @@ export default function Actions({
   fields: Field[];
 }) {
   const [isDisabled, setIsDisabled] = useState(false);
-  const t = useTranslations("Index");
+  const t = useTranslations("Dashboard");
   const router = useRouter();
 
   // handle submit form

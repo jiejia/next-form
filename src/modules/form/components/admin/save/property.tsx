@@ -20,7 +20,7 @@ export default function Property({
   fields: Field[];
   setFields: (fields: Field[]) => void;
 }) {
-  const t = useTranslations("Index");
+  const t = useTranslations("Dashboard");
 
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const uuid = currentField.uuid;

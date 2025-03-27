@@ -30,6 +30,7 @@ import {notFound, useRouter,usePathname } from 'next/navigation'
 export default function Index(props:any) {
     useEffect(() => {
         getControl();
+        initData();
     }, []);
 
     const initData = async () => {

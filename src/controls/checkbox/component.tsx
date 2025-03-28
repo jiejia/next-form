@@ -1,8 +1,8 @@
 "use client"
 
-import {Checkbox} from "@nextui-org/react";
+import {Checkbox} from "@heroui/react";
 import React from "react";
-import {CheckboxGroup} from "@nextui-org/checkbox";
+import {CheckboxGroup} from "@heroui/checkbox";
 
 export default  function Component(props: { field: any }) {
 

@@ -2,7 +2,7 @@
 
 
 import React from "react";
-import {Radio, RadioGroup} from "@nextui-org/radio";
+import {Radio, RadioGroup} from "@heroui/radio";
 
 export default  function Component(props: { field: any }) {
 

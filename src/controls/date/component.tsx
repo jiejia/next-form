@@ -1,7 +1,7 @@
 "use client"
 
 
-import {CalendarDate, DatePicker} from "@nextui-org/react";
+import {CalendarDate, DatePicker} from "@heroui/react";
 import React from "react";
 import {CalendarDateTime, ZonedDateTime} from "@internationalized/date";
 

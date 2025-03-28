@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react";
-import {Textarea} from "@nextui-org/react";
+import {Textarea} from "@heroui/react";
 
 export default  function Component(props: { field: any }) {
 

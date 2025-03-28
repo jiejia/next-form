@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react";
-import {Select, SelectItem} from "@nextui-org/react";
+import {Select, SelectItem} from "@heroui/react";
 
 export default  function Component(props: { field: any }) {
 

@@ -8,7 +8,8 @@ import {
     getFormCount as getFormCountAction,
     getFormSubmissions as getFormSubmissionsAction,
     getFormSubmissionCount as getFormSubmissionCountAction,
-    getFormById as getFormByIdAction
+    getFormById as getFormByIdAction,
+    getFormByUuid as getFormByUuidAction,
 } from "@/modules/form/actions/form-action";
 
 /**
@@ -92,5 +93,14 @@ export class FormService {
      */
     public static async getFormById(id: number) {
         return getFormByIdAction(id);
+    }
+
+    /**
+     * Get form by id
+     *
+     * @param uuid
+     */
+    public static async getFormByUuid(uuid: string) {
+        return getFormByUuidAction(uuid);
     }
 }

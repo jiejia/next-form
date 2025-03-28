@@ -36,8 +36,14 @@ const DataActionMenu: React.FC<DataActionMenuProps> = ({
   const t = useTranslations("Dashboard");
 
   const handleView = () => {
-    console.log(`View form with ID: ${formId}`);
-    // Navigate to form detail view
+    if (listData) {
+      // Find the form in the listData
+      const form = listData.items.find((item) => item.id === Number(formId));
+      if (form) {
+        // Open in a new tab
+        window.open(`/form/${form.uuid}`, "_blank");
+      }
+    }
   };
 
   const handleEdit = () => {

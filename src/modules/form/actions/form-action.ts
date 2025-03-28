@@ -156,7 +156,7 @@ export async function updateForm(form: Form) {
 
     // reset page cache
     revalidatePath('/dashboard/form');
-    revalidatePath('/dashboard/form/' + form.id + '/[id]');
+    revalidatePath('/dashboard/form/' + form.id + '/[uuid]');
 }
 
 /**
@@ -277,6 +277,24 @@ export async function getFormSubmissionCount(args: object = {}) {
 export async function getFormById(id: number) {
     return prisma.form.findFirst({
         where: {id},
+        include: {
+            fields: {
+                orderBy: {
+                    sort: 'asc',
+                },
+            }
+        },
+    });
+}
+
+/**
+ * Get form by uuid
+ *
+ * @param uuid
+ */
+export async function getFormByUuid(uuid: string) {
+    return prisma.form.findFirst({
+        where: { uuid },
         include: {
             fields: {
                 orderBy: {

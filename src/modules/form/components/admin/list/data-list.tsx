@@ -11,6 +11,7 @@ import Block from "@/modules/common/components/shared/block";
 import Scroll from "@/modules/common/components/shared/scroll";
 import { Checkbox } from "@heroui/react";
 import DataActionMenu from "./data-action-menu";
+import Link from "next/link";
 
 interface DataListProps {
   data: PageArgs<FormWithSubmissions>;
@@ -98,9 +99,14 @@ const DataList: React.FC<DataListProps> = ({
                             #{form.id}
                           </span>
                           <span className="text-gray-400 mx-1">·</span>
-                          <h3 className="text-lg font-medium text-gray-900 truncate max-w-[160px]">
+                          <Link
+                            href={`/form/${form.uuid}`}
+                            target="_blank"
+                            onClick={stopPropagation}
+                            className="text-lg font-medium text-primary-600 hover:text-primary-700 hover:underline truncate max-w-[160px]"
+                          >
                             {form.title}
-                          </h3>
+                          </Link>
                         </div>
                       </div>
                     </div>

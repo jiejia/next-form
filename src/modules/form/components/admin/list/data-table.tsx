@@ -19,6 +19,7 @@ import {
 } from "@/modules/form/constants/list";
 import DataActionMenu from "./data-action-menu";
 import { PageArgs } from "@/modules/form/types/list";
+import Link from "next/link";
 
 interface DataTableProps {
   data: PageArgs<FormWithSubmissions>;
@@ -76,7 +77,17 @@ const DataTable: React.FC<DataTableProps> = ({
         case "created_at":
           return <div className="text-center">{String(cellValue)}</div>;
         case "title":
-          return <div className="text-center">{String(cellValue)}</div>;
+          return (
+            <div className="text-center">
+              <Link
+                href={`/form/${item.uuid}`}
+                target="_blank"
+                className="text-primary-600 hover:text-primary-700 hover:underline"
+              >
+                {String(cellValue)}
+              </Link>
+            </div>
+          );
         default:
           return <div className="text-center">{String(cellValue)}</div>;
       }

@@ -1,6 +1,5 @@
-import { Form } from "@/modules/form/types/form";
+import {Form, Submission} from "@/modules/form/types/form";
 import {
-    getControlConfigs as getControlConfigsAction,
     createForm as createFormAction,
     updateForm as updateFormAction,
     deleteForms as deleteFormsAction,
@@ -10,6 +9,9 @@ import {
     getFormSubmissionCount as getFormSubmissionCountAction,
     getFormById as getFormByIdAction,
     getFormByUuid as getFormByUuidAction,
+    createSubmission as createSubmissionAction,
+    getControlConfigs as getControlConfigsAction,
+    getControlSchemas as getControlSchemasAction,
 } from "@/modules/form/actions/form-action";
 
 /**
@@ -103,4 +105,24 @@ export class FormService {
     public static async getFormByUuid(uuid: string) {
         return getFormByUuidAction(uuid);
     }
+
+
+    /**
+     * Create submission
+     *
+     * @param submission
+     */
+    public static async createSubmission(submission: Submission) {
+        return createSubmissionAction(submission);
+    }
+
+    /**
+     * Get control schemas
+     *
+     */
+    public static async getControlSchemas() {
+        return getControlSchemasAction();
+    }
+
+
 }

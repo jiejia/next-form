@@ -3,20 +3,15 @@
 import path from "path";
 import { CommonService } from "@/modules/common/services/common-service";
 import {getTranslations} from 'next-intl/server';
-import {Form, Field} from "@/modules/form/types/form";
+import {Form, Field, Submission} from "@/modules/form/types/form";
 import {revalidatePath} from 'next/cache';
 import {v4 as uuidV4} from 'uuid';
 import {FormSchema} from "@/modules/form/validators/form";
 import prisma from "@/lib/prisma";
 import {QueryArgs} from "@/modules/common/types/prisma";
+import bcrypt from "bcryptjs";
+import {loadControlsConfigFiles, loadControlsSchemaFiles} from "@/lib/control";
 
-/**
- * Get control configs
- */
-export async function getControlConfigs() {
-    const jsonDirectory = path.join(process.cwd(), "src", "controls");
-    return CommonService.loadControlsConfigFiles(jsonDirectory);
-}
 
 /**
  * Create form
@@ -305,3 +300,120 @@ export async function getFormByUuid(uuid: string) {
     });
 }
 
+
+export async function createSubmission(submission:Submission) {
+    // validate field values
+    // let schema: z.ZodString | z.ZodEffects<z.ZodString, string, string> | z.ZodArray<any, "many"> | null = null
+    //
+    // submission.data.forEach((field:any) => {
+    //     // validate values
+    //     switch (field.controlId) {
+    //         // input text
+    //         case 1: {
+    //             schema = z.string().max(field.config.maxLength).min(field.config.minLength);
+    //             break;
+    //         }
+    //         // textarea
+    //         case 2: {
+    //             schema = z.string().max(field.config.maxLength).min(field.config.minLength);
+    //             break;
+    //         }
+    //         // select
+    //         case 3: {
+    //             let enumValues = field.config.options.map((option: any) => option.val);
+    //             enumValues = z.enum(enumValues);
+    //             schema = z.array(enumValues);
+    //             break;
+    //         }
+    //         // checkbox
+    //         case 4: {
+    //             let enumValues = field.config.options.map((option: any) => option.val);
+    //             enumValues = z.enum(enumValues);
+    //             schema = z.array(enumValues);
+    //             break;
+    //         }
+    //         // radio
+    //         case 5: {
+    //             let enumValues = field.config.options.map((option: any) => option.val);
+    //             enumValues = z.enum(enumValues);
+    //             schema = z.string(enumValues);
+    //             break;
+    //         }
+    //         // date
+    //         case 6: {
+    //             schema = z.string().refine(value => {
+    //                 const parsedDate = parse(value, field.config.dateFormat, new Date());
+    //                 return isValid(parsedDate);
+    //             }, {
+    //                 message: "Invalid date-time format. Expected format: " + field.config.dateFormat
+    //             });
+    //             break;
+    //         }
+    //         default:
+    //             break;
+    //     }
+    //
+    //     if (schema != null) {
+    //         const result = schema.safeParse(field.value)
+    //
+    //         if (! result.success) {
+    //             throw new Error(result.error.errors[0].message)
+    //         }
+    //     }
+    // })
+
+
+
+
+    const createSubmission = {
+        data: {
+            formId: submission.formId,
+            data: submission.data,
+        }
+    }
+    await prisma.formSubmission.create(createSubmission);
+
+    revalidatePath('/form/' + submission.formId);
+}
+
+export  async function  getUserByArgs(args: object = {}) {
+    return prisma.user.findFirst(args);
+}
+
+
+/**
+ * query options
+ * @param args
+ */
+export async function getOptionByArgs(args: object = {}) {
+    return prisma.option.findFirst(args);
+}
+
+/**
+ * update option
+ * @param name
+ * @param value
+ */
+export async function updateOption(name:string, value:any) {
+    return prisma.option.update({
+        where: {
+            name: name,
+        },
+        data: {
+            value: value
+        },
+    })
+}
+
+export async function getControlSchemas() {
+    const jsonDirectory = path.join(process.cwd(), 'plugins', 'controls');
+    return loadControlsSchemaFiles(jsonDirectory);
+}
+
+/**
+ * Get control configs
+ */
+export async function getControlConfigs() {
+    const jsonDirectory = path.join(process.cwd(), "src", "controls");
+    return CommonService.loadControlsConfigFiles(jsonDirectory);
+}

@@ -18,14 +18,14 @@ import {
   columns,
 } from "@/modules/form/constants/list";
 import DataActionMenu from "./data-action-menu";
+import { PageArgs } from "@/modules/form/types/list";
 
 interface DataTableProps {
-  data: {
-    items: FormWithSubmissions[];
-  };
+  data: PageArgs<FormWithSubmissions>;
   selectedKeys: Selection;
   setSelectedKeys: (keys: Selection) => void;
   visibleColumns: Set<string>;
+  updateData: (updatedData: Partial<PageArgs<FormWithSubmissions>>) => void;
 }
 
 const DataTable: React.FC<DataTableProps> = ({
@@ -33,6 +33,7 @@ const DataTable: React.FC<DataTableProps> = ({
   selectedKeys,
   setSelectedKeys,
   visibleColumns,
+  updateData,
 }) => {
   const renderCell = React.useCallback(
     (item: FormWithSubmissions, columnKey: string) => {
@@ -63,7 +64,11 @@ const DataTable: React.FC<DataTableProps> = ({
         case "actions":
           return (
             <div className="flex justify-center">
-              <DataActionMenu formId={item.id} />
+              <DataActionMenu
+                formId={item.id}
+                updateData={updateData}
+                listData={data}
+              />
             </div>
           );
         case "submissions":
@@ -76,7 +81,7 @@ const DataTable: React.FC<DataTableProps> = ({
           return <div className="text-center">{String(cellValue)}</div>;
       }
     },
-    []
+    [data, updateData]
   );
 
   // 获取可见列配置，确保ID和actions列始终可见

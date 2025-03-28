@@ -28,6 +28,10 @@ import {
 import { PageArgs } from "@/modules/form/types/list";
 import { FormWithSubmissions } from "@/modules/form/types/list";
 import { sortOptions, columns } from "@/modules/form/constants/list";
+import { FormService } from "@/modules/form/services/form-service";
+import { notify } from "@/modules/common/components/admin/notify";
+import { useTranslations } from "next-intl";
+import { Selection } from "@heroui/react";
 
 interface ActionProps {
   data: PageArgs<FormWithSubmissions>;
@@ -41,6 +45,9 @@ interface ActionProps {
   handleColumnVisibilityChange: (key: string, isVisible: boolean) => void;
   viewMode: "table" | "grid";
   setViewMode: React.Dispatch<React.SetStateAction<"table" | "grid">>;
+  selectedKeys: Selection;
+  setSelectedKeys: (keys: Selection) => void;
+  updateData: (updatedData: Partial<PageArgs<FormWithSubmissions>>) => void;
 }
 
 const Action: React.FC<ActionProps> = ({
@@ -55,7 +62,75 @@ const Action: React.FC<ActionProps> = ({
   handleColumnVisibilityChange,
   viewMode,
   setViewMode,
+  selectedKeys,
+  setSelectedKeys,
+  updateData,
 }) => {
+  const t = useTranslations("Dashboard");
+
+  const handleBatchDelete = async () => {
+    // Check if there are any selected forms
+    if ((selectedKeys as Set<string>).size === 0) {
+      notify(t("Please select forms to delete"), "warning");
+      return;
+    }
+
+    if (confirm(t("Are you sure to delete selected forms?"))) {
+      try {
+        // Get the set of all valid form IDs from the current data
+        const validFormIds = new Set(data.items.map((item) => String(item.id)));
+
+        // Filter selected keys to only include IDs that exist in the current data
+        const selectedKeysArray = Array.from(selectedKeys as Set<string>);
+        const validSelectedIds = selectedKeysArray.filter((id) =>
+          validFormIds.has(id)
+        );
+
+        if (validSelectedIds.length === 0) {
+          notify(t("No valid forms to delete"), "warning");
+          return;
+        }
+
+        // If some selected forms were filtered out, inform the user
+        if (validSelectedIds.length < selectedKeysArray.length) {
+          notify(
+            t("Some selected forms don't exist and will be skipped"),
+            "warning"
+          );
+        }
+
+        // Convert string IDs to numbers
+        const formIds = validSelectedIds.map((id) => Number(id));
+
+        // Call API to delete forms
+        await FormService.deleteForms(formIds);
+
+        // Update local state instead of reloading the page
+        const deletedIdsSet = new Set(formIds);
+        const updatedItems = data.items.filter(
+          (item) => !deletedIdsSet.has(item.id)
+        );
+
+        // Update data with the filtered items and reduce count
+        updateData({
+          items: updatedItems,
+          count: data.count - formIds.length,
+        });
+
+        // Clear selection
+        setSelectedKeys(new Set() as Selection);
+
+        notify(t("Delete successfully"), "success");
+      } catch (error) {
+        if (error instanceof Error) {
+          notify(error.message, "danger");
+        } else {
+          notify(t("An unknown error occurred"), "danger");
+        }
+      }
+    }
+  };
+
   return (
     <Block className="h-full pt-3">
       <div className="grid grid-cols-[1fr_auto] items-center gap-2">
@@ -185,6 +260,7 @@ const Action: React.FC<ActionProps> = ({
                 color="danger"
                 className="text-danger"
                 startContent={<TrashIcon className="h-4 w-4" />}
+                onPress={handleBatchDelete}
               >
                 批量删除
               </DropdownItem>

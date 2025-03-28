@@ -41,6 +41,14 @@ const Index: React.FC = () => {
   );
   const [viewMode, setViewMode] = React.useState<"table" | "grid">("grid");
 
+  // Function to update data state locally
+  const updateData = (updatedData: Partial<PageArgs<FormWithSubmissions>>) => {
+    setData((currentData) => ({
+      ...currentData,
+      ...updatedData,
+    }));
+  };
+
   // Handle sort selection
   const handleSortChange = (sortKey: string) => {
     setData({ ...data, sort: sortKey });
@@ -464,6 +472,9 @@ const Index: React.FC = () => {
         handleColumnVisibilityChange={handleColumnVisibilityChange}
         viewMode={viewMode}
         setViewMode={setViewMode}
+        selectedKeys={selectedKeys}
+        setSelectedKeys={setSelectedKeys}
+        updateData={updateData}
       />
       {viewMode === "table" ? (
         <DataTable
@@ -471,12 +482,14 @@ const Index: React.FC = () => {
           selectedKeys={selectedKeys}
           setSelectedKeys={setSelectedKeys}
           visibleColumns={visibleColumns}
+          updateData={updateData}
         />
       ) : (
         <DataList
           data={data}
           selectedKeys={selectedKeys}
           setSelectedKeys={setSelectedKeys}
+          updateData={updateData}
         />
       )}
       <Paging

@@ -13,17 +13,27 @@ import {
   EllipsisVerticalIcon,
 } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { notify } from "@/modules/common/components/admin/notify";
+import { FormService } from "@/modules/form/services/form-service";
+import { PageArgs, FormWithSubmissions } from "@/modules/form/types/list";
 
 interface DataActionMenuProps {
   formId: string | number;
   placement?: "bottom-end" | "bottom" | "bottom-start";
+  updateData?: (updatedData: Partial<PageArgs<FormWithSubmissions>>) => void;
+  listData?: PageArgs<FormWithSubmissions>;
 }
 
 const DataActionMenu: React.FC<DataActionMenuProps> = ({
   formId,
   placement = "bottom-end",
+  updateData,
+  listData,
 }) => {
   const router = useRouter();
+
+  const t = useTranslations("Dashboard");
 
   const handleView = () => {
     console.log(`View form with ID: ${formId}`);
@@ -36,9 +46,31 @@ const DataActionMenu: React.FC<DataActionMenuProps> = ({
     router.push(`/dashboard/form/${formId}/edit`);
   };
 
-  const handleDelete = () => {
-    console.log(`Delete form with ID: ${formId}`);
-    // Show confirmation dialog and delete if confirmed
+  const handleDeleteForm = async (id: number) => {
+    if (confirm(t("Are you sure to delete it?"))) {
+      try {
+        await FormService.deleteForms([id]);
+        notify(t("Delete successfully"), "success");
+
+        // If updateData prop exists, update local state instead of reloading page
+        if (updateData && listData) {
+          const updatedItems = listData.items.filter((item) => item.id !== id);
+          updateData({
+            items: updatedItems,
+            count: listData.count - 1,
+          });
+        } else {
+          // Fall back to reloading if updateData isn't provided
+          window.location.reload();
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          notify(error.message, "danger");
+        } else {
+          notify(t("An unknown error occurred"), "danger");
+        }
+      }
+    }
   };
 
   return (
@@ -76,7 +108,7 @@ const DataActionMenu: React.FC<DataActionMenuProps> = ({
           color="danger"
           className="text-danger"
           startContent={<TrashIcon className="h-4 w-4" />}
-          onPress={handleDelete}
+          onPress={() => handleDeleteForm(Number(formId))}
         >
           删除表单
         </DropdownItem>

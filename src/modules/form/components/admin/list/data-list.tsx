@@ -16,12 +16,14 @@ interface DataListProps {
   data: PageArgs<FormWithSubmissions>;
   selectedKeys: Selection;
   setSelectedKeys: (keys: Selection) => void;
+  updateData: (updatedData: Partial<PageArgs<FormWithSubmissions>>) => void;
 }
 
 const DataList: React.FC<DataListProps> = ({
   data,
   selectedKeys,
   setSelectedKeys,
+  updateData,
 }) => {
   const handleSelect = (id: string) => {
     const newSelectedKeys = new Set(selectedKeys as Set<string>);
@@ -142,7 +144,11 @@ const DataList: React.FC<DataListProps> = ({
                     className="mt-4 pt-3 border-t flex justify-end"
                     onClick={stopPropagation}
                   >
-                    <DataActionMenu formId={form.id} />
+                    <DataActionMenu
+                      formId={form.id}
+                      updateData={updateData}
+                      listData={data}
+                    />
                   </div>
                 </div>
               </div>

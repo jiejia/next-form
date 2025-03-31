@@ -406,7 +406,7 @@ export async function updateOption(name:string, value:any) {
 }
 
 export async function getControlSchemas() {
-    const jsonDirectory = path.join(process.cwd(), 'plugins', 'controls');
+    const jsonDirectory = path.join(process.cwd(), 'src', 'controls');
     return loadControlsSchemaFiles(jsonDirectory);
 }
 

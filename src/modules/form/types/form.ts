@@ -1,6 +1,6 @@
 export interface Config {
     placeholder?: string;
-    defaultValue?: any;
+    defaultValue?: unknown;
     length?: number;
     maxLength?: number;
     minLength?: number;
@@ -9,8 +9,8 @@ export interface Config {
     options?: object[];
     isMultiple?: boolean;
     dateFormat?: string;
-    title: string;
-    [propName: string]: any;
+    title?: string;
+    [propName: string]: unknown;
 }
 
 export interface Control {

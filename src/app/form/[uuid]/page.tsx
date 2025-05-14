@@ -6,17 +6,20 @@ import {Form as FormType} from "@/modules/form/types/form";
 
 export default async function Uuid({params}: { params: { uuid: string } }) {
     const schemas = await FormService.getControlSchemas();
-    let form = await FormService.getFormByUuid(params.uuid);
+    const form = await FormService.getFormByUuid(params.uuid);
 
-    if (! form) {
+    if (!form) {
         notFound();
-    } else {
-        form = form as FormType;
+    }
+
+    // Ensure fields exists as an array
+    if (!form.fields) {
+        form.fields = [];
     }
 
     return (
         <>
-            <Index form={form} schemas={schemas}/>
+            <Index form={form as FormType} schemas={schemas}/>
         </>
     );
 }

@@ -4,10 +4,12 @@ import Block from "@/modules/common/components/shared/block";
 import React from "react";
 import Form from "./form";
 import {Form as FormType} from "@/modules/form/types/form";
+import { PluginSchema } from "@/lib/control";
+
 
 export default function Index({form, schemas,}: {
     form: FormType;
-  schemas: unknown;
+  schemas: PluginSchema[];
 }) {
 
   return (

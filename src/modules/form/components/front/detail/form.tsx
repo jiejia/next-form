@@ -8,6 +8,8 @@ import { notify } from "@/modules/common/components/front/notify";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { PluginSchema } from "@/lib/control";
+import {Form as FormType} from "@/modules/form/types/form";
+
 
 // 定义类型替代 any
 interface Field {
@@ -21,12 +23,7 @@ interface Field {
 }
 
 interface FormProps {
-  form: {
-    id: number;
-    uuid: string;
-    numberingStyle: number;
-    fields?: Field[];
-  };
+  form: FormType;
   schemas: PluginSchema[];
 }
 

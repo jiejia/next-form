@@ -8,19 +8,8 @@ import { notify } from "@/modules/common/components/front/notify";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { PluginSchema } from "@/lib/control";
-import {Form as FormType} from "@/modules/form/types/form";
+import {Form as FormType, Field} from "@/modules/form/types/form";
 
-
-// 定义类型替代 any
-interface Field {
-  id: number;
-  uuid: string;
-  title: string;
-  controlType: string;
-  controlId: string;
-  required: boolean;
-  value?: string;
-}
 
 interface FormProps {
   form: FormType;
@@ -45,7 +34,7 @@ export default function Form(props: FormProps) {
     console.log(props.schemas, "schemas");
   }, []);
 
-  const handleSubmitForm = async (e: any) => {
+  const handleSubmitForm =  () => {
     // validate form form
     const form = document.getElementById("form") as HTMLFormElement;
     if (form) {
@@ -57,76 +46,79 @@ export default function Form(props: FormProps) {
 
     setIsDisabled(!isDisabled);
 
-    // get and validate field values
-    const data: object[] = [];
-    const fieldErrors: string[] = [];
-    props.form.fields.map((field: Field) => {
-      // validate values' requisitelet schema = schemaObj ? await schemaObj.createSchema() : null;
-      if (field.required) {
-        if (field.value == undefined || field.value == "") {
-          fieldErrors.push(t("Please fill in the") + field.title);
-        }
-      }
+    console.log(form);
 
-      // get schema function from schemas
-      const schemaObj = props.schemas.find(
-        (obj: PluginSchema) => obj.pluginName === field.controlType
-      );
-
-      const schemaPromise = schemaObj
-        ? schemaObj.createSchema(field)
-        : Promise.resolve(null);
-      console.log("schemaPromise is", schemaPromise);
-
-      return schemaPromise.then((schema: any) => {
-        data.push({
-          title: field.title,
-          value: field.value,
-          controlId: field.controlId,
-          fieldId: field.id,
-        });
-
-        console.log("schema is", schema);
-
-        if (schema != null) {
-          try {
-            const result = schema.safeParse(field.value);
-            console.log(schema);
-          } catch (error) {
-            console.log(error);
-          }
-          // if (! result.success) {
-          //     fieldErrors.push(result.error.errors[0].message)
-          // }
-        }
-      });
-    });
-
-    if (fieldErrors.length > 0) {
-      notify(fieldErrors[0], "danger");
-      setIsDisabled(false);
-      return;
-    }
-
-    const submission = {
-      formId: props.form.id,
-      data: data,
-    };
-
-    try {
-      await FormService.createSubmission(submission);
-      // router.push('/form/' + props.form.id)
-      notify("提交成功", "success");
-      window.location.reload();
-    } catch (error) {
-      if (error instanceof Error) {
-        notify(error.message, "danger");
-      } else {
-        notify("An unknown error occurred", "danger");
-      }
-    }
-
-    setIsDisabled(false);
+    //
+    // // get and validate field values
+    // const data: object[] = [];
+    // const fieldErrors: string[] = [];
+    // props.form.fields?.map((field: Field) => {
+    //   // validate values' requisitelet schema = schemaObj ? await schemaObj.createSchema() : null;
+    //   if (field.required) {
+    //     if (field.value == undefined || field.value == "") {
+    //       fieldErrors.push(t("Please fill in the") + field.title);
+    //     }
+    //   }
+    //
+    //   // get schema function from schemas
+    //   const schemaObj = props.schemas.find(
+    //     (obj: PluginSchema) => obj.pluginName === field.controlType
+    //   );
+    //
+    //   const schemaPromise = schemaObj
+    //     ? schemaObj.createSchema(field)
+    //     : Promise.resolve(null);
+    //   console.log("schemaPromise is", schemaPromise);
+    //
+    //   return schemaPromise.then((schema: any) => {
+    //     data.push({
+    //       title: field.title,
+    //       value: field.value,
+    //       controlId: field.controlId,
+    //       fieldId: field.id,
+    //     });
+    //
+    //     console.log("schema is", schema);
+    //
+    //     if (schema != null) {
+    //       try {
+    //         const result = schema.safeParse(field.value);
+    //         console.log(schema);
+    //       } catch (error) {
+    //         console.log(error);
+    //       }
+    //       // if (! result.success) {
+    //       //     fieldErrors.push(result.error.errors[0].message)
+    //       // }
+    //     }
+    //   });
+    // });
+    //
+    // if (fieldErrors.length > 0) {
+    //   notify(fieldErrors[0], "danger");
+    //   setIsDisabled(false);
+    //   return;
+    // }
+    //
+    // const submission = {
+    //   formId: props.form.id,
+    //   data: data,
+    // };
+    //
+    // try {
+    //   await FormService.createSubmission(submission);
+    //   // router.push('/form/' + props.form.id)
+    //   notify("提交成功", "success");
+    //   window.location.reload();
+    // } catch (error) {
+    //   if (error instanceof Error) {
+    //     notify(error.message, "danger");
+    //   } else {
+    //     notify("An unknown error occurred", "danger");
+    //   }
+    // }
+    //
+    // setIsDisabled(false);
   };
 
   const handleResetForm = (e: any) => {};

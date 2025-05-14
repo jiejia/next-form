@@ -23,7 +23,7 @@ export function loadControlsConfigFiles(directory: string): Control[] {
     return configData;
 }
 
-type CreateSchemaFunction = () => any; // 你可能需要根据实际的 schema 结构来调整这个类型
+type CreateSchemaFunction = () => unknown; // 你可能需要根据实际的 schema 结构来调整这个类型
 
 export interface PluginSchema {
     pluginName: string;

@@ -7,7 +7,7 @@ import {Form as FormType} from "@/modules/form/types/form";
 import { PluginSchema } from "@/lib/control";
 
 
-export default function Index({form, schemas,}: {
+export default function Index({form, schemas}: {
     form: FormType;
   schemas: PluginSchema[];
 }) {

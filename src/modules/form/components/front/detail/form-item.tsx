@@ -2,12 +2,13 @@
 
 import React from "react";
 import dynamic from 'next/dynamic';
+import {Field} from "@/modules/form/types/form";
 
 interface ControlComponentProps {
-    field: any;
+    field: Field;
 }
 
-export default async function FormItem (props: { field: any, index: any }) {
+export default  function FormItem (props: { field: Field, index: number }) {
 
     const ControlComponent = dynamic<ControlComponentProps>(() =>
         import('@/controls/' + props.field.controlType + '/component'), {

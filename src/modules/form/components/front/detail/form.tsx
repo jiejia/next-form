@@ -24,36 +24,41 @@ export default function Form(props: FormProps) {
   >([]);
   const [isDisabled, setIsDisabled] = useState(false);
 
-  useEffect(() => {
-    // const getSchema = async () => {
-    //     const schemas = await getControlSchemas()
-    //     setValidationFunctions(schemas)
-    //     console.log(validationFunctions)
-    // }
-    // getSchema()
-    console.log(props.schemas, "schemas");
-  }, []);
+  // useEffect(() => {
+  //   // const getSchema = async () => {
+  //   //     const schemas = await getControlSchemas()
+  //   //     setValidationFunctions(schemas)
+  //   //     console.log(validationFunctions)
+  //   // }
+  //   // getSchema()
+  //   console.log(props.schemas, "schemas");
+  // }, []);
 
-  const handleSubmitForm =  () => {
-    // validate form form
+  const handleSubmitForm = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    // validate form
     const form = document.getElementById("form") as HTMLFormElement;
     if (form) {
-      // 手动触发提交事件
+      // Manual validation
       if (!form.checkValidity()) {
         return;
       }
     }
+    setIsDisabled(true);
 
-    setIsDisabled(!isDisabled);
+    // setIsDisabled(true);
+    // console.log(form);
 
-    console.log(form);
-
+    // Uncomment and fix the rest of your form submission logic as needed
+    // without using async/await inside the client component
+    
     //
     // // get and validate field values
     // const data: object[] = [];
     // const fieldErrors: string[] = [];
     // props.form.fields?.map((field: Field) => {
-    //   // validate values' requisitelet schema = schemaObj ? await schemaObj.createSchema() : null;
+    //   // validate values' requisite
     //   if (field.required) {
     //     if (field.value == undefined || field.value == "") {
     //       fieldErrors.push(t("Please fill in the") + field.title);
@@ -105,23 +110,24 @@ export default function Form(props: FormProps) {
     //   data: data,
     // };
     //
-    // try {
-    //   await FormService.createSubmission(submission);
-    //   // router.push('/form/' + props.form.id)
-    //   notify("提交成功", "success");
-    //   window.location.reload();
-    // } catch (error) {
-    //   if (error instanceof Error) {
-    //     notify(error.message, "danger");
-    //   } else {
-    //     notify("An unknown error occurred", "danger");
-    //   }
-    // }
-    //
-    // setIsDisabled(false);
+    // FormService.createSubmission(submission)
+    //   .then(() => {
+    //     notify("提交成功", "success");
+    //     window.location.reload();
+    //   })
+    //   .catch((error) => {
+    //     if (error instanceof Error) {
+    //       notify(error.message, "danger");
+    //     } else {
+    //       notify("An unknown error occurred", "danger");
+    //     }
+    //   })
+    //   .finally(() => {
+    //     setIsDisabled(false);
+    //   });
   };
 
-  const handleResetForm = (e: any) => {};
+  const handleResetForm = () => {};
 
   const getNumberingStyle = (numberingStyle: number, index: number) => {
     if (numberingStyle == 0) {
@@ -152,7 +158,8 @@ export default function Form(props: FormProps) {
         </ul>
         <div className="mt-8 grid grid-flow-col gap-x-2">
           <Button
-            color="primary"
+              type="button"
+              color="primary"
             variant="shadow"
             onClick={handleSubmitForm}
             isDisabled={isDisabled}

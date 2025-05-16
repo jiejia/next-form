@@ -17,7 +17,7 @@ export default  function FormItem (props: { field: Field, index: number }) {
 
     return (
         <>
-            <ControlComponent field={props.field}/>
+            <  ControlComponent field={props.field}/>
         </>
     )
 }

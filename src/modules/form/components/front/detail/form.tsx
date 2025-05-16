@@ -53,8 +53,8 @@ export default function Form(props: FormProps) {
     // Uncomment and fix the rest of your form submission logic as needed
     // without using async/await inside the client component
     
-    //
-    // // get and validate field values
+
+    // get and validate field values
     // const data: object[] = [];
     // const fieldErrors: string[] = [];
     // props.form.fields?.map((field: Field) => {

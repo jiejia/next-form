@@ -1,0 +1,31 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Form Module Guide
+
+The form module handles form creation, rendering, and submission. Key components and files:
+
+## Components
+- [src/modules/form/components/front/detail/form.tsx](mdc:src/modules/form/components/front/detail/form.tsx) - Main form component
+- [src/modules/form/components/front/detail/form-item.tsx](mdc:src/modules/form/components/front/detail/form-item.tsx) - Individual form field component
+
+## Types
+- [src/modules/form/types/form.ts](mdc:src/modules/form/types/form.ts) - Form-related TypeScript types
+
+## Services
+- [src/modules/form/services/form-service.ts](mdc:src/modules/form/services/form-service.ts) - Form-related API services
+
+## Form Features
+- Form validation using plugin schemas
+- Internationalization support
+- Dynamic field rendering
+- Form submission handling
+- Field numbering styles
+- Required field indicators
+
+## Usage
+Forms are rendered using the `Form` component which accepts:
+- `form`: Form configuration object
+- `schemas`: Array of plugin schemas for validation

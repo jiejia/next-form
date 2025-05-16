@@ -1,0 +1,43 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Coding Standards Guide
+
+## TypeScript
+- Use TypeScript for all new code
+- Define interfaces for component props
+- Use type imports from dedicated type files
+- Avoid using `any` type
+
+## React Components
+- Use functional components with hooks
+- Keep components focused and single-responsibility
+- Use proper prop typing
+- Implement proper error handling
+- Use proper event handling types
+
+## Styling
+- Use Tailwind CSS for styling
+- Follow mobile-first responsive design
+- Use consistent spacing and layout patterns
+- Maintain consistent color scheme
+
+## Internationalization
+- All user-facing strings should be internationalized
+- Use the `useTranslations` hook for translations
+- Keep translation keys organized by feature
+
+## Form Handling
+- Implement proper form validation
+- Use controlled components
+- Handle form submission states
+- Provide proper error feedback
+- Implement proper reset functionality
+
+## Code Organization
+- Keep related files together in modules
+- Use consistent file naming
+- Separate concerns (components, services, types)
+- Document complex logic

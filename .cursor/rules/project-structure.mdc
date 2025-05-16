@@ -1,0 +1,28 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Project Structure Guide
+
+This is a Next.js application with TypeScript and internationalization support. Here's the main structure:
+
+- `src/app/` - Next.js app router pages and layouts
+- `src/components/` - Shared React components
+- `src/modules/` - Feature-based modules containing components, services, and types
+- `src/lib/` - Shared utilities and libraries
+- `src/i18n/` - Internationalization configuration
+- `src/locales/` - Translation files
+- `src/controls/` - Form control components
+
+## Key Files
+- [next.config.mjs](mdc:next.config.mjs) - Next.js configuration
+- [next-i18next.config.mjs](mdc:next-i18next.config.mjs) - i18n configuration
+- [tailwind.config.ts](mdc:tailwind.config.ts) - Tailwind CSS configuration
+- [tsconfig.json](mdc:tsconfig.json) - TypeScript configuration
+
+## Module Structure
+Each module in `src/modules/` typically contains:
+- `components/` - Module-specific components
+- `services/` - API and business logic
+- `types/` - TypeScript type definitions

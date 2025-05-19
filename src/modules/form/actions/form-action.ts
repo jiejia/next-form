@@ -11,6 +11,7 @@ import prisma from "@/lib/prisma";
 import {QueryArgs} from "@/modules/common/types/prisma";
 import bcrypt from "bcryptjs";
 import {loadControlsConfigFiles, loadControlsSchemaFiles} from "@/lib/control";
+import {ComponentType} from "react";
 
 
 /**
@@ -423,7 +424,7 @@ export async function getControlConfigs() {
  * @param fields
  */
 export async function getFieldComponents(fields: Field[]) {
-    const components: { [key: string]: any } = {};
+    const components: { [key: string]: ComponentType<{ field: Field }> } = {};
     
     for (const field of fields) {
         if (field.controlType) {

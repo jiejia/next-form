@@ -10,7 +10,7 @@ import { PluginSchema } from "@/lib/control";
 export default function Index({form, schemas, components}: {
     form: FormType;
   schemas: PluginSchema[];
-  components: ComponentType<{ field: Field }>;
+  components: {[key: string]: ComponentType<{ field: Field }>};
 }) {
 
   return (

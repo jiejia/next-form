@@ -14,8 +14,9 @@ import {Form as FormType, Field} from "@/modules/form/types/form";
 interface FormProps {
   form: FormType;
   schemas: PluginSchema[];
-  components: ComponentType<{ field: Field }>;
+  components: {[key: string]: ComponentType<{ field: Field }>}
 }
+
 
 export default function Form(props: FormProps) {
   const t = useTranslations("Front");
@@ -25,15 +26,15 @@ export default function Form(props: FormProps) {
   >([]);
   const [isDisabled, setIsDisabled] = useState(false);
 
-  // useEffect(() => {
-  //   // const getSchema = async () => {
-  //   //     const schemas = await getControlSchemas()
-  //   //     setValidationFunctions(schemas)
-  //   //     console.log(validationFunctions)
-  //   // }
-  //   // getSchema()
-  //   console.log(props.schemas, "schemas");
-  // }, []);
+  useEffect(() => {
+    // const getSchema = async () => {
+    //     const schemas = await getControlSchemas()
+    //     setValidationFunctions(schemas)
+    //     console.log(validationFunctions)
+    // }
+    // getSchema()
+    console.log(props.schemas, "schemas");
+  }, []);
 
   const handleSubmitForm = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();

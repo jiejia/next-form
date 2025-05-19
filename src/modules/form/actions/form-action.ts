@@ -417,3 +417,27 @@ export async function getControlConfigs() {
     const jsonDirectory = path.join(process.cwd(), "src", "controls");
     return CommonService.loadControlsConfigFiles(jsonDirectory);
 }
+
+/**
+ * Get field components
+ * @param fields
+ */
+export async function getFieldComponents(fields: Field[]) {
+    const components: { [key: string]: any } = {};
+    
+    for (const field of fields) {
+        if (field.controlType) {
+            try {
+                // Dynamically import the component module based on controlType
+                const componentModule = await import(`@/controls/${field.controlType}/component`);
+                
+                // Store the component with field's uuid as key
+                components[field.uuid] = componentModule.default;
+            } catch (error) {
+                console.error(`Error loading component for field ${field.uuid} with controlType ${field.controlType}:`, error);
+            }
+        }
+    }
+    
+    return components;
+}

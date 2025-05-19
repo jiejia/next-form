@@ -1,4 +1,4 @@
-import {Form, Submission} from "@/modules/form/types/form";
+import {Field, Form, Submission} from "@/modules/form/types/form";
 import {
     createForm as createFormAction,
     updateForm as updateFormAction,
@@ -12,6 +12,7 @@ import {
     createSubmission as createSubmissionAction,
     getControlConfigs as getControlConfigsAction,
     getControlSchemas as getControlSchemasAction,
+    getFieldComponents as getFieldComponentsAction,
 } from "@/modules/form/actions/form-action";
 
 /**
@@ -122,6 +123,15 @@ export class FormService {
      */
     public static async getControlSchemas() {
         return getControlSchemasAction();
+    }
+
+
+    /**
+     * Get field components
+     *
+     */
+    public static async getFieldComponents(fields: Field[]) {
+        return getFieldComponentsAction(fields);    
     }
 
 

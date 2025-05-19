@@ -3,8 +3,10 @@
 import {Checkbox} from "@heroui/react";
 import React from "react";
 import {CheckboxGroup} from "@heroui/checkbox";
+import {Field} from "@/modules/form/types/form";
 
-export default  function Component(props: { field: any }) {
+
+export default  function Component(props: { field: Field }) {
 
     const handleCheckboxChange = (value: string[]) => {
         props.field.value = value
@@ -19,7 +21,7 @@ export default  function Component(props: { field: any }) {
                 name={props.field.uuid}
             >
                 {
-                    props.field.config.options.map((option:any, k:any) => (
+                    props.field.config?.options?.map((option:any, k:any) => (
                         <Checkbox value={option.val} key={k} aria-label={props.field.title}>{option.val}</Checkbox>
                     ))
                 }

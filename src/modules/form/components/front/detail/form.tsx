@@ -14,6 +14,7 @@ import {Form as FormType, Field} from "@/modules/form/types/form";
 interface FormProps {
   form: FormType;
   schemas: PluginSchema[];
+  components: { [key: string]: any };
 }
 
 export default function Form(props: FormProps) {
@@ -152,7 +153,7 @@ export default function Form(props: FormProps) {
                   <></>
                 )}
               </label>
-              <FormItem field={field} index={index} />
+              <FormItem field={field} index={index} component={props.components[field.uuid]} />
             </li>
           ))}
         </ul>

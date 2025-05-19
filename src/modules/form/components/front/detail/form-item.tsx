@@ -8,16 +8,11 @@ interface ControlComponentProps {
     field: Field;
 }
 
-export default  function FormItem (props: { field: Field, index: number }) {
-
-    const ControlComponent = dynamic<ControlComponentProps>(() =>
-        import('@/controls/' + props.field.controlType + '/component'), {
-        loading: () => <></>,
-    });
+export default  function FormItem (props: { field: Field, index: number, component: any }) {
 
     return (
         <>
-            <  ControlComponent field={props.field}/>
+            <props.component field={props.field}/>
         </>
     )
 }

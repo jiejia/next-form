@@ -2,7 +2,7 @@
 
 import FormItem from "./form-item";
 import { Button } from "@heroui/react";
-import React, { useEffect } from "react";
+import React, {ComponentType, useEffect} from "react";
 import { FormService } from "@/modules/form/services/form-service";
 import { notify } from "@/modules/common/components/front/notify";
 import { useState } from "react";
@@ -14,7 +14,7 @@ import {Form as FormType, Field} from "@/modules/form/types/form";
 interface FormProps {
   form: FormType;
   schemas: PluginSchema[];
-  components: { [key: string]: any };
+  components: ComponentType<{ field: Field }>;
 }
 
 export default function Form(props: FormProps) {

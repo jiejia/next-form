@@ -21,7 +21,7 @@ export default async function RootLayout({
 
     return (
         <html lang={locale}>
-        <body className={`${inter.className} h-screen`} style={{backgroundColor: "#f3f3f3"}} dir="ltr">
+        <body className={`${inter.className} min-h-screen`} style={{backgroundColor: "#f3f3f3"}} dir="ltr">
         <NextIntlClientProvider messages={messages}>
             <Providers>
                 {children}

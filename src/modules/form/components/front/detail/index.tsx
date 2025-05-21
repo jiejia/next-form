@@ -14,7 +14,7 @@ export default function Index({form, schemas, components}: {
 }) {
 
   return (
-    <div className="py-4 px-4 h-screen">
+    <div className="py-4 px-4 min-h-screen">
       <Block className="min-h-full mx-auto max-w-5xl">
         <h1 className="text-center font-bold text-xl py-4">{form.title}</h1>
         <Form form={form} schemas={schemas} components={components} />

@@ -395,7 +395,7 @@ export async function getOptionByArgs(args: object = {}) {
  * @param name
  * @param value
  */
-export async function updateOption(name:string, value:any) {
+export async function updateOption(name:string, value:string) {
     return prisma.option.update({
         where: {
             name: name,

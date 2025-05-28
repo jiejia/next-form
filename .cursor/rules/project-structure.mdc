@@ -1,7 +1,7 @@
 ---
 description: 
 globs: 
-alwaysApply: false
+alwaysApply: true
 ---
 # Project Structure Guide
 
@@ -14,15 +14,25 @@ This is a Next.js application with TypeScript and internationalization support. 
 - `src/i18n/` - Internationalization configuration
 - `src/locales/` - Translation files
 - `src/controls/` - Form control components
+- `prisma/` - Database schema and migrations
 
 ## Key Files
 - [next.config.mjs](mdc:next.config.mjs) - Next.js configuration
 - [next-i18next.config.mjs](mdc:next-i18next.config.mjs) - i18n configuration
 - [tailwind.config.ts](mdc:tailwind.config.ts) - Tailwind CSS configuration
 - [tsconfig.json](mdc:tsconfig.json) - TypeScript configuration
+- `prisma/schema.prisma` - Database models and relationships definition
 
 ## Module Structure
 Each module in `src/modules/` typically contains:
 - `components/` - Module-specific components
 - `services/` - API and business logic
 - `types/` - TypeScript type definitions
+
+## Database Structure
+The project uses PostgreSQL with Prisma ORM. All database models, relationships, and field configurations are defined in `prisma/schema.prisma`. This file contains the complete schema for:
+- Form and field configurations
+- Form submissions
+- User accounts
+- Application options
+- Menu structure

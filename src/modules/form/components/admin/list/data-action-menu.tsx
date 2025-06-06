@@ -11,6 +11,7 @@ import {
   PencilSquareIcon,
   TrashIcon,
   EllipsisVerticalIcon,
+  DocumentTextIcon,
 } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
@@ -44,6 +45,12 @@ const DataActionMenu: React.FC<DataActionMenuProps> = ({
         window.open(`/form/${form.uuid}`, "_blank");
       }
     }
+  };
+
+  const handleDetail = () => {
+    console.log(`View detail for form with ID: ${formId}`);
+    // Navigate to form detail page
+    router.push(`/dashboard/form/${formId}/detail`);
   };
 
   const handleEdit = () => {
@@ -94,9 +101,17 @@ const DataActionMenu: React.FC<DataActionMenuProps> = ({
       <DropdownMenu aria-label="表单操作">
         <DropdownItem
           key="view"
-          description="查看此表单的详细信息"
+          description="访问此表单"
           startContent={<EyeIcon className="h-4 w-4" />}
           onPress={handleView}
+        >
+          访问表单
+        </DropdownItem>
+        <DropdownItem
+          key="detail"
+          description="查看表单详情"
+          startContent={<DocumentTextIcon className="h-4 w-4" />}
+          onPress={handleDetail}
         >
           查看详情
         </DropdownItem>

@@ -442,3 +442,27 @@ export async function getFieldComponents(fields: Field[]) {
     
     return components;
 }
+
+/**
+ * Get form with all fields and submissions by form id
+ * 
+ * @param id - The form id
+ * @returns Form with fields and submissions, or null if not found
+ */
+export async function get(id: number) {
+    return prisma.form.findFirst({
+        where: { id },
+        include: {
+            fields: {
+                orderBy: {
+                    sort: 'asc',
+                },
+            },
+            submissions: {
+                orderBy: {
+                    createdAt: 'desc',
+                },
+            },
+        },
+    });
+}

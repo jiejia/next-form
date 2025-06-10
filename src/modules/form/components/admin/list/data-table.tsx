@@ -73,7 +73,16 @@ const DataTable: React.FC<DataTableProps> = ({
             </div>
           );
         case "submissions":
-          return <div className="text-center">{String(cellValue)}</div>;
+          return (
+            <div className="text-center">
+              <Link
+                href={`/dashboard/form/${item.id}/detail`}
+                className="bg-primary-100 hover:bg-primary-200 text-primary-700 px-3 py-1 rounded-full transition-colors duration-200 text-sm font-medium inline-block"
+              >
+                {String(cellValue)}
+              </Link>
+            </div>
+          );
         case "created_at":
           return <div className="text-center">{String(cellValue)}</div>;
         case "title":

@@ -458,11 +458,6 @@ export async function get(id: number) {
                     sort: 'asc',
                 },
             },
-            submissions: {
-                orderBy: {
-                    createdAt: 'desc',
-                },
-            },
         },
     });
 }

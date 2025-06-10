@@ -7,27 +7,27 @@ export default function Index({form}: {form: Form}) {
     return (
         <div className="grid grid-rows-[1fr_1fr_4fr_56px] gap-4 h-full">
             <Block>
-ewg
+&nbsp;
             </Block>
             <div className="grid grid-cols-[1fr_1fr_1fr_1fr] gap-4">
                 <Block>
-                    wfq
+                &nbsp;
                 </Block>
                 <Block>
-                    wfq
+                &nbsp;
                 </Block>
                 <Block>
-                    wfq
+                &nbsp;
                 </Block>
                 <Block>
-                    wfq
+                &nbsp;
                 </Block>
             </div>
             <Block>
-weg
+            &nbsp;
             </Block>
             <Block>
-egw
+            &nbsp;
             </Block>
         </div>
     );

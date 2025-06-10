@@ -136,9 +136,13 @@ const DataList: React.FC<DataListProps> = ({
                   <div className="flex flex-col space-y-2 text-sm text-gray-500 mt-auto">
                     <div className="flex justify-between items-center">
                       <span className="font-medium">提交数:</span>
-                      <span className="bg-gray-100 px-2 py-1 rounded-full">
+                      <Link
+                        href={`/dashboard/form/${form.id}/detail`}
+                        onClick={stopPropagation}
+                        className="bg-primary-100 hover:bg-primary-200 text-primary-700 px-3 py-1 rounded-full transition-colors duration-200 text-sm font-medium"
+                      >
                         {form.submissions}
-                      </span>
+                      </Link>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="font-medium">创建于:</span>

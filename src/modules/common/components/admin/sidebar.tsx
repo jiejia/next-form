@@ -3,30 +3,33 @@
 import Block from '@/modules/common/components/shared/block';
 import Link from "next/link";
 import Image from "next/image";
-import {Select, SelectItem} from "@heroui/react";
+import {Select, SelectItem, Button} from "@heroui/react";
 import Copyright from "@/modules/common/components/admin/copyright";
 import clsx from "clsx";
+import { LayoutDashboard, FileText, Settings, Sun, Moon, Monitor } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function Sidebar({menuItemId}: { menuItemId: number }) {
+    const router = useRouter();
 
     const menuItems = [
         {
             id: 1,
             name: "Dashboard",
             href: "/dashboard",
-            icon: "/svgs/dashboard.svg"
+            icon: <LayoutDashboard size={15} />
         },
         {
             id: 2,
             name: "Form",
             href: "/dashboard/form",
-            icon: "/svgs/forms.svg"
+            icon: <FileText size={15} />
         },
         {
             id: 3,
             name: "Setting",
             href: "/dashboard/setting",
-            icon: "/svgs/setting.svg"
+            icon: <Settings size={15} />
         },
     ]
 
@@ -41,19 +44,23 @@ export default function Sidebar({menuItemId}: { menuItemId: number }) {
                         <span className="content-center indent-1">PlainForm</span>
                     </Link>
                 </h1>
-                <ul className="grid grid-flow-row text-sm mt-8 gap-[2px]">
+                <ul className="grid grid-flow-row text-sm mt-8 gap-2">
                     {
                         menuItems.map((item, index) => {
                             return (
                                 <li key={index}>
-                                    <Link href={item.href}
-                                          className={clsx('grid grid-flow-col grid-cols-[25px_1fr] px-4 py-2 hover:bg-slate-100 rounded-lg', {"bg-slate-100": item.id == menuItemId})}>
-
-                                <span className="content-center"><Image src={item.icon} alt="Next Form"
-                                                                        className="content-center" width={15}
-                                                                        height={15}/></span>
-                                        <span className="content-center">{item.name}</span>
-                                    </Link>
+                                    <Button
+                                        fullWidth
+                                        variant={item.id == menuItemId ? "flat" : "light"}
+                                        className={clsx("justify-start", {
+                                            "bg-primary-50 text-primary": item.id == menuItemId
+                                        })}
+                                        color={item.id == menuItemId ? "primary" : "default"}
+                                        startContent={item.icon}
+                                        onPress={() => router.push(item.href)}
+                                    >
+                                        {item.name}
+                                    </Button>
                                 </li>
                             );
                         })
@@ -61,26 +68,22 @@ export default function Sidebar({menuItemId}: { menuItemId: number }) {
                 </ul>
                 <div className="absolute bottom-4 left-4 right-4">
                     <hr className="mb-4"/>
-                    <Select className="max-w-xs" size={"sm"} selectedKeys={[0]} defaultSelectedKeys={[0]}>
-                        <SelectItem key={0} value={0}>
+                    <Select className="max-w-xs" size={"sm"} selectedKeys={["0"]} defaultSelectedKeys={["0"]}>
+                        <SelectItem key="0">
                             <div className="grid grid-flow-col grid-cols-[25px_1fr]">
-                                <span className="content-center"><Image src="/svgs/light-mode.svg" alt="Next Form"
-                                                                        width={15} height={15}/></span>
+                                <span className="content-center"><Sun size={15} /></span>
                                 <span className="content-center">Light</span>
                             </div>
                         </SelectItem>
-                        <SelectItem key={1} value={1}>
+                        <SelectItem key="1">
                             <div className="grid grid-flow-col grid-cols-[25px_1fr]">
-                                <span className="content-center"><Image src="/svgs/dark-mode.svg" alt="Next Form"
-                                                                        width={15} height={15}/></span>
+                                <span className="content-center"><Moon size={15} /></span>
                                 <span className="content-center">Dark</span>
                             </div>
                         </SelectItem>
-                        <SelectItem key={7} value={7}>
+                        <SelectItem key="7">
                             <div className="grid grid-flow-col grid-cols-[25px_1fr]">
-                                <span className="content-center"><Image src="/svgs/following_system_mode.svg"
-                                                                        alt="Next Form"
-                                                                        width={15} height={15}/></span>
+                                <span className="content-center"><Monitor size={15} /></span>
                                 <span className="content-center">System</span>
                             </div>
                         </SelectItem>

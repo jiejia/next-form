@@ -10,7 +10,7 @@ async function seedUsers() {
         data: [
             {
                 username: 'admin',
-                email: 'admin@thenextform.org',
+                email: 'admin@nextform.com',
                 password: hashedPassword,
             },
         ],

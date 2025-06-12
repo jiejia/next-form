@@ -104,13 +104,13 @@ export async function updateForm(form: Form) {
     });
 
     // query existed fields
-    const existedFields = await prisma.field.findMany({where: {formId: form.id}});
+    const existedFields = await prisma.formField.findMany({where: {formId: form.id}});
 
     // delete fields
     for (const existedField of existedFields) {
         const field = form.fields.find((field) => field.uuid === existedField.uuid);
         if (!field) {
-            await prisma.field.delete({where: {uuid: existedField.uuid}});
+            await prisma.formField.delete({where: {uuid: existedField.uuid}});
         }
     }
 
@@ -118,7 +118,7 @@ export async function updateForm(form: Form) {
     for (const field of form.fields) {
         // if field is new
         if (!existedFields.find((existedField: {uuid: string}) => existedField.uuid === field.uuid)) {
-            await prisma.field.create({
+            await prisma.formField.create({
                 data: {
                     uuid: field.uuid,
                     title: field.title,
@@ -134,7 +134,7 @@ export async function updateForm(form: Form) {
                 }
             });
         } else {
-            await prisma.field.update({
+            await prisma.formField.update({
                 data: {
                     title: field.title,
                     description: field.description,
@@ -182,7 +182,7 @@ export async function deleteForms(ids: number[]) {
     }
 
     // delete fields
-    await prisma.field.deleteMany({
+    await prisma.formField.deleteMany({
         where: {
             formId: {
                 in: ids

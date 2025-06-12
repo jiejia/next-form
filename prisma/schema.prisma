@@ -20,13 +20,13 @@ model Form {
   createdAt      DateTime  @default(now()) @map("created_at")
   updatedAt      DateTime  @updatedAt @map("updated_at")
   deletedAt      DateTime? @map("deleted_at")
-  fields         Field[]
+  fields         FormField[]
   submissions    FormSubmission[]
 
   @@map("forms")
 }
 
-model Field {
+model FormField {
   id          Int       @id @default(autoincrement())
   uuid        String    @unique @db.Char(36) @map("uuid")
   title       String    @map("title")
@@ -45,7 +45,7 @@ model Field {
   updatedAt   DateTime  @updatedAt @map("updated_at")
   deletedAt   DateTime? @map("deleted_at")
 
-  @@map("fields")
+  @@map("form_fields")
 }
 
 model FormSubmission {
@@ -62,11 +62,13 @@ model FormSubmission {
 model User {
   id        Int       @id @default(autoincrement())
   username  String    @unique @db.VarChar(255) @map("username")
+  avatar    String    @db.VarChar(255) @map("avatar")
   email     String    @unique @db.VarChar(255) @map("email")
   password  String    @db.VarChar(255) @map("password")
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
+  lastLoginedAt DateTime @default(now()) @map("last_logined_at")
   status    Int       @default(0) @map("status")
 
   @@map("users")

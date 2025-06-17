@@ -3,7 +3,7 @@
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
 import { createSession, deleteSession } from '@/lib/auth'
-import { authenticateUser } from '@/modules/common/services/user-service'
+import { authenticateUser } from '@/modules/auth/services/user-service'
 
 // 登录表单验证模式
 const LoginSchema = z.object({

@@ -1,10 +1,12 @@
 'use client'
 
 import Block from "@/modules/common/components/shared/block";
-import { logout } from '@/modules/common/actions/auth-action'
+import { logout } from '@/modules/auth/actions/auth-action'
 import { Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@heroui/react"
 import { useEffect, useState, useTransition } from 'react'
 import { SessionData } from '@/lib/auth'
+import Link from "next/link"
+import { useRouter } from 'next/navigation'
 
 export default function Header({ 
   breadcrumbs = <></>, 
@@ -14,11 +16,16 @@ export default function Header({
   user: SessionData | null 
 }) {
   const [isPending, startTransition] = useTransition()
+  const router = useRouter()
 
   const handleLogout = () => {
     startTransition(async () => {
       await logout()
     })
+  }
+
+  const handleSettingsClick = () => {
+    router.push('/dashboard/setting/profile')
   }
 
   return (
@@ -42,7 +49,7 @@ export default function Header({
                 <p className="font-semibold">已登录为</p>
                 <p className="font-semibold">{user?.email}</p>
               </DropdownItem>
-              <DropdownItem key="settings" href="/dashboard/setting/profile">
+              <DropdownItem key="settings" onPress={handleSettingsClick}>
                 设置
               </DropdownItem>
               <DropdownItem 

@@ -5,7 +5,7 @@ import { Input, Button, Checkbox } from "@heroui/react";
 import Image from "next/image";
 import { Link } from "@heroui/link";
 import { useFormState, useFormStatus } from 'react-dom';
-import { login } from '@/modules/common/actions/auth-action';
+import { login } from '@/modules/auth/actions/auth-action';
 import { useEffect } from 'react';
 
 function SubmitButton() {

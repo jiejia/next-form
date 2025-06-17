@@ -52,7 +52,15 @@ export interface Form {
 export interface Submission {
     id?: number;
     formId: number;
-    data: object[];
+    data: SubmissionData[];
+    createdAt: Date;
+}
+
+export interface SubmissionData {
+    title: string;
+    value: unknown;
+    controlId: number;
+    fieldId: number;
 }
 
 export interface InitialData {
@@ -64,4 +72,19 @@ export interface InitialData {
 export interface DraggableItem {
     id: number;
     area: string;
+}
+
+// 分页相关类型定义
+export interface PaginationMeta {
+    total: number;          // 总记录数
+    page: number;           // 当前页码（从1开始）
+    pageSize: number;       // 每页记录数
+    totalPages: number;     // 总页数
+    hasNext: boolean;       // 是否有下一页
+    hasPrev: boolean;       // 是否有上一页
+}
+
+export interface PaginatedResult<T> {
+    data: T[];              // 数据列表
+    pagination: PaginationMeta;  // 分页信息
 }

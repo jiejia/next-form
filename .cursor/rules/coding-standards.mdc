@@ -24,6 +24,12 @@ alwaysApply: true
 - Use consistent spacing and layout patterns
 - Maintain consistent color scheme
 
+## Icons
+- Use Lucide React icon library for all icons
+- Import icons individually to optimize bundle size
+- Use consistent icon sizing across the application
+- Follow semantic naming for icon usage
+
 ## Internationalization
 - All user-facing strings should be internationalized
 - Use the `useTranslations` hook for translations

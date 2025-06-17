@@ -3,7 +3,7 @@
 import path from "path";
 import { CommonService } from "@/modules/common/services/common-service";
 import {getTranslations} from 'next-intl/server';
-import {Form, Field, Submission} from "@/modules/form/types/form";
+import {Form, Field, Submission, PaginatedResult} from "@/modules/form/types/form";
 import {revalidatePath} from 'next/cache';
 import {v4 as uuidV4} from 'uuid';
 import {FormSchema} from "@/modules/form/validators/form";
@@ -248,6 +248,115 @@ export async function getFormCount(args: object = {}) {
 }
 
 /**
+ * Get submissions (original function)
+ *
+ * @param args - Query arguments including pagination parameters
+ */
+export async function getSubmissions(args: QueryArgs = {}) {
+    const hasSelect = args.select !== undefined;
+    
+    // Set default orderBy to id desc if not provided
+    const defaultOrderBy = { id: 'desc' as const };
+    const orderBy = args.orderBy || defaultOrderBy;
+    
+    if (hasSelect) {
+        // If select is used, add form data to the select object
+        return prisma.formSubmission.findMany({
+            ...args,
+            orderBy,
+            select: {
+                ...args.select,
+            }
+        });
+    } else {
+        // If no select, use include as before
+        return prisma.formSubmission.findMany({
+            ...args,
+            orderBy,
+            include: {
+                ...(args.include || {})
+            }
+        });
+    }
+}
+
+/**
+ * Get submissions with pagination support
+ *
+ * @param args - Query arguments including pagination parameters
+ */
+export async function getSubmissionsWithPagination(args: QueryArgs = {}): Promise<PaginatedResult<any>> {
+    const hasSelect = args.select !== undefined;
+    
+    // Set default orderBy to id desc if not provided
+    const defaultOrderBy = { id: 'desc' as const };
+    const orderBy = args.orderBy || defaultOrderBy;
+    
+    // 提取分页参数
+    const page = Math.max(1, Math.floor((args.skip || 0) / (args.take || 10)) + 1);
+    const pageSize = args.take || 10;
+    const skip = args.skip || 0;
+    
+    // 构建查询条件（不包含分页参数）
+    const queryConditions = {
+        where: args.where,
+        orderBy,
+    };
+    
+    // 并行执行数据查询和总数查询
+    const [data, total] = await Promise.all([
+        // 获取分页数据
+        hasSelect 
+            ? prisma.formSubmission.findMany({
+                ...queryConditions,
+                skip,
+                take: pageSize,
+                select: {
+                    ...args.select,
+                }
+            })
+            : prisma.formSubmission.findMany({
+                ...queryConditions,
+                skip,
+                take: pageSize,
+                include: {
+                    ...(args.include || {})
+                }
+            }),
+        // 获取总数
+        prisma.formSubmission.count({
+            where: args.where
+        })
+    ]);
+    
+    // 计算分页信息
+    const totalPages = Math.ceil(total / pageSize);
+    
+    return {
+        data,
+        pagination: {
+            total,
+            page,
+            pageSize,
+            totalPages,
+            hasNext: page < totalPages,
+            hasPrev: page > 1
+        }
+    };
+}
+
+/**
+ * Get submissions count
+ *
+ * @param args - Query arguments for counting submissions
+ */
+export async function getSubmissionCount(args: QueryArgs = {}) {
+    // Extract only the where clause for count operation
+    const countArgs = args.where ? { where: args.where } : undefined;
+    return prisma.formSubmission.count(countArgs);
+}
+
+/**
  * Get form submissions
  *
  * @param args
@@ -461,3 +570,33 @@ export async function get(id: number) {
         },
     });
 }
+
+// 使用示例：
+// 
+// // 获取第一页数据，每页10条
+// const result = await getSubmissionsWithPagination({
+//     skip: 0,
+//     take: 10,
+//     where: { formId: 1 },
+//     include: { form: true }
+// });
+// 
+// console.log('数据:', result.data);
+// console.log('分页信息:', result.pagination);
+// // 输出：
+// // 分页信息: {
+// //   total: 50,
+// //   page: 1,
+// //   pageSize: 10,
+// //   totalPages: 5,
+// //   hasNext: true,
+// //   hasPrev: false
+// // }
+//
+// // 获取第二页数据
+// const page2 = await getSubmissionsWithPagination({
+//     skip: 10,
+//     take: 10,
+//     where: { formId: 1 }
+// });
+

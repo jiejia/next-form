@@ -33,13 +33,48 @@ export default function Index({ form }: { form: Form }) {
         hasPrev: false
     });
     const [isLoading, setIsLoading] = useState(false);
+    const [availableVersions, setAvailableVersions] = useState<number[]>([]);
+    const [selectedVersion, setSelectedVersion] = useState<number>(1);
 
-    // 获取提交数据的函数
-    const fetchSubmissions = async (page: number = 1, pageSize: number = 20) => {
-        setIsLoading(true);
+    // 获取所有可用版本的函数
+    const fetchAvailableVersions = async () => {
         try {
             const result = await getSubmissionsWithPagination({
                 where: { formId: form.id },
+                select: { version: true },
+                orderBy: { version: 'desc' },
+            });
+            
+            const versions = Array.from(new Set(
+                result.data.map((item: any) => item.version)
+            )).sort((a, b) => b - a); // 按版本号降序排序
+            
+            setAvailableVersions(versions);
+            
+            // 设置默认选中最大版本
+            if (versions.length > 0) {
+                setSelectedVersion(versions[0]);
+            }
+            
+            return versions;
+        } catch (error) {
+            console.error('获取版本列表失败:', error);
+            return [];
+        }
+    };
+
+    // 获取提交数据的函数
+    const fetchSubmissions = async (page: number = 1, pageSize: number = 20, version?: number) => {
+        setIsLoading(true);
+        try {
+            const targetVersion = version !== undefined ? version : selectedVersion;
+            
+            // 查询指定版本的所有提交记录
+            const result = await getSubmissionsWithPagination({
+                where: { 
+                    formId: form.id,
+                    version: targetVersion
+                },
                 skip: (page - 1) * pageSize,
                 take: pageSize,
             });
@@ -52,15 +87,30 @@ export default function Index({ form }: { form: Form }) {
         }
     };
 
+    // 处理版本切换
+    const handleVersionChange = (version: number) => {
+        setSelectedVersion(version);
+        fetchSubmissions(1, pagination.pageSize, version);
+    };
+
     useEffect(() => {
-        fetchSubmissions(1, 20);
+        const initializeData = async () => {
+            const versions = await fetchAvailableVersions();
+            if (versions.length > 0) {
+                await fetchSubmissions(1, 20, versions[0]);
+            } else {
+                await fetchSubmissions(1, 20, 1);
+            }
+        };
+        
+        initializeData();
     }, [form.id]);
 
     console.log(submissions);
     return (
         <div className="grid grid-rows-[56px_1fr_4fr_56px] gap-4 h-full">
             <Block className="h-full pt-3">
-                <div className="grid grid-cols-[1fr_auto] items-center gap-2">
+                <div className="grid grid-cols-[1fr_auto_auto] items-center gap-2">
                     <div>
                         <form >
                             <Input
@@ -71,6 +121,25 @@ export default function Index({ form }: { form: Form }) {
                             />
                         </form>
                     </div>
+                    <div>
+                        <Select
+                            size="sm"
+                            placeholder="选择版本"
+                            className="min-w-[100px]"
+                            selectedKeys={[selectedVersion.toString()]}
+                            onSelectionChange={(keys) => {
+                                const version = parseInt(Array.from(keys)[0] as string);
+                                handleVersionChange(version);
+                            }}
+                            isDisabled={isLoading || availableVersions.length === 0}
+                        >
+                            {availableVersions.map((version) => (
+                                <SelectItem key={version} textValue={`V${version}`}>
+                                    V{version}
+                                </SelectItem>
+                            ))}
+                        </Select>
+                    </div>
                     <div className="grid grid-flow-col gap-2">
                         <Button
                             isIconOnly
@@ -79,7 +148,7 @@ export default function Index({ form }: { form: Form }) {
                             className="text-default-600"
                             title="刷新数据"
                             isLoading={isLoading}
-                            onPress={() => fetchSubmissions(pagination.page, pagination.pageSize)}
+                            onPress={() => fetchSubmissions(pagination.page, pagination.pageSize, selectedVersion)}
                         >
                             <ArrowPathIcon className="h-5 w-5" />
                         </Button>
@@ -220,7 +289,7 @@ export default function Index({ form }: { form: Form }) {
                         total={pagination.totalPages}
                         size={"sm"}
                         isDisabled={isLoading}
-                        onChange={(page) => fetchSubmissions(page, pagination.pageSize)}
+                        onChange={(page) => fetchSubmissions(page, pagination.pageSize, selectedVersion)}
                     />
                 </div>
                 <div className="hidden sm:block justify-items-center content-center">
@@ -232,7 +301,7 @@ export default function Index({ form }: { form: Form }) {
                         selectedKeys={[pagination.pageSize.toString()]}
                         onSelectionChange={(keys) => {
                             const newPageSize = parseInt(Array.from(keys)[0] as string);
-                            fetchSubmissions(1, newPageSize);
+                            fetchSubmissions(1, newPageSize, selectedVersion);
                         }}
                         isDisabled={isLoading}
                     >

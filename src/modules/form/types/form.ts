@@ -54,6 +54,7 @@ export interface Submission {
     formId: number;
     data: SubmissionData[];
     createdAt: Date;
+    version?: number;
 }
 
 export interface SubmissionData {

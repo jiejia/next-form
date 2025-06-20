@@ -20,6 +20,7 @@ model Form {
   createdAt      DateTime  @default(now()) @map("created_at")
   updatedAt      DateTime  @updatedAt @map("updated_at")
   deletedAt      DateTime? @map("deleted_at")
+  version        Int      @default(1) @map("version")
   fields         FormField[]
   submissions    FormSubmission[]
 
@@ -54,6 +55,7 @@ model FormSubmission {
   data      Json      @map("data")
   createdAt DateTime  @default(now()) @map("created_at")
   deletedAt DateTime? @map("deleted_at")
+  version   Int       @default(1) @map("version")
   form      Form      @relation(fields: [formId], references: [id])
 
   @@map("form_submissions")

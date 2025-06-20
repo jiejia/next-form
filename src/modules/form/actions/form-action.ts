@@ -52,7 +52,18 @@ export async function createForm(form: Form) {
             enabled: form.enabled,
             numberingStyle: form.numberingStyle,
             fields: {
-                create: form.fields
+                create: form.fields.map(field => ({
+                    uuid: field.uuid,
+                    title: field.title,
+                    description: field.description,
+                    regex: field.regex,
+                    required: field.required,
+                    config: field.config as any,
+                    controlId: field.controlId,
+                    controlName: field.controlName,
+                    controlType: field.controlType,
+                    sort: field.sort || 0
+                }))
             }
         },
     };
@@ -90,69 +101,141 @@ export async function updateForm(form: Form) {
         throw new Error("Form with this title already exists");
     }
 
-    // update form
+    // query existed fields for comparison
+    const existedFields = await prisma.formField.findMany({
+        where: {formId: form.id},
+        orderBy: {sort: 'asc'}
+    });
+
+    // 检测字段是否有变化
+    const hasFieldChanges = detectFieldChanges(existedFields, form.fields);
+
+    // 获取当前表单版本
+    const currentForm = await prisma.form.findUnique({
+        where: { id: form.id },
+        select: { version: true }
+    });
+
+    const newVersion = hasFieldChanges ? (currentForm?.version || 1) + 1 : (currentForm?.version || 1);
+
+    // update form (包含版本号更新)
     await prisma.form.update({
         data: {
             title: form.title,
             description: form.description,
             enabled: form.enabled,
             numberingStyle: form.numberingStyle,
+            version: newVersion,
         },
         where: {
             id: form.id
         }
     });
 
-    // query existed fields
-    const existedFields = await prisma.formField.findMany({where: {formId: form.id}});
-
-    // delete fields
-    for (const existedField of existedFields) {
-        const field = form.fields.find((field) => field.uuid === existedField.uuid);
-        if (!field) {
-            await prisma.formField.delete({where: {uuid: existedField.uuid}});
+    // 如果有字段变化，才进行字段的增删改操作
+    if (hasFieldChanges) {
+        // delete fields
+        for (const existedField of existedFields) {
+            const field = form.fields.find((field) => field.uuid === existedField.uuid);
+            if (!field) {
+                await prisma.formField.delete({where: {uuid: existedField.uuid}});
+            }
         }
-    }
 
-    // update and create fields
-    for (const field of form.fields) {
-        // if field is new
-        if (!existedFields.find((existedField: {uuid: string}) => existedField.uuid === field.uuid)) {
-            await prisma.formField.create({
-                data: {
-                    uuid: field.uuid,
-                    title: field.title,
-                    description: field.description,
-                    regex: field.regex,
-                    required: field.required,
-                    config: field.config,
-                    controlId: field.controlId,
-                    controlName: field.controlName,
-                    controlType: field.controlType,
-                    formId: form.id,
-                    sort: field.sort
-                }
-            });
-        } else {
-            await prisma.formField.update({
-                data: {
-                    title: field.title,
-                    description: field.description,
-                    required: field.required,
-                    config: field.config,
-                    regex: field.regex,
-                    sort: field.sort
-                },
-                where: {
-                    uuid: field.uuid
-                }
-            });
+        // update and create fields
+        for (const field of form.fields) {
+            // if field is new
+            if (!existedFields.find((existedField: {uuid: string}) => existedField.uuid === field.uuid)) {
+                await prisma.formField.create({
+                    data: {
+                        uuid: field.uuid,
+                        title: field.title,
+                        description: field.description,
+                        regex: field.regex,
+                        required: field.required,
+                        config: field.config as any,
+                        controlId: field.controlId,
+                        controlName: field.controlName,
+                        controlType: field.controlType,
+                        formId: form.id!,
+                        sort: field.sort || 0
+                    }
+                });
+            } else {
+                await prisma.formField.update({
+                    data: {
+                        title: field.title,
+                        description: field.description,
+                        required: field.required,
+                        config: field.config as any,
+                        regex: field.regex,
+                        sort: field.sort || 0
+                    },
+                    where: {
+                        uuid: field.uuid
+                    }
+                });
+            }
         }
     }
 
     // reset page cache
     revalidatePath('/dashboard/form');
     revalidatePath('/dashboard/form/' + form.id + '/[uuid]');
+}
+
+/**
+ * 检测字段是否有变化
+ * @param existedFields 数据库中现有的字段
+ * @param newFields 提交的新字段
+ * @returns boolean 是否有变化
+ */
+function detectFieldChanges(existedFields: any[], newFields: Field[]): boolean {
+    // 1. 检查字段数量是否变化
+    if (existedFields.length !== newFields.length) {
+        return true;
+    }
+
+    // 2. 创建字段映射以便比较
+    const existedFieldsMap = new Map();
+    existedFields.forEach(field => {
+        existedFieldsMap.set(field.uuid, field);
+    });
+
+    // 3. 检查每个新字段
+    for (const newField of newFields) {
+        const existedField = existedFieldsMap.get(newField.uuid);
+        
+        // 如果是新字段
+        if (!existedField) {
+            return true;
+        }
+
+        // 检查关键字段是否有变化
+        if (
+            existedField.title !== newField.title ||
+            existedField.description !== newField.description ||
+            existedField.regex !== newField.regex ||
+            existedField.required !== newField.required ||
+            existedField.controlId !== newField.controlId ||
+            existedField.controlName !== newField.controlName ||
+            existedField.controlType !== newField.controlType ||
+            existedField.sort !== (newField.sort || 0) ||
+            JSON.stringify(existedField.config) !== JSON.stringify(newField.config)
+        ) {
+            return true;
+        }
+    }
+
+    // 4. 检查是否有字段被删除
+    for (const existedField of existedFields) {
+        const newField = newFields.find(field => field.uuid === existedField.uuid);
+        if (!newField) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 /**
@@ -411,7 +494,17 @@ export async function getFormByUuid(uuid: string) {
 }
 
 
-export async function createSubmission(submission:Submission) {
+export async function createSubmission(submission: Submission) {
+    // 获取当前表单的版本号
+    const form = await prisma.form.findUnique({
+        where: { id: submission.formId },
+        select: { version: true }
+    });
+
+    if (!form) {
+        throw new Error("Form not found");
+    }
+
     // validate field values
     // let schema: z.ZodString | z.ZodEffects<z.ZodString, string, string> | z.ZodArray<any, "many"> | null = null
     //
@@ -472,15 +565,14 @@ export async function createSubmission(submission:Submission) {
     //     }
     // })
 
-
-
-
+    // 创建提交记录，包含当前表单版本号
     const createSubmission = {
         data: {
             formId: submission.formId,
-            data: submission.data,
+            data: submission.data as any,
+            version: form.version, // 保存提交时的表单版本
         }
-    }
+    };
     await prisma.formSubmission.create(createSubmission);
 
     revalidatePath('/form/' + submission.formId);
@@ -599,4 +691,40 @@ export async function get(id: number) {
 //     take: 10,
 //     where: { formId: 1 }
 // });
+
+/**
+ * 数据迁移：为现有的提交记录设置版本号
+ * 这个函数应该在部署后运行一次，为现有的提交记录设置版本号
+ */
+export async function migrateSubmissionVersions() {
+    try {
+        // 获取所有版本号为1的提交记录（默认版本）
+        const submissions = await prisma.formSubmission.findMany({
+            where: {
+                version: 1 // 只处理默认版本
+            },
+            include: {
+                form: {
+                    select: { id: true, version: true }
+                }
+            }
+        });
+
+        console.log(`找到 ${submissions.length} 条需要迁移的提交记录`);
+
+        // 为每个提交记录设置对应表单的当前版本号
+        for (const submission of submissions) {
+            await prisma.formSubmission.update({
+                where: { id: submission.id },
+                data: { version: (submission as any).form.version }
+            });
+        }
+
+        console.log(`成功迁移 ${submissions.length} 条提交记录的版本号`);
+        return { success: true, migratedCount: submissions.length };
+    } catch (error) {
+        console.error('迁移提交记录版本号失败:', error);
+        return { success: false, error: error };
+    }
+}
 

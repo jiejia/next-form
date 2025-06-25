@@ -8,18 +8,13 @@ import Scroll from "@/modules/common/components/shared/scroll";
 
 import {
     FunnelIcon,
-    PauseIcon,
-    PlayIcon,
     ArrowPathIcon,
-    EllipsisVerticalIcon,
-    TrashIcon,
-    MagnifyingGlassIcon,
-    ViewColumnsIcon,
+
 } from "@heroicons/react/24/outline";
 import { Database, Plus, Clock, BarChart3 } from "lucide-react";
 import { getSubmissionsWithPagination } from "@/modules/form/actions/form-action";
 import { useEffect, useState } from "react";
-import { Submission, PaginatedResult, PaginationMeta } from "@/modules/form/types/form";
+import { Submission, PaginationMeta } from "@/modules/form/types/form";
 
 
 export default function Index({ form }: { form: Form }) {
@@ -222,7 +217,15 @@ export default function Index({ form }: { form: Form }) {
                     >
                         <TableHeader>
                             <TableColumn>ID</TableColumn>
-                            <TableColumn>data</TableColumn>
+                            {
+                                submissions.length === 0 ? (
+                                    <TableColumn>提交数据</TableColumn>
+                                ) : (
+                                    submissions[0].data.map((item, index) => (
+                                        <TableColumn key={index}>{item.title}</TableColumn>
+                                    ))
+                                )
+                            }
                             <TableColumn>created at</TableColumn>
                         </TableHeader>
                         <TableBody>
@@ -246,26 +249,13 @@ export default function Index({ form }: { form: Form }) {
                                 submissions.map((submission) => (
                                     <TableRow key={submission.id}>
                                         <TableCell>{submission.id}</TableCell>
-                                        <TableCell className="p-0">
-                                            <table className="w-full border-collapse">
-                                                <thead>
-                                                    <tr className="bg-default-50">
-                                                        {submission.data.map((item, index) => (
-                                                            <th key={index} className="px-3 py-2 text-left text-sm font-medium text-default-700 border-r border-default-200 last:border-r-0">{item.title}</th>
-                                                        ))}
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        {submission.data.map((item, index) => (
-                                                            <td key={index} className="px-3 py-2 text-sm text-default-600 border-r border-default-200 last:border-r-0">
-                                                                {String(item.value || '')}
-                                                            </td>
-                                                        ))}
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </TableCell>
+                                        {
+                                            submission.data.map((item, index) => (
+                                                <TableCell key={index}>
+                                                    {item.value || '无数据'}
+                                                </TableCell>
+                                            ))
+                                        }
                                         <TableCell>{submission.createdAt.toLocaleString()}</TableCell>
                                     </TableRow>
                                 ))

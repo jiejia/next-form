@@ -1,9 +1,9 @@
 'use client'
 
-import { Form } from "@prisma/client";
+import {Form} from "@prisma/client";
 import Block from "@/modules/common/components/shared/block";
-import { Button, Input, Pagination, Select, SelectItem } from "@heroui/react";
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@heroui/react";
+import {Button, Input, Pagination, Select, SelectItem} from "@heroui/react";
+import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@heroui/react";
 import Scroll from "@/modules/common/components/shared/scroll";
 
 import {
@@ -11,13 +11,13 @@ import {
     ArrowPathIcon,
 
 } from "@heroicons/react/24/outline";
-import { Database, Plus, Clock, BarChart3 } from "lucide-react";
-import { getSubmissionsWithPagination } from "@/modules/form/actions/form-action";
-import { useEffect, useState } from "react";
-import { Submission, PaginationMeta } from "@/modules/form/types/form";
+import {Database, Plus, Clock, BarChart3} from "lucide-react";
+import {getSubmissionsWithPagination} from "@/modules/form/actions/form-action";
+import {useEffect, useState} from "react";
+import {Submission, PaginationMeta} from "@/modules/form/types/form";
+import React from "react";
 
-
-export default function Index({ form }: { form: Form }) {
+export default function Index({form}: { form: Form }) {
     const [submissions, setSubmissions] = useState<Submission[]>([]);
     const [pagination, setPagination] = useState<PaginationMeta>({
         total: 0,
@@ -35,22 +35,22 @@ export default function Index({ form }: { form: Form }) {
     const fetchAvailableVersions = async () => {
         try {
             const result = await getSubmissionsWithPagination({
-                where: { formId: form.id },
-                select: { version: true },
-                orderBy: { version: 'desc' },
+                where: {formId: form.id},
+                select: {version: true},
+                orderBy: {version: 'desc'},
             });
-            
+
             const versions = Array.from(new Set(
-                result.data.map((item: any) => item.version)
+                result.data.map((item: { version: number }) => item.version)
             )).sort((a, b) => b - a); // 按版本号降序排序
-            
+
             setAvailableVersions(versions);
-            
+
             // 设置默认选中最大版本
             if (versions.length > 0) {
                 setSelectedVersion(versions[0]);
             }
-            
+
             return versions;
         } catch (error) {
             console.error('获取版本列表失败:', error);
@@ -63,10 +63,10 @@ export default function Index({ form }: { form: Form }) {
         setIsLoading(true);
         try {
             const targetVersion = version !== undefined ? version : selectedVersion;
-            
+
             // 查询指定版本的所有提交记录
             const result = await getSubmissionsWithPagination({
-                where: { 
+                where: {
                     formId: form.id,
                     version: targetVersion
                 },
@@ -97,7 +97,7 @@ export default function Index({ form }: { form: Form }) {
                 await fetchSubmissions(1, 20, 1);
             }
         };
-        
+
         initializeData();
     }, [form.id]);
 
@@ -107,7 +107,7 @@ export default function Index({ form }: { form: Form }) {
             <Block className="h-full pt-3">
                 <div className="grid grid-cols-[1fr_auto_auto] items-center gap-2">
                     <div>
-                        <form >
+                        <form>
                             <Input
                                 label=""
                                 type="text"
@@ -145,7 +145,7 @@ export default function Index({ form }: { form: Form }) {
                             isLoading={isLoading}
                             onPress={() => fetchSubmissions(pagination.page, pagination.pageSize, selectedVersion)}
                         >
-                            <ArrowPathIcon className="h-5 w-5" />
+                            <ArrowPathIcon className="h-5 w-5"/>
                         </Button>
                         <Button
                             isIconOnly
@@ -154,7 +154,7 @@ export default function Index({ form }: { form: Form }) {
                             className="text-default-600"
                             title="高级搜索"
                         >
-                            <FunnelIcon className="h-5 w-5" />
+                            <FunnelIcon className="h-5 w-5"/>
                         </Button>
                     </div>
                 </div>
@@ -169,7 +169,7 @@ export default function Index({ form }: { form: Form }) {
                             </span>
                             <span className="text-green-500 text-xs">↑ 18% 较上周</span>
                         </div>
-                        <Database className="text-blue-500 h-6 w-6 place-self-center" />
+                        <Database className="text-blue-500 h-6 w-6 place-self-center"/>
                     </div>
                 </Block>
                 <Block>
@@ -179,7 +179,7 @@ export default function Index({ form }: { form: Form }) {
                             <span className="text-2xl font-bold text-green-600">89</span>
                             <span className="text-green-500 text-xs">↑ 12% 较昨日</span>
                         </div>
-                        <Plus className="text-green-500 h-6 w-6 place-self-center" />
+                        <Plus className="text-green-500 h-6 w-6 place-self-center"/>
                     </div>
                 </Block>
                 <Block>
@@ -189,7 +189,7 @@ export default function Index({ form }: { form: Form }) {
                             <span className="text-2xl font-bold text-orange-600">3.2分钟</span>
                             <span className="text-red-500 text-xs">↓ 8% 较上周</span>
                         </div>
-                        <Clock className="text-orange-500 h-6 w-6 place-self-center" />
+                        <Clock className="text-orange-500 h-6 w-6 place-self-center"/>
                     </div>
                 </Block>
                 <Block>
@@ -199,7 +199,7 @@ export default function Index({ form }: { form: Form }) {
                             <span className="text-2xl font-bold text-purple-600">87.5%</span>
                             <span className="text-green-500 text-xs">↑ 5% 较上周</span>
                         </div>
-                        <BarChart3 className="text-purple-500 h-6 w-6 place-self-center" />
+                        <BarChart3 className="text-purple-500 h-6 w-6 place-self-center"/>
                     </div>
                 </Block>
             </div>
@@ -217,46 +217,52 @@ export default function Index({ form }: { form: Form }) {
                     >
                         <TableHeader>
                             <TableColumn>ID</TableColumn>
-                            {
-                                submissions.length === 0 ? (
+                            {isLoading ? (
+                                <>
+                                    <TableColumn>加载中 ... </TableColumn>
+                                </>
+                                ) : submissions.length === 0 ? (
+                                <>
                                     <TableColumn>提交数据</TableColumn>
-                                ) : (
-                                    submissions[0].data.map((item, index) => (
+                                </>
+                            ) : (
+                                <>
+                                    {submissions[0].data.map((item, index) => (
                                         <TableColumn key={index}>{item.title}</TableColumn>
-                                    ))
-                                )
-                            }
+                                    ))}
+                                </>
+                            )}
                             <TableColumn>created at</TableColumn>
                         </TableHeader>
                         <TableBody>
                             {isLoading ? (
                                 <TableRow>
-                                    <TableCell colSpan={3}>
-                                        <div className="flex justify-center items-center py-8">
-                                            <div className="text-default-500">加载中...</div>
-                                        </div>
-                                    </TableCell>
+                                        <TableCell colSpan={3}>
+                                            <div className="flex justify-center items-center py-8">
+                                                <div className="text-default-500">加载中...</div>
+                                            </div>
+                                        </TableCell>
                                 </TableRow>
                             ) : submissions.length === 0 ? (
                                 <TableRow>
-                                    <TableCell colSpan={3}>
-                                        <div className="flex justify-center items-center py-8">
-                                            <div className="text-default-500">暂无提交数据</div>
-                                        </div>
-                                    </TableCell>
+                                        <TableCell colSpan={3}>
+                                            <div className="flex justify-center items-center py-8">
+                                                <div className="text-default-500">暂无提交数据</div>
+                                            </div>
+                                        </TableCell>
                                 </TableRow>
                             ) : (
                                 submissions.map((submission) => (
                                     <TableRow key={submission.id}>
-                                        <TableCell>{submission.id}</TableCell>
-                                        {
-                                            submission.data.map((item, index) => (
-                                                <TableCell key={index}>
-                                                    {item.value || '无数据'}
-                                                </TableCell>
-                                            ))
-                                        }
-                                        <TableCell>{submission.createdAt.toLocaleString()}</TableCell>
+                                            <TableCell>{submission.id}</TableCell>
+                                            {
+                                                submission.data.map((item, index) => (
+                                                    <TableCell key={index}>
+                                                        {item.value?.toString() ?? '无数据'}
+                                                    </TableCell>
+                                                ))
+                                            }
+                                            <TableCell>{submission.createdAt.toLocaleString()}</TableCell>
                                     </TableRow>
                                 ))
                             )}
@@ -297,7 +303,7 @@ export default function Index({ form }: { form: Form }) {
                     >
                         {[10, 20, 50, 100].map((size) => (
                             <SelectItem key={size} textValue={size.toString()}>
-                            {size}
+                                {size}
                             </SelectItem>
                         ))}
                     </Select>

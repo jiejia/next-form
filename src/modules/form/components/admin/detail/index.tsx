@@ -254,15 +254,15 @@ export default function Index({form}: { form: Form }) {
                             ) : (
                                 submissions.map((submission) => (
                                     <TableRow key={submission.id}>
-                                            <TableCell>{submission.id}</TableCell>
-                                            {
-                                                submission.data.map((item, index) => (
-                                                    <TableCell key={index}>
-                                                        {item.value?.toString() ?? '无数据'}
-                                                    </TableCell>
-                                                ))
-                                            }
-                                            <TableCell>{submission.createdAt.toLocaleString()}</TableCell>
+                                    {[
+                                        <TableCell key="id">{submission.id}</TableCell>,
+                                        ...submission.data.map((item, i) => (
+                                            <TableCell key={i}>
+                                                {item.value?.toString() ?? '无数据'}
+                                            </TableCell>
+                                        )),
+                                        <TableCell key="created">{submission.createdAt.toLocaleString()}</TableCell>
+                                    ]}
                                     </TableRow>
                                 ))
                             )}

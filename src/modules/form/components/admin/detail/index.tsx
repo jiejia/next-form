@@ -103,7 +103,7 @@ export default function Index({form}: { form: Form }) {
 
     console.log(submissions);
     return (
-        <div className="grid grid-rows-[56px_1fr_4fr_56px] gap-4 h-full">
+        <div className="grid md:grid-rows-[56px_1fr_4fr_56px] grid-rows-[56px_2fr_3fr_56px] gap-4 h-full">
             <Block className="h-full pt-3">
                 <div className="grid grid-cols-[1fr_auto_auto] items-center gap-2">
                     <div>
@@ -159,7 +159,7 @@ export default function Index({form}: { form: Form }) {
                     </div>
                 </div>
             </Block>
-            <div className="grid grid-cols-[1fr_1fr_1fr_1fr] gap-4">
+            <div className="grid md:grid-cols-[1fr_1fr_1fr_1fr] grid-cols-[1fr_1fr] gap-4">
                 <Block>
                     <div className="grid grid-cols-[2fr_1fr] h-full content-center">
                         <div className="grid content-center gap-1">

@@ -38,7 +38,7 @@ export default function Index({form}: { form: Form }) {
 
     const handleKeywordChange = (value: string) => {
         setKeyword(value);
-        fetchSubmissions(1, pagination.pageSize, selectedVersion, keyword);
+        fetchSubmissions(1, pagination.pageSize, selectedVersion, value);
 
     };
 
@@ -83,27 +83,21 @@ export default function Index({form}: { form: Form }) {
 
             // 如果有关键词，添加搜索条件
             if (keyword && keyword.trim()) {
-                whereCondition.OR = [
-                    // 搜索提交数据中的任意字段值
+                whereCondition.AND = [
                     {
-                        data: {
-                            some: {
-                                value: {
-                                    contains: keyword.trim(),
-                                    mode: 'insensitive' // 不区分大小写
-                                }
-                            }
-                        }
+                      // JSON 全文搜索（需要 Prisma 5 的 string_contains，或升级到 5 后使用）
+                      data: {
+                        // path: ['value'],
+                        string_contains: keyword.trim(),
+                        // mode: 'insensitive',
+                      },
                     },
-                    // 也可以搜索其他字段，如备注等
-                    {
-                        remarks: {
-                            contains: keyword.trim(),
-                            mode: 'insensitive'
-                        }
-                    }
-                ];
+                  ];
             }
+
+            // 添加调试日志
+            console.log('查询条件:', JSON.stringify(whereCondition, null, 2));
+            console.log('关键词:', keyword);
 
             // 查询指定版本的提交记录
             const result = await getSubmissionsWithPagination({
@@ -125,7 +119,7 @@ export default function Index({form}: { form: Form }) {
     // 处理版本切换
     const handleVersionChange = (version: number) => {
         setSelectedVersion(version);
-        fetchSubmissions(1, pagination.pageSize, version);
+        fetchSubmissions(1, pagination.pageSize, version, keyword);
     };
 
     useEffect(() => {

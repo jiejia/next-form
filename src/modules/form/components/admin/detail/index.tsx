@@ -5,13 +5,12 @@ import Block from "@/modules/common/components/shared/block";
 import {Button, Input, Pagination, Select, SelectItem} from "@heroui/react";
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@heroui/react";
 import Scroll from "@/modules/common/components/shared/scroll";
-
 import {
     FunnelIcon,
     ArrowPathIcon,
 
 } from "@heroicons/react/24/outline";
-import {Database, Plus, Clock, BarChart3} from "lucide-react";
+import {Database, Plus, Clock, BarChart3, Download} from "lucide-react";
 import {getSubmissionsWithPagination} from "@/modules/form/actions/form-action";
 import {useEffect, useState} from "react";
 import {Submission, PaginationMeta} from "@/modules/form/types/form";
@@ -30,6 +29,18 @@ export default function Index({form}: { form: Form }) {
     const [isLoading, setIsLoading] = useState(false);
     const [availableVersions, setAvailableVersions] = useState<number[]>([]);
     const [selectedVersion, setSelectedVersion] = useState<number>(1);
+    const [searechConditions, setSearchConditions] = useState<object[]>([{
+        field: "all",
+        operator: "contains",
+        value: []
+    }]);
+    const [keyword, setKeyword] = useState<string>('');
+
+    const handleKeywordChange = (value: string) => {
+        setKeyword(value);
+        fetchSubmissions(1, pagination.pageSize, selectedVersion, keyword);
+
+    };
 
     // 获取所有可用版本的函数
     const fetchAvailableVersions = async () => {
@@ -59,22 +70,51 @@ export default function Index({form}: { form: Form }) {
     };
 
     // 获取提交数据的函数
-    const fetchSubmissions = async (page: number = 1, pageSize: number = 20, version?: number) => {
+    const fetchSubmissions = async (page: number = 1, pageSize: number = 20, version?: number, keyword: string = '') => {
         setIsLoading(true);
         try {
             const targetVersion = version !== undefined ? version : selectedVersion;
 
-            // 查询指定版本的所有提交记录
+            // 构建 where 条件
+            const whereCondition: any = {
+                formId: form.id,
+                version: targetVersion
+            };
+
+            // 如果有关键词，添加搜索条件
+            if (keyword && keyword.trim()) {
+                whereCondition.OR = [
+                    // 搜索提交数据中的任意字段值
+                    {
+                        data: {
+                            some: {
+                                value: {
+                                    contains: keyword.trim(),
+                                    mode: 'insensitive' // 不区分大小写
+                                }
+                            }
+                        }
+                    },
+                    // 也可以搜索其他字段，如备注等
+                    {
+                        remarks: {
+                            contains: keyword.trim(),
+                            mode: 'insensitive'
+                        }
+                    }
+                ];
+            }
+
+            // 查询指定版本的提交记录
             const result = await getSubmissionsWithPagination({
-                where: {
-                    formId: form.id,
-                    version: targetVersion
-                },
+                where: whereCondition,
                 skip: (page - 1) * pageSize,
                 take: pageSize,
             });
             setSubmissions(result.data as unknown as Submission[]);
             setPagination(result.pagination);
+            console.log(submissions);
+
         } catch (error) {
             console.error('获取提交数据失败:', error);
         } finally {
@@ -113,6 +153,8 @@ export default function Index({form}: { form: Form }) {
                                 type="text"
                                 size="sm"
                                 placeholder="搜索表单提交数据..."
+                                value={keyword}
+                                onValueChange={handleKeywordChange}
                             />
                         </form>
                     </div>
@@ -146,6 +188,16 @@ export default function Index({form}: { form: Form }) {
                             onPress={() => fetchSubmissions(pagination.page, pagination.pageSize, selectedVersion)}
                         >
                             <ArrowPathIcon className="h-5 w-5"/>
+                        </Button>
+                        <Button
+                            isIconOnly
+                            size="sm"
+                            variant="flat"
+                            className="text-default-600"
+                            title="导出数据"
+                            isDisabled={isLoading || submissions.length === 0}
+                        >
+                            <Download className="h-5 w-5"/>
                         </Button>
                         <Button
                             isIconOnly

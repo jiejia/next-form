@@ -13,7 +13,7 @@ import {
 import {Database, Plus, Clock, BarChart3, Download} from "lucide-react";
 import {getSubmissionsWithPagination} from "@/modules/form/actions/form-action";
 import {useEffect, useState} from "react";
-import {Submission, PaginationMeta} from "@/modules/form/types/form";
+import {Submission, PaginationMeta, SearchConditions} from "@/modules/form/types/form";
 import React from "react";
 
 export default function Index({form}: { form: Form }) {
@@ -76,23 +76,17 @@ export default function Index({form}: { form: Form }) {
             const targetVersion = version !== undefined ? version : selectedVersion;
 
             // 构建 where 条件
-            const whereCondition: any = {
+            const whereCondition: SearchConditions = {
                 formId: form.id,
                 version: targetVersion
             };
 
             // 如果有关键词，添加搜索条件
             if (keyword && keyword.trim()) {
-                whereCondition.AND = [
-                    {
-                      // JSON 全文搜索（需要 Prisma 5 的 string_contains，或升级到 5 后使用）
-                      data: {
-                        // path: ['value'],
-                        string_contains: keyword.trim(),
-                        // mode: 'insensitive',
-                      },
-                    },
-                  ];
+                whereCondition.data = {
+                    path: ['0', 'value'],      // 第 1 个元素的 value 字段是 string
+                    string_contains: keyword.trim() // 在 JSON 字符串中搜索
+                };
             }
 
             // 添加调试日志

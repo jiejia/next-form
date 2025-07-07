@@ -89,3 +89,11 @@ export interface PaginatedResult<T> {
     data: T[];              // 数据列表
     pagination: PaginationMeta;  // 分页信息
 }
+
+
+export interface SearchConditions {
+    formId?: number;
+    version?: number;
+    AND?: object;
+    data?: object;
+}

@@ -364,6 +364,46 @@ export async function getSubmissions(args: QueryArgs = {}) {
 }
 
 /**
+ * 根据表单ID和版本号获取提交记录的数据字段元素数量
+ * @param formId - 表单ID
+ * @param version - 表单版本号
+ * @returns 数据字段元素数量，如果记录不存在返回0
+ */
+export async function getSubmissionDataElementCount(formId: number, version: number): Promise<number> {
+    try {
+        const submission = await prisma.formSubmission.findFirst({
+            where: {
+                formId: formId,
+                version: version
+            },
+            select: {
+                data: true
+            }
+        });
+
+        if (!submission || !submission.data) {
+            return 0;
+        }
+
+        // 检查data是否为数组
+        if (Array.isArray(submission.data)) {
+            return submission.data.length;
+        }
+
+        // 如果data是对象，返回对象属性数量
+        if (typeof submission.data === 'object') {
+            return Object.keys(submission.data).length;
+        }
+
+        // 其他情况返回0
+        return 0;
+    } catch (error) {
+        console.error('获取提交记录数据元素数量失败:', error);
+        return 0;
+    }
+}
+
+/**
  * Get submissions with pagination support
  *
  * @param args - Query arguments including pagination parameters

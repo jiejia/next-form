@@ -11,7 +11,7 @@ import {
 
 } from "@heroicons/react/24/outline";
 import {Database, Plus, Clock, BarChart3, Download} from "lucide-react";
-import {getSubmissionsWithPagination} from "@/modules/form/actions/form-action";
+import {getSubmissionsWithPagination, getSubmissionDataElementCount} from "@/modules/form/actions/form-action";
 import {useEffect, useState} from "react";
 import {Submission, PaginationMeta, SearchConditions} from "@/modules/form/types/form";
 import React from "react";
@@ -75,6 +75,8 @@ export default function Index({form}: { form: Form }) {
         try {
             const targetVersion = version !== undefined ? version : selectedVersion;
 
+            const elementCount = await getSubmissionDataElementCount(form.id, targetVersion);
+
             // 构建 where 条件
             const whereCondition: SearchConditions = {
                 formId: form.id,
@@ -83,10 +85,19 @@ export default function Index({form}: { form: Form }) {
 
             // 如果有关键词，添加搜索条件
             if (keyword && keyword.trim()) {
-                whereCondition.data = {
-                    path: ['0', 'value'],      // 第 1 个元素的 value 字段是 string
-                    string_contains: keyword.trim() // 在 JSON 字符串中搜索
-                };
+                const searchConditions = [];
+
+                for (let i = 0; i < elementCount; i++) {
+                    searchConditions.push({
+                        data: {
+                            path: [i.toString(), 'value'],
+                            string_contains: keyword.trim()
+                        }
+                    });
+                }
+
+                // 使用 OR 条件
+                whereCondition.OR = searchConditions;
             }
 
             // 添加调试日志

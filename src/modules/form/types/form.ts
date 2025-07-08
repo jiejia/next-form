@@ -96,4 +96,5 @@ export interface SearchConditions {
     version?: number;
     AND?: object;
     data?: object;
+    OR?: object[];
 }

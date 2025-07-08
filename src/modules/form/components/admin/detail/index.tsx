@@ -11,7 +11,7 @@ import {
 
 } from "@heroicons/react/24/outline";
 import {Database, Plus, Clock, BarChart3, Download} from "lucide-react";
-import {getSubmissionsWithPagination, getSubmissionDataElementCount} from "@/modules/form/actions/form-action";
+import {getSubmissionsWithPagination, getSubmissionDataElementCount, getList} from "@/modules/form/actions/submission-action";
 import {useEffect, useState} from "react";
 import {Submission, PaginationMeta, SearchConditions} from "@/modules/form/types/form";
 import React from "react";
@@ -73,46 +73,11 @@ export default function Index({form}: { form: Form }) {
     const fetchSubmissions = async (page: number = 1, pageSize: number = 20, version?: number, keyword: string = '') => {
         setIsLoading(true);
         try {
-            const targetVersion = version !== undefined ? version : selectedVersion;
+            const result = await getList(keyword, version, form.id, page, pageSize)
 
-            const elementCount = await getSubmissionDataElementCount(form.id, targetVersion);
-
-            // 构建 where 条件
-            const whereCondition: SearchConditions = {
-                formId: form.id,
-                version: targetVersion
-            };
-
-            // 如果有关键词，添加搜索条件
-            if (keyword && keyword.trim()) {
-                const searchConditions = [];
-
-                for (let i = 0; i < elementCount; i++) {
-                    searchConditions.push({
-                        data: {
-                            path: [i.toString(), 'value'],
-                            string_contains: keyword.trim()
-                        }
-                    });
-                }
-
-                // 使用 OR 条件
-                whereCondition.OR = searchConditions;
-            }
-
-            // 添加调试日志
-            console.log('查询条件:', JSON.stringify(whereCondition, null, 2));
-            console.log('关键词:', keyword);
-
-            // 查询指定版本的提交记录
-            const result = await getSubmissionsWithPagination({
-                where: whereCondition,
-                skip: (page - 1) * pageSize,
-                take: pageSize,
-            });
             setSubmissions(result.data as unknown as Submission[]);
             setPagination(result.pagination);
-            console.log(submissions);
+            console.log("result",result);
 
         } catch (error) {
             console.error('获取提交数据失败:', error);

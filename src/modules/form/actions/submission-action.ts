@@ -124,8 +124,8 @@ export async function getList(keyword?: string, version?: number, formId?: numbe
 
     // 构建 where 条件
     const whereCondition: SearchConditions = {
-        formId: form.id,
-        version: targetVersion
+        formId: formId,
+        version: version
     };
 
     if (keyword && keyword.trim()) {
@@ -142,6 +142,8 @@ export async function getList(keyword?: string, version?: number, formId?: numbe
 
         whereCondition.OR = searchConditions;
     }
+
+    console.log('whereCondition', whereCondition);
 
     return await getSubmissionsWithPagination({
         where: whereCondition,

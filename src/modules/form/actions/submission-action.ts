@@ -151,3 +151,41 @@ export async function getList(keyword?: string, version?: number, formId?: numbe
         take: pageSize,
     });
 }
+
+/**
+ * Get field titles from submission data by form ID and version
+ * @param formId - Form ID
+ * @param version - Form version number
+ * @returns Array of field titles, returns empty array if no record exists
+ */
+export async function getSubmissionFieldTitles(formId: number, version: number): Promise<string[]> {
+    try {
+        const submission = await prisma.formSubmission.findFirst({
+            where: {
+                formId: formId,
+                version: version
+            },
+            select: {
+                data: true
+            }
+        });
+
+        if (!submission || !submission.data) {
+            return [];
+        }
+
+        // Check if data is an array
+        if (Array.isArray(submission.data)) {
+            // Extract title field from each element
+            return submission.data
+                .map((item: any) => item?.title)
+                .filter((title: any): title is string => typeof title === 'string' && title.trim() !== '');
+        }
+
+        // Return empty array if data is not an array
+        return [];
+    } catch (error) {
+        console.error('Failed to get submission field titles:', error);
+        return [];
+    }
+}

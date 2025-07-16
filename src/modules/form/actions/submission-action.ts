@@ -118,7 +118,7 @@ export async function getSubmissionsWithPagination(args: QueryArgs = {}): Promis
  * @param page
  * @param pageSize
  */
-export async function getList(keyword?: string, version?: number, formId?: number, page: number = 1, pageSize: number = 20)
+export async function getList(version: number, formId: number, keyword?: string, page: number = 1, pageSize: number = 20)
 {
     const elementCount = await getSubmissionDataElementCount(formId, version);
 

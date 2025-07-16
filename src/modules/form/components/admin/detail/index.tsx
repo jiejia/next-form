@@ -70,10 +70,10 @@ export default function Index({form}: { form: Form }) {
     };
 
     // 获取提交数据的函数
-    const fetchSubmissions = async (page: number = 1, pageSize: number = 20, version?: number, keyword: string = '') => {
+    const fetchSubmissions = async (page: number = 1, pageSize: number = 20, version: number, keyword: string = '') => {
         setIsLoading(true);
         try {
-            const result = await getList(keyword, version, form.id, page, pageSize)
+            const result = await getList(version, form.id, keyword, page, pageSize)
 
             setSubmissions(result.data as unknown as Submission[]);
             setPagination(result.pagination);

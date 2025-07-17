@@ -11,9 +11,9 @@ import {
 
 } from "@heroicons/react/24/outline";
 import {Database, Plus, Clock, BarChart3, Download} from "lucide-react";
-import {getSubmissionsWithPagination, getSubmissionDataElementCount, getList} from "@/modules/form/actions/submission-action";
+import {getSubmissionsWithPagination, getList} from "@/modules/form/actions/submission-action";
 import {useEffect, useState} from "react";
-import {Submission, PaginationMeta, SearchConditions} from "@/modules/form/types/form";
+import {Submission, PaginationMeta} from "@/modules/form/types/form";
 import React from "react";
 
 export default function Index({form}: { form: Form }) {
@@ -29,6 +29,7 @@ export default function Index({form}: { form: Form }) {
     const [isLoading, setIsLoading] = useState(false);
     const [availableVersions, setAvailableVersions] = useState<number[]>([]);
     const [selectedVersion, setSelectedVersion] = useState<number>(1);
+    const [fieldTitles, setFieldTitles] = useState<string[]>([]);
     const [searechConditions, setSearchConditions] = useState<object[]>([{
         field: "all",
         operator: "contains",
@@ -41,6 +42,26 @@ export default function Index({form}: { form: Form }) {
         fetchSubmissions(1, pagination.pageSize, selectedVersion, value);
 
     };
+
+    const fetchFieldTitles = async (formId: number, version: number) => {
+        try {
+            const result = await getSubmissionsWithPagination({
+                where: {formId, version},
+                select: {data: true},
+                orderBy: {createdAt: 'desc'},
+                take: 1 // 只取最新的一条数据
+            });
+
+            if (result.data.length > 0 && result.data[0].data.length > 0) {
+                const titles = result.data[0].data.map((item: { title: string }) => item.title);
+                setFieldTitles(titles);
+            } else {
+                setFieldTitles([]);
+            }
+        } catch (error) {
+            console.error('获取字段标题失败:', error);
+        }
+    }
 
     // 获取所有可用版本的函数
     const fetchAvailableVersions = async () => {
@@ -97,8 +118,10 @@ export default function Index({form}: { form: Form }) {
             const versions = await fetchAvailableVersions();
             if (versions.length > 0) {
                 await fetchSubmissions(1, 20, versions[0]);
+                await fetchFieldTitles(form.id, versions[0]);
             } else {
                 await fetchSubmissions(1, 20, 1);
+                await fetchFieldTitles(form.id, 1);
             }
         };
 

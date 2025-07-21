@@ -11,7 +11,11 @@ import {
 
 } from "@heroicons/react/24/outline";
 import {Database, Plus, Clock, BarChart3, Download} from "lucide-react";
-import {getSubmissionsWithPagination, getList} from "@/modules/form/actions/submission-action";
+import {
+    getSubmissionsWithPagination,
+    getList,
+    getSubmissionFieldTitles
+} from "@/modules/form/actions/submission-action";
 import {useEffect, useState} from "react";
 import {Submission, PaginationMeta} from "@/modules/form/types/form";
 import React from "react";
@@ -44,23 +48,8 @@ export default function Index({form}: { form: Form }) {
     };
 
     const fetchFieldTitles = async (formId: number, version: number) => {
-        try {
-            const result = await getSubmissionsWithPagination({
-                where: {formId, version},
-                select: {data: true},
-                orderBy: {createdAt: 'desc'},
-                take: 1 // 只取最新的一条数据
-            });
-
-            if (result.data.length > 0 && result.data[0].data.length > 0) {
-                const titles = result.data[0].data.map((item: { title: string }) => item.title);
-                setFieldTitles(titles);
-            } else {
-                setFieldTitles([]);
-            }
-        } catch (error) {
-            console.error('获取字段标题失败:', error);
-        }
+        const result = await getSubmissionFieldTitles(formId, version);
+        console.log(result);
     }
 
     // 获取所有可用版本的函数

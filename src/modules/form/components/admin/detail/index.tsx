@@ -61,8 +61,9 @@ export default function Index({form}: { form: Form }) {
 
     const fetchFieldTitles = async (formId: number, version: number) => {
         const titles = await getSubmissionFieldTitles(formId, version);
-        console.log(titles);
         setFieldTitles(titles);
+        console.log("title", titles);
+
     }
 
     // 获取所有可用版本的函数
@@ -128,6 +129,7 @@ export default function Index({form}: { form: Form }) {
         };
 
         initializeData();
+
     }, [form.id]);
 
     console.log(submissions);

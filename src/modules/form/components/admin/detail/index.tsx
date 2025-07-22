@@ -19,8 +19,20 @@ import {
 import {useEffect, useState} from "react";
 import {Submission, PaginationMeta} from "@/modules/form/types/form";
 import React from "react";
+import {
+    Modal,
+    ModalContent,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+    useDisclosure,
+} from "@heroui/react";
+
 
 export default function Index({form}: { form: Form }) {
+    const {isOpen, onOpen, onOpenChange} = useDisclosure();
+
+
     const [submissions, setSubmissions] = useState<Submission[]>([]);
     const [pagination, setPagination] = useState<PaginationMeta>({
         total: 0,
@@ -49,7 +61,7 @@ export default function Index({form}: { form: Form }) {
 
     const fetchFieldTitles = async (formId: number, version: number) => {
         const titles = await getSubmissionFieldTitles(formId, version);
-        // console.log(titles);
+        console.log(titles);
         setFieldTitles(titles);
     }
 
@@ -182,6 +194,7 @@ export default function Index({form}: { form: Form }) {
                             variant="flat"
                             className="text-default-600"
                             title="高级搜索"
+                            onPress={onOpen}
                         >
                             <FunnelIcon className="h-5 w-5"/>
                         </Button>
@@ -338,6 +351,22 @@ export default function Index({form}: { form: Form }) {
                     </Select>
                 </div>
             </Block>
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+                <ModalContent>
+                    {() => (
+                        <>
+                            <ModalHeader className="flex flex-col gap-1">Advanced Search</ModalHeader>
+                            <ModalBody>
+                                <Select className="max-w-xs">
+                                    {fieldTitles.map((title, index) => (
+                                        <SelectItem key={index}>{title}</SelectItem>
+                                    ))}
+                                </Select>
+                            </ModalBody>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
         </div>
     );
 }

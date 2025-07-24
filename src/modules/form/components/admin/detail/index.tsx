@@ -29,7 +29,7 @@ import {
 } from "@heroui/react";
 
 
-export default function Index({form}: { form: Form }) {
+export function Index({form}: { form: Form }) {
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
 
 
@@ -63,7 +63,6 @@ export default function Index({form}: { form: Form }) {
         const titles = await getSubmissionFieldTitles(formId, version);
         setFieldTitles(titles);
         console.log("title", titles);
-
     }
 
     // 获取所有可用版本的函数
@@ -101,7 +100,7 @@ export default function Index({form}: { form: Form }) {
 
             setSubmissions(result.data as unknown as Submission[]);
             setPagination(result.pagination);
-            console.log("result",result);
+            console.log("result", result);
 
         } catch (error) {
             console.error('获取提交数据失败:', error);
@@ -265,7 +264,7 @@ export default function Index({form}: { form: Form }) {
                                 <>
                                     <TableColumn>加载中 ... </TableColumn>
                                 </>
-                                ) : submissions.length === 0 ? (
+                            ) : submissions.length === 0 ? (
                                 <>
                                     <TableColumn>提交数据</TableColumn>
                                 </>
@@ -281,32 +280,32 @@ export default function Index({form}: { form: Form }) {
                         <TableBody>
                             {isLoading ? (
                                 <TableRow>
-                                        <TableCell colSpan={3}>
-                                            <div className="flex justify-center items-center py-8">
-                                                <div className="text-default-500">加载中...</div>
-                                            </div>
-                                        </TableCell>
+                                    <TableCell colSpan={3}>
+                                        <div className="flex justify-center items-center py-8">
+                                            <div className="text-default-500">加载中...</div>
+                                        </div>
+                                    </TableCell>
                                 </TableRow>
                             ) : submissions.length === 0 ? (
                                 <TableRow>
-                                        <TableCell colSpan={3}>
-                                            <div className="flex justify-center items-center py-8">
-                                                <div className="text-default-500">暂无提交数据</div>
-                                            </div>
-                                        </TableCell>
+                                    <TableCell colSpan={3}>
+                                        <div className="flex justify-center items-center py-8">
+                                            <div className="text-default-500">暂无提交数据</div>
+                                        </div>
+                                    </TableCell>
                                 </TableRow>
                             ) : (
                                 submissions.map((submission) => (
                                     <TableRow key={submission.id}>
-                                    {[
-                                        <TableCell key="id">{submission.id}</TableCell>,
-                                        ...submission.data.map((item, i) => (
-                                            <TableCell key={i}>
-                                                {item.value?.toString() ?? '无数据'}
-                                            </TableCell>
-                                        )),
-                                        <TableCell key="created">{submission.createdAt.toLocaleString()}</TableCell>
-                                    ]}
+                                        {[
+                                            <TableCell key="id">{submission.id}</TableCell>,
+                                            ...submission.data.map((item, i) => (
+                                                <TableCell key={i}>
+                                                    {item.value?.toString() ?? '无数据'}
+                                                </TableCell>
+                                            )),
+                                            <TableCell key="created">{submission.createdAt.toLocaleString()}</TableCell>
+                                        ]}
                                     </TableRow>
                                 ))
                             )}
@@ -353,17 +352,25 @@ export default function Index({form}: { form: Form }) {
                     </Select>
                 </div>
             </Block>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false}>
                 <ModalContent>
                     {() => (
                         <>
                             <ModalHeader className="flex flex-col gap-1">Advanced Search</ModalHeader>
                             <ModalBody>
-                                <Select className="max-w-xs">
+                                <Select 
+                                    className="max-w-xs"
+                                    label="Favorite Animal"
+                                    placeholder="请选择字段"
+                                    selectionMode="single"
+
+                                >
+
                                     {fieldTitles.map((title, index) => (
-                                        <SelectItem key={index}>{title}</SelectItem>
+                                        <SelectItem key={index} textValue={title.toString()}>{title}</SelectItem>
                                     ))}
                                 </Select>
+                                <span>{JSON.stringify(fieldTitles)}</span>
                             </ModalBody>
                         </>
                     )}

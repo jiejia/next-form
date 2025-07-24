@@ -1,7 +1,7 @@
 import DashboardLayout from "@/app/dashboard/dashboard-layout";
 import React from "react";
 import Link from "next/link";
-import Index from "@/modules/form/components/admin/detail";
+import {Index} from "@/modules/form/components/admin/detail";
 import {get} from "@/modules/form/actions/form-action"; 
 import { notFound } from "next/navigation";     
 

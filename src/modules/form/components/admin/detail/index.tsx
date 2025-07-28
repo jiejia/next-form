@@ -352,25 +352,38 @@ export function Index({form}: { form: Form }) {
                     </Select>
                 </div>
             </Block>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false}>
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
                     {() => (
                         <>
                             <ModalHeader className="flex flex-col gap-1">Advanced Search</ModalHeader>
                             <ModalBody>
-                                <Select 
+                                <Input
+                                    autoFocus
+
+                                    label="Email"
+                                    placeholder="Enter your email"
+                                    variant="bordered"
+                                />
+                                <Input
+
+                                    label="Password"
+                                    placeholder="Enter your password"
+                                    type="password"
+                                    variant="bordered"
+                                />
+                                <Select
                                     className="max-w-xs"
-                                    label="Favorite Animal"
-                                    placeholder="请选择字段"
-                                    selectionMode="single"
-
+                                    label="Select country"
+                                    placement="bottom"
+                                    size="md"
+                                    variant="bordered"
                                 >
-
-                                    {fieldTitles.map((title, index) => (
-                                        <SelectItem key={index} textValue={title.toString()}>{title}</SelectItem>
-                                    ))}
+                                    <SelectItem key="argentina">Argentina</SelectItem>
+                                    <SelectItem key="venezuela">Venezuela</SelectItem>
+                                    <SelectItem key="brazil">Brazil</SelectItem>
                                 </Select>
-                                <span>{JSON.stringify(fieldTitles)}</span>
+
                             </ModalBody>
                         </>
                     )}
